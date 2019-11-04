@@ -1,0 +1,28 @@
+#127.0.0.1    localhost
+10.63.0.5     neotrade-node-muxa
+10.63.0.10    neotrade-node1
+10.63.0.11    neotrade-node2
+10.63.0.12    neotrade-node3
+10.63.0.13    neotrade-node4
+10.63.0.14    neotrade-node5
+10.63.0.15    neotrade-node6
+10.63.0.16    neotrade-node7
+10.63.0.17    neotrade-node8
+10.63.0.18    neotrade-node9
+10.63.0.19    neotrade-node10
+10.63.0.20    neotrade-node11
+10.63.0.21    neotrade-node12
+10.63.0.22    neotrade-node13
+10.63.0.23    neotrade-node14
+10.63.0.24    neotrade-node15
+10.63.0.25    neotrade-node16
+10.63.0.26    neotrade-node17
+10.63.0.27    neotrade-node18
+10.63.0.28    neotrade-node19
+10.63.0.29    neotrade-node20
+
+10.63.100.250 BOLID
+# The following lines are desirable for IPv6 capable hosts
+#::1     localhost ip6-localhost ip6-loopback
+#ff02::1 ip6-allnodes
+#ff02::2 ip6-allrouters

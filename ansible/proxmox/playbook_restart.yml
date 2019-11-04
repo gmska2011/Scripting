@@ -1,0 +1,36 @@
+---
+ - name: restart nodes
+   hosts: all
+
+   tasks:
+    - name: Ping host
+      ping: ~
+##
+#    - name: Get running processes
+#      shell: "ps -ef | grep -v grep | grep -w corosync | awk '{print $2}'"
+#      register: running_processes
+
+#    - name: Kill running processes
+#      shell: "kill {{ item }}"
+#      with_items: "{{ running_processes.stdout_lines }}"
+
+#    - wait_for:
+#        path: "/proc/{{ item }}/status"
+#        state: absent
+#      with_items: "{{ running_processes.stdout_lines }}"
+#      ignore_errors: yes
+#      register: killed_processes
+
+    - name: Force kill stuck processes
+      shell: "killall corosync -9"
+#      with_items: "{{ running_processes.stdout_lines }}"
+##
+    - name: Stop service pve-cluster, if started
+      service:
+         name: pve-cluster
+         state: stopped
+
+    - name: Start service pve-cluster, if started
+      service:
+         name: pve-cluster
+         state: started

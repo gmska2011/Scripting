@@ -1,0 +1,14 @@
+---
+ - name: restart nodes
+   hosts: 10.63.0.10
+
+   tasks:
+    - name: Copy nag
+      copy:
+        src: ./copy_dir/pve-nag-buster.sh
+        dest: /tmp/pve-nag-buster.sh
+        owner: root
+        group: root
+        mode: '0755'
+    - name: Update Subscription
+      shell: "/tmp/pve-nag-buster.sh"

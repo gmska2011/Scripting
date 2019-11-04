@@ -1,0 +1,18 @@
+[NODES]
+neotrade-node1    ansible_host=10.63.0.10 
+neotrade-node2    ansible_host=10.63.0.11
+neotrade-node3    ansible_host=10.63.0.12
+neotrade-node4    ansible_host=10.63.0.13
+neotrade-node5    ansible_host=10.63.0.14
+neotrade-node6    ansible_host=10.63.0.15
+neotrade-node7    ansible_host=10.63.0.16
+neotrade-node8    ansible_host=10.63.0.17
+neotrade-node9    ansible_host=10.63.0.19
+neotrade-node10   ansible_host=10.63.0.20
+neotrade-node12   ansible_host=10.63.0.21
+neotrade-node13   ansible_host=10.63.0.22
+neotrade-node14   ansible_host=10.63.0.23
+neotrade-node15   ansible_host=10.63.0.24
+neotrade-node16   ansible_host=10.63.0.25
+
+[NEW]

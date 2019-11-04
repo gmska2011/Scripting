@@ -1,0 +1,67 @@
+---
+ - name: install proxmox on nodes
+   hosts: NEW
+
+   tasks:
+    - name: Ping host
+      ping: ~
+##
+    - name: Add an Apt signing key to a specific keyring file
+      apt_key:
+        #id: 9FED2BCBDCD29CDF762678CBAED4B06F473041FA
+        url: http://download.proxmox.com/debian/proxmox-ve-release-5.x.gpg
+        keyring: /etc/apt/trusted.gpg.d/proxmox-ve-release-5.x.gpg
+#        url: http://download.proxmox.com/debian/proxmox-ve-release-6.x.gpg
+#        keyring: /etc/apt/trusted.gpg.d/proxmox-ve-release-6.x.gpg
+##
+    - apt_repository:
+       repo: deb http://download.proxmox.com/debian/pve stretch pve-no-subscription
+#       repo: deb http://download.proxmox.com/debian/pve buster pve-no-subscription
+       state: present
+       filename: pve-install-repo
+    - apt_repository:
+       repo: "{{ item }}"
+       state: present
+       filename: corosync3-repo
+      loop:
+        - deb http://download.proxmox.com/debian/corosync-3/ stretch main
+
+    - apt_repository:
+       repo: "{{ item }}"
+       state: absent
+      loop:
+        - deb https://enterprise.proxmox.com/debian/pve stretch pve-enterprise
+
+##
+    - name: Update apt packages
+      apt:
+        update_cache: yes
+        upgrade: yes
+##  
+    - name: Copy file with owner and permissions
+      copy:
+        src: ./etc/hosts
+        dest: /etc/hosts
+        owner: root
+        group: root
+        mode: '0644'
+
+##
+    - name: Install a list of packages
+      apt:
+        name: "{{ packages }}"
+      vars:
+        packages:
+        - mc
+        - ifenslave
+        - bridge-utils
+        - pve-manager
+        - proxmox-ve
+        - corosync
+        - htop
+        - tcpdump
+        - ethtool
+        - hdparm
+        - ntp
+        - net-tools
+

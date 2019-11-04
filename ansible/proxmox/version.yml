@@ -1,0 +1,15 @@
+---
+ - name: pveversion nodes
+   hosts: all
+
+   tasks:
+   - name: Get Kernel version
+     shell: uname -r | egrep '^[0-9]*\.[0-9]*' -o
+     register: kernel_shell_output
+
+   - debug: msg="{{ kernel_shell_output.stdout}}"
+
+#    - shell: echo "It works"
+#         when: echo_content.stdout == "12"
+#         register: out
+#    - debug: var=out.stdout_lines
