@@ -1,0 +1,21 @@
+context meandr-home {
+    _XXX  => {
+//       &CheckAvail(${EXTEN});
+       &BusyCheckLocal(${EXTEN});
+       Dial(SIP/${EXTEN},60,Tt);
+    }
+    
+    _XXXXXX => {
+	   Set(CALLERID(num)=557565);	   
+	   Dial(SIP/AIST_TRUNK/${EXTEN},,T);
+    }
+   _8XXXXXXXXXX => {
+	   Set(CALLERID(num)=557565);
+	   Dial(SIP/AIST_TRUNK/${EXTEN},,T);
+    };
+   _+7XXXXXXXXXX => {
+	   Set(CALLERID(num)=557565);
+	   Dial(SIP/AIST_TRUNK/${EXTEN},,T);
+   };
+
+}

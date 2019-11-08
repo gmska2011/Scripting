@@ -1,0 +1,496 @@
+#!/bin/sh
+
+get_ip ()
+{
+ FILE=$1
+ PARAM=`cat /home/scripts/firewall/$FILE  | sed -e s'/#.*//' | sed -e s'/\ //g' | egrep -v "^#" | egrep -v "^$"` 
+ echo $PARAM
+}
+
+WORKDIR="/home/scripts/firewall"
+IPTABLES="/sbin/iptables"
+MYSQL="/usr/bin/mysql"
+MYSQLUSER="traffuser"
+MYSQLPASS="traff"
+
+modprobe ip_tables
+modprobe iptable_nat
+modprobe ipt_LOG
+modprobe ipt_limit
+modprobe ip_nat_ftp
+modprobe ip_conntrack_ftp
+
+MYREALIP="85.114.181.162"
+
+
+/home/scripts/traffic.pl
+
+ALLOW_SSH=`get_ip allow_ssh`
+ALLOW_SSH_1C=`get_ip allow_ssh_1c`
+ALLOW_POP3=`get_ip allow_pop3`
+ALLOW_RDP=`get_ip allow_rdp`
+ALLOW_OPENVPN=`get_ip allow_openvpn`
+ALLOW_JABBER=`get_ip allow_jabber`
+ALLOW_WWW=`get_ip allow_www`
+ALLOW_ASTER=`get_ip allow_aster`
+PIRING_NET=`get_ip piring_networks`
+AIST_NETS=`get_ip aist_nets`
+SMB="192.168.0.225 192.168.0.193"
+
+$MYSQL -h localhost -u $MYSQLUSER -p${MYSQLPASS} -D traffic -N -s -e 'delete from users'
+
+############################################################
+
+
+$IPTABLES -F
+$IPTABLES -t nat -F
+
+$IPTABLES -X 
+$IPTABLES -X -t nat 
+
+$IPTABLES -P INPUT ACCEPT
+$IPTABLES -P FORWARD ACCEPT
+$IPTABLES -P OUTPUT ACCEPT
+
+#$IPTABLES -N ssh_check
+$IPTABLES -N traffic_vpn
+$IPTABLES -N total_traff
+$IPTABLES -N aist_check
+
+$IPTABLES -A INPUT  -s 218.77.129.82 -j DROP
+$IPTABLES -A OUTPUT  -s 218.77.129.82 -j DROP
+
+#######################################
+#
+# Firewall
+#
+#
+
+
+
+# Для аиста рубим все кроме аиста 
+# $IPTABLES -A INPUT -i eth1.3501 -j aist_check
+# $IPTABLES -A FORWARD -i eth1.3501 -o eth0 -j aist_check
+
+#for NET in $AIST_NETS  ; do 
+#  $IPTABLES -A aist_check -s $NET -j RETURN
+#done
+#  $IPTABLES -A aist_check  -j DROP
+
+###### QOS #################
+$IPTABLES -t mangle -A POSTROUTING -o tun+ -p udp --sport 4569 -j MARK --set-mark 5
+$IPTABLES -t mangle -A POSTROUTING -o tun+ -p udp --sport 5060 -j MARK --set-mark 5
+$IPTABLES -t mangle -A POSTROUTING -o tun+ -p udp --sport 10000:12000 -j MARK --set-mark 5
+
+$IPTABLES -t mangle -A POSTROUTING -o tun+ -p tcp --sport 5222 -j MARK --set-mark 6
+$IPTABLES -t mangle -A POSTROUTING -o tun+ -p tcp --sport 5223 -j MARK --set-mark 6
+# ICMP-traffic with `mark 6`
+$IPTABLES -t mangle -A POSTROUTING -o tun+ -p icmp -j MARK --set-mark 6
+
+$IPTABLES -t mangle -A POSTROUTING -o tun+ -p tcp --sport 3389 -j MARK --set-mark 7
+# SAMBA
+#$IPTABLES -t mangle -A POSTROUTING -o tun0 -p tcp --dport 445 -j MARK --set-mark 7
+#$IPTABLES -t mangle -A POSTROUTING -o tun0 -p udp --dport 445 -j MARK --set-mark 7
+
+###############################  
+
+#$IPTABLES -A INPUT  -i eth1.3501 -p udp --dport 53 --match state --state NEW --match string --algo kmp --hex-string "|00 00 02 00 01|" --from 40 --to 45 --match recent --name DNST --update --seconds 600 -j DROP
+#$IPTABLES -A INPUT  -i eth1.3501 -p udp --dport 53 --match state --state NEW --match string --algo kmp --hex-string "|00 00 02 00 01|" --from 40 --to 45 --match recent --name DNST --set -j ACCEPT
+#$IPTABLES -A INPUT  --in-interface eth2 --protocol udp --dport 53 --match state --state NEW --match string --algo kmp --hex-string "|00 00 02 00 01|" --from 40 --to 45 --match recent --name DNST --update --seconds 600 --jump DROP
+#$IPTABLES -A INPUT  --in-interface eth2 --protocol udp --dport 53 --match state --state NEW --match string --algo kmp --hex-string "|00 00 02 00 01|" --from 40 --to 45 --match recent --name DNST --set --jump ACCEPT
+#$IPTABLES -A INPUT  --in-interface eth3 --protocol udp --dport 53 --match state --state NEW --match string --algo kmp --hex-string "|00 00 02 00 01|" --from 40 --to 45 --match recent --name DNST --update --seconds 600 --jump DROP
+#$IPTABLES -A INPUT  --in-interface eth3 --protocol udp --dport 53 --match state --state NEW --match string --algo kmp --hex-string "|00 00 02 00 01|" --from 40 --to 45 --match recent --name DNST --set --jump ACCEPT
+
+### DNS ATTACK HACK
+$IPTABLES -A INPUT -i eth1.3501 -p udp --dport 53 -j ACCEPT
+$IPTABLES -A INPUT -i eth1.3501 -p tcp --dport 53 -j ACCEPT
+$IPTABLES -A INPUT -i eth1.3501 -p tcp --dport 21 -j ACCEPT
+#$IPTABLES -A INPUT -i eth1.3501 -p udp --dport 53 -m recent --set
+#$IPTABLES -A INPUT -i eth1.3501 -p udp --dport 53 -m recent --update --seconds 20 --hitcount 20 -j DROP
+$IPTABLES -A INPUT -i eth2 -p udp --dport 53 -m recent --set
+$IPTABLES -A INPUT -i eth2 -p udp --dport 53 -m recent --update --seconds 20 --hitcount 20 -j DROP
+$IPTABLES -A INPUT -i eth3 -p udp --dport 53 -m recent --set
+$IPTABLES -A INPUT -i eth3 -p udp --dport 53 -m recent --update --seconds 20 --hitcount 20 -j DROP
+
+
+$IPTABLES -I INPUT -i eth1.3501 -p tcp --dport 25 -j ACCEPT #
+$IPTABLES -I INPUT -i eth1.3501 -p udp --dport 123 -j ACCEPT #
+$IPTABLES -I INPUT -i eth1.3501 -p tcp --dport 4569 -j ACCEPT #
+				
+$IPTABLES -N eth0_check # Создать цепочку для проверки пакетов с ИНЕТА
+
+$IPTABLES -A INPUT -i lo -j ACCEPT   # Пропускать все локальные пакеты 
+$IPTABLES -A INPUT -i breth0 -j ACCEPT #
+
+# Общий трафик
+$IPTABLES -A INPUT -i eth1.3501 -j total_traff
+$IPTABLES -A FORWARD -i eth1.3501 -j total_traff
+
+for NET in $PIRING_NET  ; do 
+ $IPTABLES -A total_traff -s $NET -j RETURN
+done
+ #$IPTABLES -A total_traff -p TCP --dport 25 -j RETURN # smtp
+ $IPTABLES -A total_traff -s 0/0 -j RETURN
+
+ $IPTABLES -A INPUT -p UDP --dport 1195 -j ACCEPT      
+ $IPTABLES -A INPUT -p UDP --dport 1197 -j ACCEPT      
+ $IPTABLES -A INPUT -p UDP --dport 1194 -j ACCEPT      
+ 
+for OPENVPN in $ALLOW_OPENVPN ; do
+    $IPTABLES -A INPUT -p UDP -s $OPENVPN  --dport 1194 -j ACCEPT  
+    $IPTABLES -A INPUT -p UDP -s $OPENVPN  --dport 1196 -j ACCEPT
+done    
+
+$IPTABLES -A INPUT -i tun+  -j ACCEPT
+$IPTABLES -A INPUT -i tap+  -j ACCEPT
+$IPTABLES -A INPUT -i tap0 -j ACCEPT
+
+### BAD
+$IPTABLES -A FORWARD -i tun1 -s 192.168.90.241 -d 192.168.0.4 -j ACCEPT
+$IPTABLES -A FORWARD -i tun1 -s 192.168.90.241 -d 192.168.0.197 -j ACCEPT
+$IPTABLES -A FORWARD -i tun1 -s 192.168.90.241 -d 192.168.0.0/8 -j DROP
+
+ ### BAD_AIST
+$IPTABLES -A INPUT -i eth4 -s 62.106.122.110 -d 85.114.181.182 -j ACCEPT
+$IPTABLES -A INPUT -i eth4 -s 85.114.181.181 -d 85.114.181.182 -j ACCEPT
+$IPTABLES -A OUTPUT -o eth4 -d 62.106.122.110 -s 85.114.181.182 -j ACCEPT
+$IPTABLES -A OUTPUT -o eth4 -d 85.114.181.181 -s 85.114.181.182 -j ACCEPT
+
+$IPTABLES -A INPUT -i eth4 -s 0/0 -d 85.114.181.182 -j DROP
+
+
+
+
+$IPTABLES -A INPUT -i eth1.3501 -j eth0_check # Проверить пакеты с инета идущие локально на машину
+$IPTABLES -A INPUT -i eth2 -j eth0_check # Проверить пакеты с инета идущие локально на машину
+$IPTABLES -A INPUT -i eth3 -j eth0_check # Проверить пакеты с инета идущие локально на машину
+
+# Настройка параметров MTU                                                                                     
+# Без этих правил клиент Windows XP не работает нормально с VPN !!!                                       
+#$IPTABLES -A FORWARD -i tun+ -p tcp -d $SMB -m multiport --dport  135,136,137,138,139,445 -j ACCEPT
+####TERMINALS_SAMBA
+$IPTABLES -A FORWARD -i tun+ -p udp -d 192.168.0.193 -m multiport --dport  135,136,137,138,139,445 -j ACCEPT
+$IPTABLES -A FORWARD -i tun+ -p tcp -d 192.168.0.193 -m multiport --dport  135,136,137,138,139,445 -j ACCEPT
+$IPTABLES -A FORWARD -i tun+ -p udp -d 192.168.0.194 -m multiport --dport  135,136,137,138,139,445 -j ACCEPT
+$IPTABLES -A FORWARD -i tun+ -p tcp -d 192.168.0.194 -m multiport --dport  135,136,137,138,139,445 -j ACCEPT
+$IPTABLES -A FORWARD -i tun+ -p udp -d 192.168.0.195 -m multiport --dport  135,136,137,138,139,445 -j ACCEPT
+$IPTABLES -A FORWARD -i tun+ -p tcp -d 192.168.0.195 -m multiport --dport  135,136,137,138,139,445 -j ACCEPT
+$IPTABLES -A FORWARD -i tun+ -p udp -d 192.168.0.196 -m multiport --dport  135,136,137,138,139,445 -j ACCEPT
+$IPTABLES -A FORWARD -i tun+ -p tcp -d 192.168.0.196 -m multiport --dport  135,136,137,138,139,445 -j ACCEPT
+$IPTABLES -A FORWARD -i tun+ -p udp -d 192.168.0.197 -m multiport --dport  135,136,137,138,139,445 -j ACCEPT
+$IPTABLES -A FORWARD -i tun+ -p tcp -d 192.168.0.197 -m multiport --dport  135,136,137,138,139,445 -j ACCEPT
+$IPTABLES -A FORWARD -i tun+ -p udp -d 192.168.0.198 -m multiport --dport  135,136,137,138,139,445 -j ACCEPT
+$IPTABLES -A FORWARD -i tun+ -p tcp -d 192.168.0.198 -m multiport --dport  135,136,137,138,139,445 -j ACCEPT
+$IPTABLES -A FORWARD -i tun+ -p udp -d 192.168.0.199 -m multiport --dport  135,136,137,138,139,445 -j ACCEPT
+$IPTABLES -A FORWARD -i tun+ -p tcp -d 192.168.0.199 -m multiport --dport  135,136,137,138,139,445 -j ACCEPT
+$IPTABLES -A FORWARD -i tun+ -p udp -d 192.168.0.200 -m multiport --dport  135,136,137,138,139,445 -j ACCEPT
+$IPTABLES -A FORWARD -i tun+ -p tcp -d 192.168.0.200 -m multiport --dport  135,136,137,138,139,445 -j ACCEPT
+
+####SAMBA_ADMIN
+
+$IPTABLES -A FORWARD -i tun+ -p udp -d 192.168.0.205 -m multiport --dport  135,136,137,138,139,445 -j ACCEPT
+$IPTABLES -A FORWARD -i tun+ -p tcp -d 192.168.0.205 -m multiport --dport  135,136,137,138,139,445 -j ACCEPT
+$IPTABLES -A FORWARD -i tun+ -p udp -d 192.168.0.206 -m multiport --dport  135,136,137,138,139,445 -j ACCEPT
+$IPTABLES -A FORWARD -i tun+ -p tcp -d 192.168.0.206 -m multiport --dport  135,136,137,138,139,445 -j ACCEPT
+$IPTABLES -A FORWARD -i tun+ -p udp -d 192.168.0.244 -m multiport --dport  135,136,137,138,139,445 -j ACCEPT
+$IPTABLES -A FORWARD -i tun+ -p tcp -d 192.168.0.244 -m multiport --dport  135,136,137,138,139,445 -j ACCEPT
+$IPTABLES -A FORWARD -i tun+ -p udp -d 192.168.0.253 -m multiport --dport  135,136,137,138,139,445 -j ACCEPT
+$IPTABLES -A FORWARD -i tun+ -p tcp -d 192.168.0.253 -m multiport --dport  135,136,137,138,139,445 -j ACCEPT
+$IPTABLES -A FORWARD -i tun+ -p udp -d 192.168.0.228 -m multiport --dport  135,136,137,138,139,445 -j ACCEPT
+$IPTABLES -A FORWARD -i tun+ -p tcp -d 192.168.0.228 -m multiport --dport  135,136,137,138,139,445 -j ACCEPT
+$IPTABLES -A FORWARD -i tun+ -p udp -d 192.168.0.226 -m multiport --dport  135,136,137,138,139,445 -j ACCEPT
+$IPTABLES -A FORWARD -i tun+ -p tcp -d 192.168.0.226 -m multiport --dport  135,136,137,138,139,445 -j ACCEPT
+$IPTABLES -A FORWARD -i tun+ -p udp -d 192.168.0.225 -m multiport --dport  135,136,137,138,139,445 -j ACCEPT
+$IPTABLES -A FORWARD -i tun+ -p tcp -d 192.168.0.225 -m multiport --dport  135,136,137,138,139,445 -j ACCEPT
+$IPTABLES -A FORWARD -i tun+ -p udp -d 192.168.0.127 -m multiport --dport  135,136,137,138,139,445 -j ACCEPT
+$IPTABLES -A FORWARD -i tun+ -p tcp -d 192.168.0.127 -m multiport --dport  135,136,137,138,139,445 -j ACCEPT
+
+$IPTABLES -A FORWARD -i tun+ -p tcp  -m multiport --dport  135,136,137,138,139,445 -j DROP
+$IPTABLES -A FORWARD -i tun+ -p udp  -m multiport --dport  135,136,137,138,139,445 -j DROP
+
+$IPTABLES -A FORWARD -i ppp+ -o eth1.3501  -p tcp --tcp-flags SYN,RST SYN -j TCPMSS --set-mss 1024                  
+
+$IPTABLES -A FORWARD -s 192.168.0.0/24 -d 10.10.0.0/8  -j DROP  #
+
+$IPTABLES -I FORWARD 1 -i eth1.3501 -o ppp+ -j traffic_vpn  # Считаем входящий траффик VPN клиентов
+
+$IPTABLES -A FORWARD -i breth0 -o eth1.3501 -j ACCEPT # Пропускать все пакеты с внутренней сети в инет 
+
+ 
+$IPTABLES -A FORWARD -i eth1.3501 -o breth0 -j eth0_check # Проверить пакеты с инета 
+$IPTABLES -A FORWARD -i eth2 -o breth0 -j eth0_check # Проверить пакеты с инета 
+$IPTABLES -A FORWARD -i eth3 -o breth0 -j eth0_check # Проверить пакеты с инета 
+
+
+# icmp пакеты 
+$IPTABLES -A  eth0_check -p ICMP --icmp-type 8 -j LOG  --log-level debug --log-prefix "I'm pinging :" 
+$IPTABLES -A  eth0_check -p ICMP --icmp-type 3 -j ACCEPT # Пропускаем пакеты Destination Unreacheable
+$IPTABLES -A  eth0_check -p ICMP --icmp-type 8 -j ACCEPT # Пропускаем Echo Request 
+$IPTABLES -A  eth0_check -p ICMP --icmp-type 0  -j ACCEPT # Пропускаем Echo Reply 
+$IPTABLES -A  eth0_check -p ICMP --icmp-type 11 -j ACCEPT # Пропускаем Time Exceeded
+$IPTABLES -A  eth0_check -p ICMP --icmp-type 30 -j ACCEPT # Пропускаем traceroute
+$IPTABLES -A  eth0_check -p ICMP -m limit --limit 2/minute --limit-burst 6 -j LOG --log-level debug --log-prefix "ICMP packed died:"
+$IPTABLES -A  eth0_check -p ICMP -j DROP 
+
+#UDP пакеты 
+#$IPTABLES -A eth0_check -p UDP --sport 53 -j ACCEPT 
+#$IPTABLES -A eth0_check -p UDP --dport 53 -j ACCEPT  
+
+for IP in $ALLOW_ASTER ; do
+ $IPTABLES -A eth0_check -p UDP -s $IP --dport 5060 -j ACCEPT # 5060 Asterisk_allow
+done
+
+
+                                                                                                               
+for OPENVPN in $ALLOW_OPENVPN ; do                                                                             
+ $IPTABLES -A eth0_check -p UDP -s $OPENVPN --dport 1194 -j ACCEPT 
+done        
+
+ $IPTABLES -A eth0_check -p TCP -s gmska.homelinux.org --dport 3128 -j ACCEPT 
+
+ $IPTABLES -A eth0_check -p TCP -s 0/0 --dport 88 -j ACCEPT 
+
+# $IPTABLES -A eth0_check -p TCP -s 0/0 --dport 5931 -j ACCEPT 
+ $IPTABLES -A eth0_check -p udp -s 62.106.112.70 --dport 123 -j ACCEPT 
+ $IPTABLES -A eth0_check -p tcp -s 62.106.112.70 --dport 123 -j ACCEPT 
+# $IPTABLES -A eth0_check -p TCP -s 0/0 --dport 3128 -j ACCEPT 
+# $IPTABLES -A OUTPUT -p tcp --sport 3128 -j ACCEPT 
+
+
+$IPTABLES  -t nat -I PREROUTING 1 -p udp -d 85.114.181.162 --dport 27506 -j DNAT --to-destination 85.114.181.162:5060
+#$IPTABLES  -t nat -I PREROUTING 1 -p udp -d 85.114.181.162 --dport 5931 -j DNAT --to-destination 192.168.0.163:5931
+
+#$IPTABLES  -t nat -I PREROUTING 2 -p udp -d 192.168.0.4 --dport 27506 -j DNAT --to-destination 192.168.0.4:5060
+$IPTABLES -A eth0_check  -s 0/0 -p udp  --dport 27506 -j ACCEPT
+#$IPTABLES -A eth0_check  -s 0/0 -p udp  --dport 5060 -j ACCEPT
+$IPTABLES -A eth0_check -p UDP -m multiport --dport 10000:12000 -j ACCEPT
+
+$IPTABLES -A eth0_check -p UDP -m state --state ESTABLISHED,RELATED -j ACCEPT  # Пропускаем установленные соеденения 
+#$IPTABLES -A udp_pck -p UDP -sport 4000 -j ACCEPT 
+$IPTABLES -A  eth0_check -m limit --limit 3/minute --limit-burst 6 -j LOG --log-level debug --log-prefix "UDP packet died:"
+$IPTABLES -A  eth0_check -p UDP -j DROP
+
+#tcp пакеты 
+$IPTABLES -A eth0_check -p TCP ! --syn -m state --state NEW -j LOG --log-level debug --log-prefix "Bad TCP packet NEW not Syn" # Логируем ненормальные пакеты 
+$IPTABLES -A eth0_check -p TCP ! --syn -m state --state NEW -j DROP
+
+for SSH in $ALLOW_SSH ; do
+ $IPTABLES -A eth0_check -p TCP -s $SSH --dport 22 -j ACCEPT # Проверить пакеты SSH
+done 
+for SSH in $ALLOW_SSH ; do
+ $IPTABLES -A eth0_check -p TCP -s $SSH --dport 22122 -j ACCEPT # Проверить пакеты SSH
+ $IPTABLES -A eth0_check -p TCP -s $SSH --dport 7000 -j ACCEPT # 
+
+done 
+
+for IP in $ALLOW_SSH_1C ; do
+ $IPTABLES -I FORWARD -p TCP -s $IP --dport 22222 -j ACCEPT # Проверить пакеты RDP
+ $IPTABLES -t nat -A PREROUTING  -p tcp -s $IP --dport 22222 -j DNAT --to-destination 192.168.0.212
+done 
+
+# $IPTABLES -A eth0_check -p TCP -s $SSH --dport 22 -j ACCEPT # Проверить пакеты SSH
+
+for SSH in $ALLOW_WWW ; do
+ $IPTABLES -A eth0_check -p TCP -s $SSH --dport 80 -j ACCEPT # Проверить пакеты WWW
+done 
+
+
+ $IPTABLES -A eth0_check -p TCP -s 62.106.112.70 --dport 8080 -j ACCEPT # Проверить пакеты WWW
+
+#for JABBER in $ALLOW_JABBER ; do
+# $IPTABLES -A eth0_check -p TCP -s $JABBER --dport 5222 -j ACCEPT # Проверить пакеты jabber
+# $IPTABLES -A eth0_check -p TCP -s $JABBER --dport 5223 -j ACCEPT # Проверить пакеты jabber
+#done 
+
+ $IPTABLES -A eth0_check -p TCP  --dport 5222 -j ACCEPT # Проверить пакеты jabber
+ $IPTABLES -A eth0_check -p TCP  --dport 5223 -j ACCEPT # Проверить пакеты jabber
+
+for IP in $ALLOW_RDP ; do
+ $IPTABLES -A eth0_check -p TCP -s $IP --dport 3389 -j ACCEPT # Проверить пакеты RDP
+ $IPTABLES -t nat -A PREROUTING  -p tcp -s $IP --dport 3389 -j DNAT --to-destination 192.168.0.198
+done 
+ $IPTABLES -t nat -A PREROUTING  -p tcp -s 0/0 --dport 5931 -j DNAT --to-destination 192.168.0.163
+
+##### VIDEO
+
+$IPTABLES  -t nat -I PREROUTING 2 -p tcp -d $MYREALIP --dport 88 -j DNAT --to-destination 192.168.0.101:80
+
+# $IPTABLES -t nat -A PREROUTING  -p tcp -s 0/0 --dport 87 -j DNAT --to-destination 192.168.0.101:80
+
+# $IPTABLES -t nat -A PREROUTING  -p tcp -s 192.168.241.241 --dport 3389 -j DNAT --to-destination 192.168.0.198
+
+# $IPTABLES -A eth0_check -p TCP -s 0/0 --dport 5060 -j ACCEPT # Dirol
+# $IPTABLES -t nat -A PREROUTING  -p tcp -s 0/0 --dport 5060 -j DNAT --to-destination 10.10.0.210
+ 
+ 
+
+### $IPTABLES -A eth0_check  -s 0/0 --dport 53 -j ACCEPT # Проверить пакеты jabber
+
+for IP in $ALLOW_POP3 ; do
+ $IPTABLES -A eth0_check -p TCP -s $IP --dport 110 -j ACCEPT # Проверить пакеты SSH
+
+done 
+#$IPTABLES -A INPUT -p TCP -i eth2 --dport 53 -j DROP # Пропустить DNS
+#$IPTABLES -A INPUT -p TCP -i eth3 --dport 53 -j DROP # Пропустить DNS
+
+#$IPTABLES -A eth0_check -p TCP --dport 80 -j ACCEPT # Пропустить DNS
+#$IPTABLES -A eth0_check -p TCP --dport 53 -j ACCEPT # Пропустить DNS
+$IPTABLES -A eth0_check -p TCP --dport 25 -j ACCEPT # Пропустить Почту
+#$IPTABLES -A eth0_check -p TCP --dport 80 -j ACCEPT # www
+
+# icmp паке�.�..
+
+
+$IPTABLES -A eth0_check -p TCP -m state --state ESTABLISHED,RELATED -j ACCEPT  # Пропускаем установленные соеденения 
+$IPTABLES -A eth0_check -m limit --limit 3/minute --limit-burst 6 -j LOG --log-level debug --log-prefix "IP INPUT packet died:"  # Логируем упущенные соеденения 
+
+$IPTABLES -A eth0_check -p TCP -j DROP 
+
+
+
+
+###################################
+#NAT 
+###################################
+
+#   $IPTABLES -t nat -A POSTROUTING -s 192.168.0.0/24 -d $NETWORK -j SNAT --to-source $MYREALIP
+
+ # $IPTABLES -t nat -A POSTROUTING -s 10.10.0.210 -d 89.190.255.99 -j SNAT --to-source $MYREALIP
+ # $IPTABLES -t nat -A POSTROUTING -s 10.10.0.210 -d 89.190.255.98 -j SNAT --to-source $MYREALIP  
+
+
+####### GLAVNIY BOSS
+   $IPTABLES -t nat -A POSTROUTING -s 192.168.0.79 -d 0/0 -j SNAT --to-source $MYREALIP
+
+
+#   $IPTABLES -t nat -A POSTROUTING -s 192.168.0.49 -d 0/0 -j SNAT --to-source $MYREALIP
+   $IPTABLES -t nat -A POSTROUTING -s 192.168.0.212 -d 0/0 -j SNAT --to-source $MYREALIP
+   $IPTABLES -t nat -A POSTROUTING -o eth1.3501 -s 192.168.0.225 -d 0/0 -j SNAT --to-source $MYREALIP
+
+###  $IPTABLES -t nat -A POSTROUTING -s 192.168.100.101 -d 0/0 -j SNAT --to-source $MYREALIP  
+  $IPTABLES -t nat -A POSTROUTING -s 192.168.0.2 -d 0/0 -j SNAT --to-source $MYREALIP
+  $IPTABLES -t nat -A POSTROUTING -s 192.168.0.127 -d 85.114.166.91 -j SNAT --to-source $MYREALIP  
+##Sputnik 
+  $IPTABLES -t nat -A POSTROUTING -s 192.168.0.127 -d 217.77.108.26 -j SNAT --to-source $MYREALIP  
+  $IPTABLES -t nat -A POSTROUTING -s 192.168.0.214 -d 217.77.108.26 -j SNAT --to-source $MYREALIP  
+##Sberbank
+  $IPTABLES -t nat -A POSTROUTING -s 192.168.0.173 -d 194.186.207.124 -j SNAT --to-source $MYREALIP  
+##KlientBank
+  $IPTABLES -t nat -A POSTROUTING -s 192.168.0.34 -d 217.77.108.2 -j SNAT --to-source $MYREALIP
+  $IPTABLES -t nat -A POSTROUTING -s 192.168.150.201 -d 217.77.108.2 -j SNAT --to-source $MYREALIP
+
+
+  $IPTABLES -t nat -A POSTROUTING -s 192.168.0.0/24 -d 81.28.160.141 -j SNAT --to-source $MYREALIP  
+  $IPTABLES -t nat -A POSTROUTING -s 192.168.0.0/24 -d 81.28.160.249 -j SNAT --to-source $MYREALIP  
+  $IPTABLES -t nat -A POSTROUTING -o eth1.3501 -s 192.168.0.207 -d 0/0 -j SNAT --to-source $MYREALIP  
+  #$IPTABLES -t nat -A POSTROUTING -s 192.168.0.226 -d 0/0 -j SNAT --to-source $MYREALIP  
+  
+  $IPTABLES -t nat -A POSTROUTING -o eth1.3501 -s 192.168.0.5 -d 0/0 -j SNAT --to-source $MYREALIP  
+
+ ###TEST
+# $IPTABLES -t nat -A POSTROUTING -s 192.168.0.230 -d 0/0 -j SNAT --to-source $MYREALIP  
+ 
+ 
+  $IPTABLES -t nat -A POSTROUTING -s 192.168.0.191 -d 193.219.80.27 -j SNAT --to-source $MYREALIP  
+
+  $IPTABLES -t nat -A POSTROUTING -o eth1.3501 -s 192.168.0.191 -d 0/0 -j SNAT --to-source $MYREALIP  
+  $IPTABLES -t nat -A POSTROUTING -o eth1.3501 -s 192.168.0.163 -d 0/0 -j SNAT --to-source $MYREALIP  
+  $IPTABLES -t nat -A POSTROUTING -o eth1.3501 -s 192.168.0.6 -d 0/0 -j SNAT --to-source $MYREALIP
+   
+  $IPTABLES -t nat -A POSTROUTING -s 192.168.0.84  -d 0/0 -j SNAT --to-source $MYREALIP  
+  $IPTABLES -t nat -A POSTROUTING -s 192.168.0.206 -d 0/0 -j SNAT --to-source $MYREALIP  
+  #$IPTABLES -t nat -A POSTROUTING -s 192.168.0.163 -d 0/0 -j SNAT --to-source $MYREALIP  
+  $IPTABLES -t nat -A POSTROUTING -s 192.168.0.164 -d 0/0 -j SNAT --to-source $MYREALIP  
+  $IPTABLES -t nat -A POSTROUTING -s 192.168.0.209 -d 0/0 -j SNAT --to-source $MYREALIP  
+  $IPTABLES -t nat -A POSTROUTING -s 192.168.0.223 -d 0/0 -j SNAT --to-source $MYREALIP  
+  $IPTABLES -t nat -A POSTROUTING -s 192.168.0.227 -d 0/0 -j SNAT --to-source $MYREALIP  
+  $IPTABLES -t nat -A POSTROUTING -s 192.168.0.127 -d 0/0 -j SNAT --to-source $MYREALIP  
+ $IPTABLES -t nat -A POSTROUTING -s 192.168.0.226 -d 192.168.90.0/24 -j ACCEPT
+ $IPTABLES -t nat -A POSTROUTING -s 192.168.0.226 -d 0/0 -j MASQUERADE
+ $IPTABLES -t nat -A POSTROUTING -s 192.168.0.163 -d 0/0 -j MASQUERADE
+ $IPTABLES -t nat -A POSTROUTING -s 192.168.0.222 -d 0/0 -j MASQUERADE
+ $IPTABLES -t nat -A POSTROUTING -s 192.168.90.141 -d 0/0 -j MASQUERADE
+ #$IPTABLES -t nat -A POSTROUTING -p icmp -s 192.168.98.0/24 -o eth1.3501 -j SNAT --to-source $MYREALIP                     
+ #$IPTABLES -t nat -A POSTROUTING -p udp -m multiport -s 192.168.98.0/24 -o eth1.3501 --dport 20,21,25,53,80,110,8080,8081,443,563,5222,5190,5191,5192,3389 -j SNAT --to-source $MYREALIP
+ #$IPTABLES -t nat -A POSTROUTING -p tcp -m multiport -s 192.168.98.0/24 -o eth1.3501 --dport 20,21,25,53,80,110,8080,8081,443,563,5222,5190,5191,5192,3389 -j SNAT --to-source $MYREALIP
+
+
+ #$IPTABLES -t nat -A PREROUTING  -p tcp -d $MYREALIP --dport 7000 -j DNAT --to-destination 192.168.90.141
+
+#$IPTABLES -t nat -A PREROUTING -i ppp+ -p tcp --dport 80 -j REDIRECT --to-port 3128
+  VPNUSERS=`cat /etc/ppp/chap-secrets | egrep -v "^#|^$" | awk '{print $4}'`  
+  for IP in $VPNUSERS ; do
+      REALUSER=`cat /etc/ppp/chap-secrets | egrep  "$IP" | awk '{print $6}'`
+      PROTO=`cat /home/scripts/firewall/allow_proto | egrep -i "$REALUSER" | awk '{print $2}'`
+      echo "$REALUSER - $IP: $PROTO"
+
+#	echo $IP
+      $IPTABLES -t nat -A POSTROUTING -p icmp -s $IP -o eth1.3501 -j SNAT --to-source $MYREALIP
+      $IPTABLES -t nat -A POSTROUTING -p udp -m multiport -s $IP -o eth1.3501 --dport $PROTO -j SNAT --to-source $MYREALIP
+      $IPTABLES -t nat -A POSTROUTING -p tcp -m multiport -s $IP -o eth1.3501 --dport $PROTO -j SNAT --to-source $MYREALIP
+#      $MYSQL -h localhost -u $MYSQLUSER -p${MYSQLPASS} -D traffic -N -s -e "insert into users (ip,user) values(\"$IP\",\"$REALUSER\")"
+  done
+
+#  $IPTABLES -t nat -A POSTROUTING -p tcp -m multiport -s 192.168.0.127 -d 81.28.160.225 --dport 433 -j SNAT --to-source $MYREALIP   
+##  $IPTABLES -t nat -A POSTROUTING -p tcp -m multiport -s 192.168.0.127 -d 85.114.166.91 --dport 21 -j SNAT --to-source $MYREALIP   
+$IPTABLES -t nat -A POSTROUTING -p tcp -m multiport -s 192.168.0.127 -d 81.28.160.249 --dport 9001 -j SNAT --to-source $MYREALIP   # AIST-ONLINE
+$IPTABLES -t nat -A POSTROUTING -p tcp -m multiport -s 192.168.0.127 -d 0/0 --dport 2802 -j SNAT --to-source $MYREALIP   # AIST-ONLINE
+##  $IPTABLES -t nat -A POSTROUTING -p tcp -m multiport -s 192.168.0.127 -d mail.ru --dport 25,110 -j SNAT --to-source $MYREALIP    
+$IPTABLES -t nat -A POSTROUTING -p tcp -m multiport -s 192.168.0.173 -d dionis1.parus-s.ru --dport 25,110,23 -j SNAT --to-source $MYREALIP    
+$IPTABLES -t nat -A POSTROUTING -p tcp -m multiport -s 192.168.0.173 -d 83.242.250.68 --dport 25,110,23 -j SNAT --to-source $MYREALIP    
+
+$IPTABLES -t nat -A POSTROUTING -p tcp -m multiport -s 192.168.0.34 -d 195.144.196.227 --dport 25,110,23,99 -j SNAT --to-source $MYREALIP
+$IPTABLES -t nat -A POSTROUTING -p tcp -m multiport -s 192.168.0.34 -d 62.213.8.42 --dport 24554 -j SNAT --to-source $MYREALIP
+$IPTABLES -t nat -A POSTROUTING -p tcp -m multiport -s 192.168.0.34 -d 91.198.33.33 --dport 200 -j SNAT --to-source $MYREALIP
+$IPTABLES -t nat -A POSTROUTING -p tcp -m multiport -s 192.168.0.34 -d ibank.fiabank.ru  --dport 9091 -j SNAT --to-source $MYREALIP
+$IPTABLES -t nat -A POSTROUTING -p tcp -m multiport -s 192.168.0.34 -d 217.77.108.2  --dport 21 -j SNAT --to-source $MYREALIP
+$IPTABLES -t nat -A POSTROUTING -p tcp -m multiport -s 192.168.0.34 -d 91.220.16.5  --dport 443 -j SNAT --to-source $MYREALIP
+
+$IPTABLES -t nat -A POSTROUTING -s 192.168.0.190 -d 193.219.80.27 -j SNAT --to-source $MYREALIP
+$IPTABLES -t nat -A POSTROUTING -s 192.168.0.190 -d security.debian.org -j SNAT --to-source $MYREALIP
+$IPTABLES -t nat -A POSTROUTING -s 192.168.0.3 -d 194.110.251.19 -j SNAT --to-source $MYREALIP
+$IPTABLES -t nat -A POSTROUTING -s 192.168.0.9 -d 89.108.114.92  -j SNAT --to-source $MYREALIP #Alcotreid
+$IPTABLES -t nat -A POSTROUTING -s 192.168.0.9 -d 88.198.21.67  -j SNAT --to-source $MYREALIP #Alcotreid
+$IPTABLES -t nat -A POSTROUTING -s 192.168.0.9 -d 62.117.66.221  -j SNAT --to-source $MYREALIP #Alcotreid
+$IPTABLES -t nat -A POSTROUTING -s 192.168.0.9 -d 62.117.66.219  -j SNAT --to-source $MYREALIP #Alcotreid
+$IPTABLES -t nat -A POSTROUTING -s 192.168.0.9 -d 62.117.66.220  -j SNAT --to-source $MYREALIP #Alcotreid
+$IPTABLES -t nat -A POSTROUTING -s 192.168.0.12 -d 89.108.114.92 -j SNAT --to-source $MYREALIP #Alcoterid
+$IPTABLES -t nat -A POSTROUTING -s 192.168.0.12 -d 88.198.21.67  -j SNAT --to-source $MYREALIP #Alcotreid
+$IPTABLES -t nat -A POSTROUTING -s 192.168.0.12 -d 62.117.66.221  -j SNAT --to-source $MYREALIP #Alcotreid
+$IPTABLES -t nat -A POSTROUTING -s 192.168.0.12 -d 62.117.66.219  -j SNAT --to-source $MYREALIP #Alcotreid
+$IPTABLES -t nat -A POSTROUTING -s 192.168.0.12 -d 62.117.66.220  -j SNAT --to-source $MYREALIP #Alcotreid
+$IPTABLES -t nat -A POSTROUTING -s 192.168.0.3 -d 194.67.29.98 -j SNAT --to-source $MYREALIP
+$IPTABLES -t nat -A POSTROUTING -s 192.168.14.90 -d 194.67.29.98 -j SNAT --to-source $MYREALIP
+$IPTABLES -t nat -A POSTROUTING -s 192.168.14.91 -d 194.67.29.98 -j SNAT --to-source $MYREALIP
+$IPTABLES -t nat -A POSTROUTING -s 192.168.14.92 -d 194.67.29.98 -j SNAT --to-source $MYREALIP
+
+#$IPTABLES -t nat -A POSTROUTING -s 192.168.42.42 -d 0/0 -j MASQUERADE
+
+###RUSSKIY STANDART VLAN
+$IPTABLES -t nat -A POSTROUTING -s 10.10.10.0/24 -d 194.67.29.98 -j SNAT --to-source $MYREALIP
+$IPTABLES -t nat -A POSTROUTING -s 10.10.10.0/24 -d 194.110.251.19 -j SNAT --to-source $MYREALIP
+
+$IPTABLES -t nat -A POSTROUTING -s 10.10.10.0/24 -d 0/0 -j SNAT --to-source $MYREALIP
+$IPTABLES -t nat -A POSTROUTING -p tcp -s 10.10.10.0/24 -d 91.198.33.33 -m multiport --destination-port 200 -j SNAT --to-source $MYREALIP
+$IPTABLES -t nat -A POSTROUTING -p tcp -s 10.10.10.0/24 -d 62.213.8.42 -m multiport --destination-port 24554 -j SNAT --to-source $MYREALIP
+$IPTABLES -t nat -A POSTROUTING -p tcp -s 10.10.10.0/24 -d 91.220.16.5 -m multiport --destination-port 9091,1834,443 -j SNAT --to-source $MYREALIP
+$IPTABLES -t nat -A POSTROUTING -p tcp -s 192.168.50.0/24 -d 91.220.16.5 -m multiport --destination-port 9091,1834,443 -j SNAT --to-source $MYREALIP
+#$IPTABLES -t nat -A POSTROUTING -p tcp -m multiport -s 10.10.10.0/24 -d 91.220.16.5  --dport 443 -j SNAT --to-source $MYREALIP
+#  $IPTABLES -t nat -A POSTROUTING -o eth1.3501 -s 192.168.0.0/8  -d 0/0  -j DROP     
+
+
+###########################                                                                                    
+# VPN
+###########################                                                                                    
+IP_VPN=`cat /etc/ppp/chap-secrets | egrep -v "^#|^$" | awk '{print $4}'`
+for IP in $IP_VPN
+do
+  $IPTABLES  -A traffic_vpn -d $IP
+done
+
+# $IPTABLES -A OUTPUT -p tcp --sport 3128 -d 10.0.0.0/8 -j ACCEPT 
+ $IPTABLES -A OUTPUT -p tcp --sport 3128 -d 192.168.0.0/24 -j ACCEPT 
+
+
+
+service iptables save

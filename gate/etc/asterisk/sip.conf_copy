@@ -1,0 +1,1041 @@
+[general]
+;register=>557675:6022490217151138@198.19.255.155/557675
+;register=>gmska:gmska123@sipnet.ru/0032006648
+register=>neotreid:rfhfynby@sipnet.ru/0041894509
+
+
+context=default                 ; Default context for incoming calls
+allowguest=no                  ; Allow or reject guest calls (default is yes)
+allowoverlap=no                 ; Disable overlap dialing support. (Default is yes)
+tcpenable=no                    ; Enable server for incoming TCP connections (default is no)
+tcpbindaddr=0.0.0.0             ; IP address for TCP server to bind to (0.0.0.0 binds to all interfaces)
+srvlookup=no                   ; Enable DNS SRV lookups on outbound calls
+language=ru                    ; Default language setting for all users/peers
+;externip = 85.114.181.182
+;externaddr = 81.28.162.69:27506
+;externaddr = 85.114.181.182:5060
+localnet=192.168.0.0/16
+udpbindaddr=0.0.0.0:5060
+alwaysauthreject=yes
+silencesuppression=no
+
+jbenable=yes
+jbforce=yes
+qualify=yes
+
+allowsubscribe=yes
+useclientcode=yes
+subscribecontext=status 
+
+[spa3102] ; 
+type=friend
+host=dynamic
+secret=sipuralinksys
+context=from-gw
+port=5061
+insecure=port,invite
+disallow=all
+allow=g729
+allow=gsm
+allow=alaw
+allow=ulaw
+canreinvite=no
+dtmfmode=rfc2833
+qualify=yes
+
+
+ [SIPNET] ; дл� sipnet.ru (дл� п�иема в�од��и� ди�ек�ива register в на�але �айла)
+; secret = gmska123
+; defaultuser = gmska
+ secret = rfhfynby
+ defaultuser = neotreid
+ trunkname = sipnet
+ callerid =
+ hasexten = no
+ hassip = yes
+ hasiax = no
+ host = sipnet.ru
+ context = from-sipnet ; кон�ек�� � �аким именем должен ���е��вова�� в dialplan�е
+ insecure = invite
+; fromuser = 0032006648 ; ва� id в SIPNET
+ fromuser = 0041894509 ; ва� id в SIPNET
+ fromdomain = sipnet.ru
+ type = peer
+ disallow = all
+ allow = alaw
+ allow = ulaw
+ allow = g729
+ ;nat=force_rport,comedia
+ nat=yes
+ canreinvite = no
+ dtmfmode = auto
+                         
+
+;[AIST_TRUNK1]
+;type = user
+;fromuser = 557675
+;fromdomain = 62.106.122.110
+;host = 62.106.122.110
+;context = fromaist
+;insecure=port,invite
+;canreinvite=no
+;qualify=no
+;dtmfmode=RFC2833
+;port=5060
+
+[AIST_TRUNK]
+type = friend
+host = 198.19.255.155
+context = fromaist
+port=5060
+insecure=port
+nat=no
+canreinvites=yes
+;dtmfmode=rfc2833
+disallow=all
+allow=ulaw
+allow=alaw
+t38udptlsupport=yes
+rfc2833compensate=yes
+silencesuppression=no
+dtmfmode=inband
+
+[SHOPS](!)
+type=friend ; может как принимать, так и совершать звонки
+host=dynamic
+; nat = no !!!
+nat=yes
+canreinvite=no
+context=from-shops
+disallow=all ; разрешить только определенные кодэки
+allow=g729
+;allow=ulaw
+;allow=alaw
+monitor=yes
+language=ru ; язык
+dtmfmode=rfc2833
+deny=0/0
+permit=10.0.0.0/8
+permit=11.11.11.0/24
+permit=192.168.0.0/16
+permit=81.28.164.244
+
+[SHOPS_SAMARA](!)
+type=friend ; может как принимать, так и совершать звонки
+host=dynamic
+; nat = no !!!
+nat=yes
+canreinvite=no
+context=from-shops-samara
+disallow=all ; разрешить только определенные кодэки
+allow=g729
+allow=ulaw
+allow=alaw
+monitor=yes
+language=ru ; язык
+dtmfmode=rfc2833
+deny=0/0
+permit=10.0.0.0/8
+permit=11.11.11.0/24
+permit=192.168.0.0/16
+permit=62.106.112.70
+
+[SHOPS_SAMARA_SIP](!)
+type=friend ; может как принимать, так и совершать звонки
+host=dynamic
+; nat = no !!!
+nat=yes
+canreinvite=no
+context=from-shops-samara-sip
+disallow=all ; разрешить только определенные кодэки
+allow=g729
+allow=ulaw
+allow=alaw
+monitor=yes
+language=ru ; язык
+dtmfmode=rfc2833
+deny=0/0
+permit=10.0.0.0/8
+permit=11.11.11.0/24
+permit=192.168.0.0/16
+permit=62.106.112.70
+
+[ADMIN](!)
+type=friend ; может как принимать, так и совершать звонки
+host=dynamic
+nat=yes
+canreinvite=no
+context=from-admin
+disallow=all ; разрешить только определенные кодэки
+allow=ulaw
+allow=g729
+allow=gsm
+monitor=yes
+language=ru ; язык
+dtmfmode=rfc2833
+deny=0/0
+permit=192.168.0.0/16
+permit=62.106.112.70
+permit=178.163.100.3
+permit=0/0
+
+[OFFICE](!)
+type=friend ; может как принимать, так и совершать звонки
+host=dynamic
+nat=yes
+canreinvite=no
+context=from-office
+disallow=all ; разрешить только определенные кодэки
+allow=ulaw
+allow=alaw
+;allow=g729
+monitor=yes
+language=ru ; язык
+dtmfmode=rfc2833
+deny=0/0
+permit=10.0.1.0/24
+permit=192.168.0.0/16
+permit=62.106.112.70
+
+[NOTINOFFICE](!)
+type=friend ; может как принимать, так и совершать звонки
+host=dynamic
+nat=yes
+canreinvite=no
+context=from-notinoffice
+disallow=all ; разрешить только определенные кодэки
+allow=g729
+;allow=ulaw
+monitor=yes
+language=ru ; язык
+dtmfmode=rfc2833
+permit=0/0
+
+[OFFICE-BUH](!)
+type=friend ; может как принимать, так и совершать звонки
+host=dynamic
+nat=yes
+canreinvite=no
+context=from-office
+disallow=all ; разрешить только определенные кодэки
+allow=g729
+;allow=ulaw
+;allow=alaw
+monitor=yes
+language=ru ; язык
+dtmfmode=rfc2833
+permit=0/0
+
+[OFFICE-BUH-NO-SIPNET](!)
+type=friend ; может как принимать, так и совершать звонки
+host=dynamic
+nat=yes
+canreinvite=no
+context=from-office-no-sipnet
+disallow=all ; разрешить только определенные кодэки
+allow=g729
+;allow=ulaw
+;allow=alaw
+monitor=yes
+language=ru ; язык
+dtmfmode=rfc2833
+permit=0/0
+
+[MEANDR](!)
+type=friend ; может как принимать, так и совершать звонки
+host=dynamic
+nat=yes
+canreinvite=no
+context=from-meandr
+disallow=all ; разрешить только определенные кодэки
+;allow=g729
+allow=ulaw
+allow=alaw
+monitor=yes
+language=ru ; язык
+dtmfmode=rfc2833
+permit=0/0
+
+
+; For testing
+[899](NOTINOFFICE)
+secret=Vjq[bnhsqgfhjkm
+callerid="Pavel test" <899>
+
+[500](ADMIN)
+secret=pelican2015
+callerid="Шевелев Дом" <500>
+allow=gsm
+
+[501](OFFICE-BUH-NO-SIPNET)
+secret=pelican2015
+callerid="Охрана Шевелева" <501>
+;allow=gsm
+
+[900](ADMIN)
+secret=Borodavka2000
+callerid="Muxa_058" <900>
+allow=gsm
+
+[901](ADMIN)
+secret=Borodavka2000
+callerid="IT test" <901>
+;allow=gsm
+disallow=all ; разрешить только определенные кодэки
+allow=g729
+
+[902](ADMIN)
+secret=Borodavka2014
+callerid="Skrimp Skrooller" <902>
+allow=gsm
+
+[111](ADMIN)
+secret=jabcytjnhtql111
+callerid="Admin" <111>
+
+[105](ADMIN)
+secret=jabcytjnhtql111
+callerid="Muxa Admin" <105>
+
+[200](MEANDR)
+secret=Meandr2014
+callerid="Andrey dom" <200>
+
+[102](OFFICE)
+secret=FylhtqHf,jnf1
+callerid="Rumia" <102>
+
+[107](OFFICE)
+secret=FylhtqHf,jnf1
+callerid="Andrey" <107>
+
+[117](OFFICE)
+secret=jabcytjnhtql131
+callerid="Zakupki_1" <117>
+
+[119](OFFICE)
+secret=jabcytjnhtql131
+callerid="Zakupki_2" <119>
+
+[122](OFFICE)
+secret=jabcytjnhtql131
+callerid="Zakupki_3" <122>
+
+;[123](OFFICE-BUH-NO-SIPNET)
+[123](OFFICE-BUH)
+secret=,e[ufknthbz1
+callerid="Buh1" <123>
+type=friend
+
+[124](OFFICE-BUH)
+secret=,e[ufknthbz1
+callerid="Buh2" <124>
+type=friend
+
+[125](OFFICE-BUH)
+secret=,e[ufknthbz1
+callerid="Buh3" <125>
+type=friend
+
+[126](OFFICE-BUH)
+secret=,e[ufknthbz1
+callerid="Buh4" <126>
+type=friend
+
+[127](OFFICE-BUH)
+secret=,e[ufknthbz1
+callerid="Buh5" <127>
+type=friend
+
+[128](OFFICE-BUH)
+secret=,e[ufknthbz1
+callerid="Buh6" <128>
+type=friend
+
+[130](OFFICE)
+secret=jabcytjnhtql130
+callerid="13a_kab_Zorina" <130>
+
+[131](OFFICE)
+secret=jabcytjnhtql131
+callerid="13a_kab" <131>
+
+
+[137](OFFICE)
+secret=jabcytjnhtql137
+callerid="OK_4" <137>
+
+[138](OFFICE)
+secret=jabcytjnhtql138
+callerid="OK_3" <138>
+
+[139](OFFICE)
+secret=jabcytjnhtql139
+callerid="OK_2" <139>
+
+[140](OFFICE)
+secret=jabcytjnhtql140
+callerid="OK_1" <140>
+
+[141](OFFICE)
+secret=jabcytjnhtql141
+callerid="Ohrana 1 floor " <141>
+
+[142](OFFICE)
+secret=jabcytjnhtql142
+callerid="Raschetniy_Otdel_1" <142>
+
+[143](OFFICE)
+secret=jabcytjnhtql143
+callerid="Raschetniy_Otdel_2" <143>
+
+[144](OFFICE)
+secret=jabcytjnhtql131
+callerid="Malishev" <144>
+
+[145](OFFICE)
+secret=jabcytjnhtql131
+callerid="Zakupki_4" <145>
+
+[146](OFFICE)
+secret=jabcytjnhtql131
+callerid="Zakupki_5" <146>
+
+[147](OFFICE)
+secret=jabcytjnhtql147
+callerid="Raschetniy_Otdel_3" <147>
+
+[148](OFFICE)
+secret=jabcytjnhtql148
+callerid="Zhukova K." <148>
+
+[149](OFFICE)
+secret=jabcytjnhtql131
+callerid="Zakupki_6" <149>
+
+[150](OFFICE)
+secret=jabcytjnhtql131
+callerid="Zakupki_7" <150>
+
+[151](OFFICE)
+secret=jabcytjnhtql131
+callerid="Zakupki_8" <151>
+
+[152](OFFICE)
+secret=jabcytjnhtql131
+callerid="Zakupki_9" <152>
+
+[153](ADMIN)
+secret=jabcytjnhtql1153
+callerid="Tech.Support" <153>
+
+[154](OFFICE-BUH)
+secret=jabcytjnhtql1154
+callerid="Buh_Lomia" <154>
+
+[155](OFFICE-BUH)
+secret=jabcytjnhtql1155
+callerid="Buh_Braslavskaya" <155>
+
+[160](OFFICE-BUH)
+secret=jabcytjnhtql1160
+callerid="Oper_Office_1" <160>
+
+[161](OFFICE-BUH)
+secret=jabcytjnhtql1161
+callerid="Oper_Office_2" <161>
+
+[162](OFFICE-BUH)
+secret=jabcytjnhtql1162
+callerid="Oper_Office_3" <162>
+
+[163](OFFICE-BUH)
+secret=jabcytjnhtql1163
+callerid="Oper_Office_4" <163>
+
+[164](OFFICE-BUH)
+secret=jabcytjnhtql1164
+callerid="Oper_Office_5" <164>
+  
+[165](OFFICE-BUH)
+secret=jabcytjnhtql1165
+callerid="Idrisova" <165>
+
+
+[777](OFFICE)
+secret=jabcytjnhtql131
+callerid="Zakupki_10" <777>
+
+
+
+
+[201](SHOPS)
+secret=Vfufpby1
+callerid="Yagodnoe 1" <201>
+
+[202](SHOPS)
+secret=Vfufpby2
+callerid="P13_2" <202>
+
+[214](SHOPS)
+secret=Gtkbrfif214
+callerid="P14" <214>
+
+[217](SHOPS)
+secret=Gtkbrfif217
+callerid="P17" <217>
+
+[221](SHOPS)
+secret=Gtkbrfif221
+callerid="P20_2" <221>
+maxexpiry=60
+
+[228](SHOPS)
+secret=Gtkbrfif228
+callerid="P_3b" <228>
+
+[234](SHOPS)
+secret=Gtkbrfif234
+callerid="P8_2" <234>
+
+[235](SHOPS)
+secret=Gtkbrfif235
+callerid="P8_3" <235>
+
+[238](SHOPS)
+secret=Gtkbrfif238
+callerid="P9_4" <238>
+
+[239](SHOPS)
+secret=Gtkbrfif239
+callerid="P9_5" <239>
+
+[247](SHOPS)
+secret=Gtkbrfif247
+callerid="P15_3" <247>
+
+[248](SHOPS)
+secret=Gtkbrfif248
+callerid="P15_4" <248>
+
+[253](SHOPS)
+secret=Gtkbrfif253
+callerid="P_TOP" <253>
+
+[256](SHOPS)
+secret=Gtkbrfirf256
+callerid="P_AvtoZ41" <256>
+;allow=g729
+allow=ulaw
+allow=alaw
+
+[257](SHOPS)
+secret=Gtkbrfirf257
+callerid="P_Golosova" <257>
+
+[258](SHOPS)
+secret=Gtkbrfirf258
+callerid="P_10_6" <258>
+
+[270](SHOPS)
+secret=Gtkbrfif270
+callerid="P_komsa" <270>
+
+[277](SHOPS)
+secret=Gtkbrfif277
+callerid="P20_4" <277>
+
+[278](SHOPS)
+secret=Gtkbrfif278
+callerid="P_Val" <278>
+
+[279](SHOPS)
+secret=Gtkbrfif279
+callerid="P_Lenina" <279>
+
+[280](SHOPS)
+secret=Gtkbrfif280
+callerid="P_Lenina" <280>
+
+[281](SHOPS)
+secret=Gtkbrfif281
+callerid="P3a_3" <281>
+
+[282](SHOPS)
+secret=Gtkbrfif282
+callerid="P_lt" <282>
+
+[283](SHOPS)
+secret=Gtkbrfif283
+callerid="P19_3" <283>
+
+[284](SHOPS)
+secret=Gtkbrfif284
+callerid="P14_4" <284>
+
+[285](SHOPS)
+secret=Gtkbrfif285
+callerid="P11_4" <285>
+
+[286](SHOPS)
+secret=Gtkbrfif286
+callerid="P_Mur4" <286>
+
+[287](SHOPS)
+secret=Gtkbrfif287
+callerid="P2_2" <287>
+
+[288](SHOPS)
+secret=Gtkbrfif288
+callerid="P2_2" <288>
+
+[289](SHOPS)
+secret=Gtkbrfif289
+callerid="P_Gorkiy2" <289>
+
+[290](SHOPS)
+secret=Gtkbrfif290
+callerid="P_Yros" <290>
+
+[292](SHOPS)
+secret=Gtkbrfif292
+callerid="P12_4" <292>
+
+
+[293](SHOPS)
+secret=Gtkbrfif293
+callerid="P_Fedor" <293>
+
+[294](SHOPS)
+secret=Gtkbrfif294
+callerid="P_31" <294>
+
+[295](SHOPS)
+secret=Gtkbrfif295
+callerid="P_Viselki" <295>
+
+[296](SHOPS)
+secret=Gtkbrfif296
+callerid="P20_5" <296>
+
+[297](SHOPS)
+secret=Gtkbrfif297
+callerid="PSov89" <297>
+
+[298](SHOPS)
+secret=Gtkbrfif298
+callerid="PNikonova" <298>
+
+[299](SHOPS)
+secret=Gtkbrfif299
+callerid="P50let" <299>
+
+[300](SHOPS)
+secret=Gtkbrfif300
+callerid="PBorkovka" <300>
+
+[301](SHOPS)
+secret=Gtkbrfirf301
+callerid="P_50let_2" <301>
+
+[302](SHOPS)
+secret=Gtkbrfirf302
+callerid="YaOvrag" <302>
+
+[303](SHOPS)
+secret=Gtkbrfirf303
+callerid="Podstepki" <303>
+
+[304](SHOPS)
+secret=Gtkbrfirf304
+callerid="P_2_3" <304>
+
+[305](SHOPS)
+secret=Gtkbrfirf305
+callerid="P_2_3 Oper" <305>
+
+[306](SHOPS)
+secret=Gtkbrfirf306
+callerid="P_Molodezhka" <306>
+
+[307](SHOPS)
+secret=Gtkbrfirf307
+callerid="P_Mezhdurechensk" <307>
+
+[308](SHOPS)
+secret=Gtkbrfirf308
+callerid="P_Timofeevka" <308>
+
+[309](SHOPS)
+secret=Gtkbrfirf309
+callerid="P_9_6" <309>
+
+[310](SHOPS)
+secret=Gtkbrfirf310
+callerid="P_Vasilevka" <310>
+
+[311](SHOPS)
+secret=Gtkbrfirf311
+callerid="P_5_2" <311>
+
+[312](SHOPS)
+secret=Gtkbrfirf312
+callerid="P_4_3" <312>
+
+[313](SHOPS)
+secret=Gtkbrfirf313
+callerid="P_7_4" <313>
+
+[314](SHOPS)
+secret=Gtkbrfirf314
+callerid="P_7_4_Oper" <314>
+
+[315](SHOPS)
+secret=Gtkbrfirf315
+callerid="P_Gromova" <315>
+
+[316](SHOPS)
+secret=Gtkbrfirf316
+callerid="P_Hryaschevka" <316>
+
+[317](SHOPS)
+secret=Gtkbrfirf317
+callerid="P_18_4" <317>
+
+[318](SHOPS)
+secret=Gtkbrfirf318
+callerid="P_2_4" <318>
+
+[319](SHOPS)
+secret=Gtkbrfirf319
+callerid="P_b_Lenina" <319>
+
+[320](SHOPS)
+secret=Gtkbrfirf320
+callerid="P_Borkovka_2" <320>
+
+[321](SHOPS)
+secret=Gtkbrfirf321
+callerid="P_Alesia" <321>
+
+[322](SHOPS)
+secret=Gtkbrfirf322
+callerid="P_Dubrava_2" <322>
+
+[323](SHOPS)
+secret=Gtkbrfirf323
+callerid="P_Mira" <323>
+
+[324](SHOPS)
+secret=Gtkbrfirf324
+callerid="P_Zhiguli" <324>
+
+[325](SHOPS)
+secret=Gtkbrfirf325
+callerid="P_15_5" <325>
+
+[326](SHOPS)
+secret=Gtkbrfirf326
+callerid="P_Uzukovo" <326>
+
+[327](SHOPS)
+secret=Gtkbrfirf327
+callerid="P_Jilina2" <327>
+
+[328](SHOPS)
+secret=Gtkbrfirf328
+callerid="P_Mehanizatorov" <328>
+
+[329](SHOPS)
+secret=Gtkbrfirf329
+callerid="P_Gidrotehnicheskaya" <329>
+
+[330](SHOPS)
+secret=Gtkbrfirf330
+callerid="P_15_6" <330>
+
+[331](SHOPS)
+secret=Gtkbrfirf331
+callerid="P_10_2" <331>
+
+[332](SHOPS)
+secret=Gtkbrfirf332
+callerid="P_10_3" <332>
+
+[333](SHOPS)
+secret=Gtkbrfirf333
+callerid="P_LT_2" <333>
+
+[334](SHOPS)
+secret=Gtkbrfirf334
+callerid="P_19_4" <334>
+
+[335](SHOPS)
+secret=Gtkbrfirf335
+callerid="P_8_5" <335>
+
+[336](SHOPS)
+secret=Gtkbrfirf336
+callerid="P_20/7" <336>
+allow = g729
+
+[337](SHOPS)
+secret=Gtkbrfirf337
+callerid="P_Matrosova" <337>
+
+[338](SHOPS)
+secret=Gtkbrfirf338
+callerid="P_Matrosova" <338>
+
+[339](SHOPS)
+secret=Gtkbrfirf339
+callerid="P_20_6" <339>
+
+[340](SHOPS)
+secret=Gtkbrfirf340
+callerid="P_1_4" <340>
+allow = g729
+
+
+[341](SHOPS)
+secret=Gtkbrfirf341
+callerid="P_21" <341>
+
+[342](SHOPS)
+secret=Gtkbrfirf342
+callerid="P_Lenina_2" <342>
+
+[343](SHOPS)
+secret=Gtkbrfirf343
+callerid="P_Mira_2" <343>
+
+[344](SHOPS)
+secret=Gtkbrfirf344
+callerid="P_Leningradskaya_3" <344>
+
+[345](SHOPS)
+secret=Gtkbrfirf345
+callerid="P_Yaroslavskaya_2" <345>
+
+[346](SHOPS)
+secret=Gtkbrfirf346
+callerid="P_Karla_Marksa_2" <346>
+allow=ulaw
+allow=alaw
+
+[347](SHOPS)
+secret=Gtkbrfirf347
+callerid="P_5_3" <347>
+
+[348](SHOPS)
+secret=Gtkbrfirf348
+callerid="P_6_2" <348>
+
+[349](SHOPS)
+secret=Gtkbrfirf349
+callerid="P_15_7" <349>
+
+[350](SHOPS)
+secret=Gtkbrfirf350
+callerid="P_Zhigulevsk" <350>
+
+[351](SHOPS)
+secret=Gtkbrfirf351
+callerid="P_Yagodnoe2" <351>
+
+[352](SHOPS)
+secret=Gtkbrfirf352
+callerid="P_Lenina3" <352>
+
+[353](SHOPS)
+secret=Gtkbrfirf353
+callerid="P_MDC" <353>
+
+[354](SHOPS)
+secret=Gtkbrfirf354
+callerid="P_Povolzhskiy" <354>
+
+[355](SHOPS)
+secret=Gtkbrfirf355
+callerid="P_Lizichaykinoy" <355>
+
+[356](SHOPS)
+secret=Gtkbrfirf356
+callerid="P_Timofeevka 2" <356>
+
+[357](SHOPS)
+secret=Gtkbrfirf357
+callerid="P_16_8" <357>
+
+[358](SHOPS)
+secret=Gtkbrfirf358
+callerid="P_Primorsky" <358>
+
+[359](SHOPS)
+secret=Gtkbrfirf359
+callerid="P_5_4" <359>
+
+[360](SHOPS)
+secret=Gtkbrfirf360
+callerid="PZ_G1" <360>
+
+[361](SHOPS)
+secret=Gtkbrfirf361
+callerid="P_Ushakova_2" <361>
+
+[362](SHOPS)
+secret=Gtkbrfirf362
+callerid="P_9_8" <362>
+
+[363](SHOPS)
+secret=Gtkbrfirf363
+callerid="P_Podstepki_2" <363>
+
+[364](SHOPS)
+secret=Gtkbrfirf364
+callerid="P_Gidro_2" <364>
+
+[365](SHOPS)
+secret=Gtkbrfirf365
+callerid="" <365>
+
+[366](SHOPS)
+secret=Gtkbrfirf366
+callerid="P_18_6" <366>
+
+[367](SHOPS)
+secret=Gtkbrfirf367
+callerid="P_Matrosova32" <367>
+
+[368](SHOPS)
+secret=Gtkbrfirf368
+callerid="P_18_5" <368>
+
+[369](SHOPS)
+secret=Gtkbrfirf369
+callerid="P_Gidro_10a(3)" <369>
+
+[370](SHOPS)
+secret=Gtkbrfirf370
+callerid="P_10_5" <370>
+
+[371](SHOPS)
+secret=Gtkbrfirf371
+callerid="P_Lynacharsky" <371>
+
+[372](SHOPS)
+secret=Gtkbrfirf372
+callerid="P_Mirny" <372>
+
+[373](SHOPS)
+secret=Gtkbrfirf373
+callerid="P_Elhovka" <373>
+
+
+;;;;; SHOPS SIZRAN ;;;;;;;;;
+
+[601](SHOPS_SAMARA)
+secret=Gtkbrfirf601
+callerid="P_Szn_50let_22" <601>
+
+[602](SHOPS_SAMARA)
+secret=Gtkbrfirf602
+callerid="P_Szn_Smolina_2" <602>
+
+[603](SHOPS_SAMARA)
+secret=Gtkbrfirf603
+callerid="P_Szn_KMarksa_12" <603>
+
+
+;;;;; SHOPS NOVOKUYBISHEVSK ;;;;;;;;;
+
+[650](SHOPS_SAMARA)
+secret=Gtkbrfirf650
+callerid="PN_Mironova37" <650>
+
+
+
+;;;;; SHOPS SAMARA ;;;;;;;;;
+
+[701](SHOPS_SAMARA)
+secret=Gtkbrfif701
+callerid="PS_Stara_Zagora_87" <701>
+
+[702](SHOPS_SAMARA)
+secret=Gtkbrfif702
+callerid="PS_Dimitrova_44b" <702>
+
+[703](SHOPS_SAMARA)
+secret=Gtkbrfif703
+callerid="PS_Stara_Zagora_257" <703>
+
+[704](SHOPS_SAMARA)
+secret=Gtkbrfif704
+callerid="PS_Kirova" <704>
+
+[705](SHOPS_SAMARA)
+secret=Gtkbrfif705
+callerid="PS_Aerodromnaya 75" <705>
+
+[706](SHOPS_SAMARA)
+secret=Gtkbrfif706
+callerid="PS_Pobeda" <706>
+
+[707](SHOPS_SAMARA)
+secret=Gtkbrfif707
+callerid="PS_Aerodromnaya 117" <707>
+
+[708](SHOPS_SAMARA)
+secret=Gtkbrfif708
+callerid="PS_Dimitrova_117" <708>
+
+[709](SHOPS_SAMARA)
+secret=Gtkbrfif709
+callerid="PS_Zav_Shosse_46" <709>
+
+[710](SHOPS_SAMARA)
+secret=Gtkbrfif710
+callerid="PS_Voronezhskaya" <710>
+
+[711](SHOPS_SAMARA)
+secret=Gtkbrfif711
+callerid="PS_Mitireva" <711>
+
+[712](SHOPS_SAMARA)
+secret=Gtkbrfif712
+callerid="PS_Amineva" <712>
+
+[713](SHOPS_SAMARA)
+secret=Gtkbrfif713
+callerid="PS_Morisa_Toreza" <713>
+
+[714](SHOPS_SAMARA_SIP)
+secret=Gtkbrfif714
+callerid="PK_Mayak" <714>
+
+[715](SHOPS_SAMARA_SIP)
+secret=Gtkbrfif715
+callerid="PK_Eksperim" <715>
+
+[716](SHOPS_SAMARA)
+secret=Gtkbrfif716
+callerid="PS_Myagi" <716>
+
+[717](SHOPS_SAMARA)
+secret=Gtkbrfif717
+callerid="PS_Fizkulkurnaya" <717>
+
+[718](SHOPS_SAMARA)
+secret=Gtkbrfif718
+callerid="PS_SovArmii" <718>
+
+[719](SHOPS_SAMARA)
+secret=Gtkbrfirf719
+callerid="PS_Krasnoarmeyskoe" <719>
+
+[720](SHOPS_SAMARA)
+secret=Gtkbrfirf720
+callerid="PS_Big_Glushica" <720>
+
+
+

@@ -1,0 +1,71 @@
+Certificate:
+    Data:
+        Version: 3 (0x2)
+        Serial Number: 7 (0x7)
+        Signature Algorithm: sha1WithRSAEncryption
+        Issuer: C=RU, ST=SAMARSKAYA, L=SAMARA, O=NEOTRAID, CN=NEOTRAID CA/emailAddress=admin@neo63.ru
+        Validity
+            Not Before: Mar 11 12:30:43 2013 GMT
+            Not After : Mar  9 12:30:43 2023 GMT
+        Subject: C=RU, ST=SAMARSKAYA, L=SAMARA, O=NEOTRAID, CN=smr_pobeda/emailAddress=admin@neo63.ru
+        Subject Public Key Info:
+            Public Key Algorithm: rsaEncryption
+            RSA Public Key: (1024 bit)
+                Modulus (1024 bit):
+                    00:c8:99:89:dc:9b:f3:93:4b:8a:37:d4:45:61:bc:
+                    75:ad:e0:dc:ce:0c:16:5e:63:1d:95:5e:be:29:2e:
+                    7c:37:55:f2:17:8a:1d:13:f0:e5:d8:df:40:c7:dc:
+                    f1:c2:84:3d:2e:20:f9:71:ec:d9:16:e4:dd:81:4e:
+                    b9:40:32:89:d7:5d:6c:11:29:6d:24:7e:09:30:40:
+                    a1:2c:59:18:7e:bb:40:82:56:98:f5:d7:95:1d:93:
+                    18:59:1e:56:e0:cb:98:bf:47:ef:bf:2e:ce:2c:7a:
+                    e9:bc:dc:2f:47:e5:ab:28:8f:fd:3b:32:41:fc:27:
+                    9d:0b:11:4f:4f:2f:87:45:cf
+                Exponent: 65537 (0x10001)
+        X509v3 extensions:
+            X509v3 Basic Constraints: 
+                CA:FALSE
+            Netscape Comment: 
+                Easy-RSA Generated Certificate
+            X509v3 Subject Key Identifier: 
+                BD:2F:11:4A:D8:3A:4D:02:DD:34:85:95:06:7D:D9:05:B7:65:06:FB
+            X509v3 Authority Key Identifier: 
+                keyid:D7:B0:0C:9A:20:7E:D0:9B:C9:28:03:A1:04:13:C7:AA:C8:A8:AF:CE
+                DirName:/C=RU/ST=SAMARSKAYA/L=SAMARA/O=NEOTRAID/CN=NEOTRAID CA/emailAddress=admin@neo63.ru
+                serial:B9:41:23:02:DB:46:2A:24
+
+            X509v3 Extended Key Usage: 
+                TLS Web Client Authentication
+            X509v3 Key Usage: 
+                Digital Signature
+    Signature Algorithm: sha1WithRSAEncryption
+        9e:70:8a:7e:7c:69:52:0a:e9:aa:69:ea:3d:2b:39:a0:41:8e:
+        15:4e:7d:0d:33:ca:eb:9f:59:ee:f8:87:72:de:62:c0:a6:10:
+        dd:20:52:0f:70:b0:c8:7f:ef:b6:e5:14:13:e0:28:c6:d8:8e:
+        7d:8d:b9:fa:06:4b:3c:4a:97:80:16:d3:67:39:c9:53:06:00:
+        b3:24:2f:c6:37:26:f1:a1:7d:7b:05:b3:37:4c:10:24:37:0c:
+        18:f0:79:fa:4a:d8:38:54:f6:89:a7:ad:ec:38:19:9e:66:20:
+        05:39:b0:3d:17:bd:92:c5:0b:be:92:d3:16:63:10:6c:d1:d0:
+        5c:bf
+-----BEGIN CERTIFICATE-----
+MIIDnDCCAwWgAwIBAgIBBzANBgkqhkiG9w0BAQUFADB7MQswCQYDVQQGEwJSVTET
+MBEGA1UECBMKU0FNQVJTS0FZQTEPMA0GA1UEBxMGU0FNQVJBMREwDwYDVQQKEwhO
+RU9UUkFJRDEUMBIGA1UEAxMLTkVPVFJBSUQgQ0ExHTAbBgkqhkiG9w0BCQEWDmFk
+bWluQG5lbzYzLnJ1MB4XDTEzMDMxMTEyMzA0M1oXDTIzMDMwOTEyMzA0M1owejEL
+MAkGA1UEBhMCUlUxEzARBgNVBAgTClNBTUFSU0tBWUExDzANBgNVBAcTBlNBTUFS
+QTERMA8GA1UEChMITkVPVFJBSUQxEzARBgNVBAMUCnNtcl9wb2JlZGExHTAbBgkq
+hkiG9w0BCQEWDmFkbWluQG5lbzYzLnJ1MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCB
+iQKBgQDImYncm/OTS4o31EVhvHWt4NzODBZeYx2VXr4pLnw3VfIXih0T8OXY30DH
+3PHChD0uIPlx7NkW5N2BTrlAMonXXWwRKW0kfgkwQKEsWRh+u0CCVpj115UdkxhZ
+Hlbgy5i/R++/Ls4seum83C9H5asoj/07MkH8J50LEU9PL4dFzwIDAQABo4IBLzCC
+ASswCQYDVR0TBAIwADAtBglghkgBhvhCAQ0EIBYeRWFzeS1SU0EgR2VuZXJhdGVk
+IENlcnRpZmljYXRlMB0GA1UdDgQWBBS9LxFK2DpNAt00hZUGfdkFt2UG+zCBrQYD
+VR0jBIGlMIGigBTXsAyaIH7Qm8koA6EEE8eqyKivzqF/pH0wezELMAkGA1UEBhMC
+UlUxEzARBgNVBAgTClNBTUFSU0tBWUExDzANBgNVBAcTBlNBTUFSQTERMA8GA1UE
+ChMITkVPVFJBSUQxFDASBgNVBAMTC05FT1RSQUlEIENBMR0wGwYJKoZIhvcNAQkB
+Fg5hZG1pbkBuZW82My5ydYIJALlBIwLbRiokMBMGA1UdJQQMMAoGCCsGAQUFBwMC
+MAsGA1UdDwQEAwIHgDANBgkqhkiG9w0BAQUFAAOBgQCecIp+fGlSCumqaeo9Kzmg
+QY4VTn0NM8rrn1nu+Idy3mLAphDdIFIPcLDIf++25RQT4CjG2I59jbn6Bks8SpeA
+FtNnOclTBgCzJC/GNybxoX17BbM3TBAkNwwY8Hn6Stg4VPaJp63sOBmeZiAFObA9
+F72SxQu+ktMWYxBs0dBcvw==
+-----END CERTIFICATE-----

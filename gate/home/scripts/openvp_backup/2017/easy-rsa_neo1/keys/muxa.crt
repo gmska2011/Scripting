@@ -1,0 +1,71 @@
+Certificate:
+    Data:
+        Version: 3 (0x2)
+        Serial Number: 3 (0x3)
+    Signature Algorithm: sha1WithRSAEncryption
+        Issuer: C=RU, ST=SAMARSKAYA, L=TOGLIATTY, O=NEOTREID-LTD, CN=NEOTREID-LTD CA/emailAddress=muxa@neo63.ru
+        Validity
+            Not Before: Jul 17 09:27:29 2015 GMT
+            Not After : Jul 14 09:27:29 2025 GMT
+        Subject: C=RU, ST=SAMARSKAYA, L=TOGLIATTY, O=NEOTREID-LTD, CN=muxa/emailAddress=muxa@neo63.ru
+        Subject Public Key Info:
+            Public Key Algorithm: rsaEncryption
+                Public-Key: (1024 bit)
+                Modulus:
+                    00:f1:f2:a7:86:60:74:b3:cc:88:1e:d3:a5:ef:6f:
+                    9c:c0:29:bc:45:34:06:10:a9:a1:ad:1a:f2:6c:bc:
+                    dc:63:a8:ea:50:9c:50:f2:b2:4d:3b:82:d7:c1:1b:
+                    27:70:af:e6:2e:0f:a7:19:96:ce:0c:8e:3e:ec:fe:
+                    88:4e:f5:7c:de:57:bd:88:b9:c0:95:f3:15:2b:22:
+                    ec:1b:10:1b:55:d4:92:ce:fa:30:09:f2:88:6c:03:
+                    8a:d1:da:f1:31:5f:ea:5d:8d:b7:43:98:b9:bd:d6:
+                    70:37:18:6c:c0:bc:99:21:0b:26:4a:34:0d:da:f1:
+                    df:2a:c5:1f:a8:07:f4:05:2d
+                Exponent: 65537 (0x10001)
+        X509v3 extensions:
+            X509v3 Basic Constraints: 
+                CA:FALSE
+            Netscape Comment: 
+                Easy-RSA Generated Certificate
+            X509v3 Subject Key Identifier: 
+                41:05:15:FE:26:E4:BA:AD:5C:81:49:F6:14:9F:49:EC:04:AD:22:30
+            X509v3 Authority Key Identifier: 
+                keyid:F8:AD:6B:CF:05:6A:F5:01:B7:8A:6F:A2:91:D0:F3:C3:E3:2B:62:F3
+                DirName:/C=RU/ST=SAMARSKAYA/L=TOGLIATTY/O=NEOTREID-LTD/CN=NEOTREID-LTD CA/emailAddress=muxa@neo63.ru
+                serial:A3:2E:2A:A8:AE:52:1B:B7
+
+            X509v3 Extended Key Usage: 
+                TLS Web Client Authentication
+            X509v3 Key Usage: 
+                Digital Signature
+    Signature Algorithm: sha1WithRSAEncryption
+         5f:b5:96:79:27:e4:b0:6b:3a:36:c4:93:b8:3a:22:fb:bf:f8:
+         84:8f:5b:f0:85:3b:1a:08:be:23:69:7c:58:b6:5f:ff:1e:73:
+         85:1c:fd:f1:cd:d0:a5:b4:6c:09:a0:2a:90:d0:51:cb:6e:c4:
+         cd:44:0e:8a:42:92:ed:dc:94:da:6d:b4:97:67:8c:b8:74:5c:
+         2d:6d:fd:a5:9d:86:4e:1f:69:36:44:5f:9c:7d:b5:35:e7:8b:
+         b4:24:0d:04:3b:84:12:08:e4:eb:66:c2:4b:a9:5b:f7:96:be:
+         43:8e:24:ef:f7:09:f3:1f:c1:c3:a5:db:95:6a:cf:3a:8b:35:
+         67:d2
+-----BEGIN CERTIFICATE-----
+MIIDtDCCAx2gAwIBAgIBAzANBgkqhkiG9w0BAQUFADCBhTELMAkGA1UEBhMCUlUx
+EzARBgNVBAgTClNBTUFSU0tBWUExEjAQBgNVBAcTCVRPR0xJQVRUWTEVMBMGA1UE
+ChMMTkVPVFJFSUQtTFREMRgwFgYDVQQDEw9ORU9UUkVJRC1MVEQgQ0ExHDAaBgkq
+hkiG9w0BCQEWDW11eGFAbmVvNjMucnUwHhcNMTUwNzE3MDkyNzI5WhcNMjUwNzE0
+MDkyNzI5WjB6MQswCQYDVQQGEwJSVTETMBEGA1UECBMKU0FNQVJTS0FZQTESMBAG
+A1UEBxMJVE9HTElBVFRZMRUwEwYDVQQKEwxORU9UUkVJRC1MVEQxDTALBgNVBAMT
+BG11eGExHDAaBgkqhkiG9w0BCQEWDW11eGFAbmVvNjMucnUwgZ8wDQYJKoZIhvcN
+AQEBBQADgY0AMIGJAoGBAPHyp4ZgdLPMiB7Tpe9vnMApvEU0BhCpoa0a8my83GOo
+6lCcUPKyTTuC18EbJ3Cv5i4PpxmWzgyOPuz+iE71fN5XvYi5wJXzFSsi7BsQG1XU
+ks76MAnyiGwDitHa8TFf6l2Nt0OYub3WcDcYbMC8mSELJko0Ddrx3yrFH6gH9AUt
+AgMBAAGjggE8MIIBODAJBgNVHRMEAjAAMC0GCWCGSAGG+EIBDQQgFh5FYXN5LVJT
+QSBHZW5lcmF0ZWQgQ2VydGlmaWNhdGUwHQYDVR0OBBYEFEEFFf4m5LqtXIFJ9hSf
+SewErSIwMIG6BgNVHSMEgbIwga+AFPita88FavUBt4pvopHQ88PjK2LzoYGLpIGI
+MIGFMQswCQYDVQQGEwJSVTETMBEGA1UECBMKU0FNQVJTS0FZQTESMBAGA1UEBxMJ
+VE9HTElBVFRZMRUwEwYDVQQKEwxORU9UUkVJRC1MVEQxGDAWBgNVBAMTD05FT1RS
+RUlELUxURCBDQTEcMBoGCSqGSIb3DQEJARYNbXV4YUBuZW82My5ydYIJAKMuKqiu
+Uhu3MBMGA1UdJQQMMAoGCCsGAQUFBwMCMAsGA1UdDwQEAwIHgDANBgkqhkiG9w0B
+AQUFAAOBgQBftZZ5J+Swazo2xJO4OiL7v/iEj1vwhTsaCL4jaXxYtl//HnOFHP3x
+zdCltGwJoCqQ0FHLbsTNRA6KQpLt3JTabbSXZ4y4dFwtbf2lnYZOH2k2RF+cfbU1
+54u0JA0EO4QSCOTrZsJLqVv3lr5DjiTv9wnzH8HDpduVas86izVn0g==
+-----END CERTIFICATE-----

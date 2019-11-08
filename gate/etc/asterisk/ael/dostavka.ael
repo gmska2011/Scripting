@@ -1,0 +1,47 @@
+context dostavka-users {
+    _XXXXXX =>{
+        &recording(${CALLERID(number)},${EXTEN});
+        Set(CALLERID(num)=200201);
+        Dial(SIP/${EXTEN}@AIST_TRUNK,,);
+    };
+    _78482XXXXXX =>{
+        &recording(${CALLERID(number)},${EXTEN});
+        Dial(SIP/${EXTEN:5}@AIST_TRUNK,,T);
+    };
+    _88482XXXXXX =>{
+        &recording(${CALLERID(number)},${EXTEN});
+        Dial(SIP/${EXTEN:5}@AIST_TRUNK,,T);
+    };
+    _8846XXXXXXX =>{
+        &recording(${CALLERID(number)},${EXTEN});
+        Dial(SIP/${EXTEN:4}@AIST_TRUNK,,T);
+    };
+    _89X. =>{
+        &recording(${CALLERID(number)},${EXTEN});
+        Set(CALLERID(num)=200201);
+        Dial(SIP/${EXTEN}@AIST_TRUNK,,T);
+    };
+    _+79X. =>{
+        &recording(${CALLERID(number)},${EXTEN});
+        Set(CALLERID(num)=200201);
+        Dial(SIP/8${EXTEN:2}@AIST_TRUNK,,T);
+    };
+    _79X. =>{
+        &recording(${CALLERID(number)},${EXTEN});
+        Set(CALLERID(num)=200201);
+        Dial(SIP/8${EXTEN:1}@AIST_TRUNK,,T);
+    };
+    _XXX =>{
+        &recording(${CALLERID(number)},${EXTEN});
+        Dial(SIP/${EXTEN},,T);
+    };
+                      
+    _909 => {
+	&RecordGreeting();
+     };
+         
+    _7XXX =>{
+        &recording(${CALLERID(number)},${EXTEN});
+        Dial(SIP/${EXTEN:1},,T);
+    };
+};

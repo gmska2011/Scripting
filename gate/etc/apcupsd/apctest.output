@@ -1,0 +1,203 @@
+
+
+2016-03-14 16:17:21 apctest 3.14.10 (13 September 2011) debian
+Checking configuration ...
+Attached to driver: usb
+sharenet.type = Network & ShareUPS Disabled
+cable.type = USB Cable
+mode.type = USB UPS Driver
+Setting up the port ...
+apctest FATAL ERROR in device.c at line 71
+Unable to create UPS lock file.
+  If apcupsd or apctest is already running,
+  please stop it and run this program again.
+apctest error termination completed
+
+
+2016-03-14 16:17:41 apctest 3.14.10 (13 September 2011) debian
+Checking configuration ...
+Attached to driver: usb
+sharenet.type = Network & ShareUPS Disabled
+cable.type = USB Cable
+mode.type = USB UPS Driver
+Setting up the port ...
+Doing prep_device() ...
+
+You are using a USB cable type, so I'm entering USB test mode
+Hello, this is the apcupsd Cable Test program.
+This part of apctest is for testing USB UPSes.
+
+Getting UPS capabilities...SUCCESS
+
+Please select the function you want to perform.
+
+1)  Test kill UPS power
+2)  Perform self-test
+3)  Read last self-test result
+4)  View/Change battery date
+5)  View manufacturing date
+6)  View/Change alarm behavior
+7)  View/Change sensitivity
+8)  View/Change low transfer voltage
+9)  View/Change high transfer voltage
+10) Perform battery calibration
+11) Test alarm
+12) View/Change self-test interval
+ Q) Quit
+
+Select function number: 3
+
+Result of last self test: WARNING
+
+1)  Test kill UPS power
+2)  Perform self-test
+3)  Read last self-test result
+4)  View/Change battery date
+5)  View manufacturing date
+6)  View/Change alarm behavior
+7)  View/Change sensitivity
+8)  View/Change low transfer voltage
+9)  View/Change high transfer voltage
+10) Perform battery calibration
+11) Test alarm
+12) View/Change self-test interval
+ Q) Quit
+
+Select function number: 5
+
+
+I don't know how to access the manufacturing date on your UPS
+or your UPS does not support the manufacturing date feature.
+
+1)  Test kill UPS power
+2)  Perform self-test
+3)  Read last self-test result
+4)  View/Change battery date
+5)  View manufacturing date
+6)  View/Change alarm behavior
+7)  View/Change sensitivity
+8)  View/Change low transfer voltage
+9)  View/Change high transfer voltage
+10) Perform battery calibration
+11) Test alarm
+12) View/Change self-test interval
+ Q) Quit
+
+Select function number: 12
+
+
+I don't know how to access the self-test interval on your UPS
+or your UPS does not support the self-test interval feature.
+
+1)  Test kill UPS power
+2)  Perform self-test
+3)  Read last self-test result
+4)  View/Change battery date
+5)  View manufacturing date
+6)  View/Change alarm behavior
+7)  View/Change sensitivity
+8)  View/Change low transfer voltage
+9)  View/Change high transfer voltage
+10) Perform battery calibration
+11) Test alarm
+12) View/Change self-test interval
+ Q) Quit
+
+Select function number: 2
+
+
+This test instructs the UPS to perform a self-test
+operation and reports the result when the test completes.
+
+Clearing previous self test result...CLEARED
+Initiating self test...INITIATED
+Waiting for test to complete...COMPLETED
+Result of last self test: IN PROGRESS
+
+1)  Test kill UPS power
+2)  Perform self-test
+3)  Read last self-test result
+4)  View/Change battery date
+5)  View manufacturing date
+6)  View/Change alarm behavior
+7)  View/Change sensitivity
+8)  View/Change low transfer voltage
+9)  View/Change high transfer voltage
+10) Perform battery calibration
+11) Test alarm
+12) View/Change self-test interval
+ Q) Quit
+
+Select function number: 3
+
+Result of last self test: IN PROGRESS
+
+1)  Test kill UPS power
+2)  Perform self-test
+3)  Read last self-test result
+4)  View/Change battery date
+5)  View manufacturing date
+6)  View/Change alarm behavior
+7)  View/Change sensitivity
+8)  View/Change low transfer voltage
+9)  View/Change high transfer voltage
+10) Perform battery calibration
+11) Test alarm
+12) View/Change self-test interval
+ Q) Quit
+
+Select function number: 3
+
+Result of last self test: PASSED
+
+1)  Test kill UPS power
+2)  Perform self-test
+3)  Read last self-test result
+4)  View/Change battery date
+5)  View manufacturing date
+6)  View/Change alarm behavior
+7)  View/Change sensitivity
+8)  View/Change low transfer voltage
+9)  View/Change high transfer voltage
+10) Perform battery calibration
+11) Test alarm
+12) View/Change self-test interval
+ Q) Quit
+
+Select function number: 3
+
+Result of last self test: PASSED
+
+1)  Test kill UPS power
+2)  Perform self-test
+3)  Read last self-test result
+4)  View/Change battery date
+5)  View manufacturing date
+6)  View/Change alarm behavior
+7)  View/Change sensitivity
+8)  View/Change low transfer voltage
+9)  View/Change high transfer voltage
+10) Perform battery calibration
+11) Test alarm
+12) View/Change self-test interval
+ Q) Quit
+
+Select function number: 3
+
+Result of last self test: PASSED
+
+1)  Test kill UPS power
+2)  Perform self-test
+3)  Read last self-test result
+4)  View/Change battery date
+5)  View manufacturing date
+6)  View/Change alarm behavior
+7)  View/Change sensitivity
+8)  View/Change low transfer voltage
+9)  View/Change high transfer voltage
+10) Perform battery calibration
+11) Test alarm
+12) View/Change self-test interval
+ Q) Quit
+
+Select function number: 2016-03-14 16:18:30 apctest exiting, signal 2

@@ -1,0 +1,419 @@
+#include "ael/local.ael"
+#include "ael/meandr.ael"
+#include "ael/macros.ael"
+#include "ael/albatros.ael"
+#include "ael/dostavka.ael"
+#include "ael/lg800-users.ael"
+
+globals {
+    ADMIN=SIP/153&SIP/556;
+    IT=SIP/105&SIP/111;
+    SECRETAR=SIP/205&SIP/210;
+    //FOKRECEPTION=IAX2/neo-fokaster/3833&IAX2/neo-fokaster/3834;
+    //FOKDIAL=SIP/801&SIP/802&SIP/803;
+    ALBSOUNDS=/var/lib/asterisk/sounds/albasport; // Папка со звуками
+    WAV=/records/wav; //Временный каталог с WAV
+    MP3=/var/spool/asterisk/monitor; //Куда выгружать mp3 файлы
+    RECORDING=1; // Запись, 1 - включена.
+}
+
+context from-shops {
+        includes {
+	    support;
+            local-users;
+        };
+};
+
+context from-shops-samara {
+        includes {
+	    support;
+            local-users;
+        };
+};
+
+context from-shops-samara-sip {
+        includes {
+	    support;
+            local-users;
+            sipnet-users;
+        };
+};
+context from-dostavka {
+        includes {
+	    support;
+            to-neo;
+            dostavka-users;
+        };
+};
+
+context from-bot {
+        includes {
+            local-users;
+        };
+};
+                
+                
+context from-admin {
+        _88299255  => {
+//	Set(CALLERID(num)=78482378033);
+        Dial(SIP/KURS/${EXTEN:2},60,Tt);
+    }
+//       902125186800
+      _90XXXXXXXXXX =>{
+//                    &SaveToMp3();
+//        &recording(${CALLERID(number)},${EXTEN});
+       Dial(SIP/${EXTEN}@SIPNET,,T);
+    }
+        _8889063390390  => {
+//	Set(CALLERID(num)=78482378033);
+        Dial(SIP/KURS/${EXTEN:2},60,Tt);
+    }
+        _88  => {
+        Dial(IAX2/neo-fokaster/800,60,Tt);
+    }
+    _444 => {
+            &IVR_Albaport();
+            }
+    _8XX => {
+//      Set(CALLERID(num)=${CALLERID(number)});
+        &recording(${CALLERID(number)},${EXTEN});
+        Dial(IAX2/neo-fokaster/${EXTEN},60,Tt);
+     };
+        includes {
+	    support;
+            local-users;
+            sipnet-users;
+	    ats-users;
+        };
+
+};
+
+context from-office {
+        includes {
+    	    support;
+            local-users;
+            sipnet-users;
+        };
+};
+
+context from-office-no-sipnet {
+        includes {
+	    support;
+            local-users;
+        };
+};
+
+
+context from-notinoffice {
+        includes {
+	    support;
+            sipnet-users;
+            local-users;
+        };
+};
+
+context from-meandr {
+        includes {
+                meandr-home;
+        };
+};
+
+context from-albatros {
+        includes {
+	    support;
+            albatros-users;
+        };
+};
+
+context from-pavel {
+    _XXXXXX => {
+        Set(CALLERID(num)=557675);
+	Dial(SIP/AIST_TRUNK/${EXTEN},,);
+    }
+}
+
+context fromaist {
+    200201 => {
+	Answer();
+	Playback(/var/lib/asterisk/sounds/zdravstvuyte_dostavka8);
+	//Read(NUMBER,/var/lib/asterisk/sounds/zdravstujte_dostavka&/var/lib/asterisk/sounds/dial-exten-tone,3,,,15);
+	&recording(${CALLERID(number)},${EXTEN});
+        Queue(queue_dostavka,t);
+    }
+
+    211200 => {
+	Answer();
+	Playback(/var/lib/asterisk/sounds/zdravstvuyte_dostavka8);
+	//Read(NUMBER,/var/lib/asterisk/sounds/zdravstujte_dostavka&/var/lib/asterisk/sounds/dial-exten-tone,3,,,15);
+	&recording(${CALLERID(number)},${EXTEN});
+        Queue(queue_dostavka_komzina,t);
+    }
+
+    208400 => {
+	Dial(IAX2/neo-mindal/208400,60,mT);    
+	hangup();
+    }
+
+    208396 => {
+	Dial(IAX2/neo-mindal/208396,60,mT);    
+	hangup();
+    }
+
+    208407 => {
+	Dial(IAX2/neo-mindal/208407,60,mT);    
+	hangup();
+    }
+
+    208626 => {
+	Dial(IAX2/neo-mindal/208626,60,mT);    
+	hangup();
+    }
+
+    208627 => {
+	Dial(IAX2/neo-mindal/208627,60,mT);    
+	hangup();
+    }
+
+    557675 => {
+//	Set(CALLERID(num)=557675);
+//	Dial(SIP/AIST_TRUNK/299255,60,mT);    
+//	hangup();
+	Answer();
+//	Read(NUMBER,/var/lib/asterisk/sounds/greetings,3,,,15);
+	Read(NUMBER,/var/lib/asterisk/sounds/zdravstujte&/var/lib/asterisk/sounds/dial-exten-tone,3,,,15);
+	&recording(${CALLERID(number)},${EXTEN});
+      
+	if (${NUMBER} = 111 ) {
+    	    Noop(${CALLERID(number)});
+    	    if (${CALLERID(number)} = 4953630660 ) {
+    		Playback(/var/lib/asterisk/sounds/all-circuits-busy);
+    	        Hangup();
+    	    }
+    	    Dial(SIP/105,60,mT);
+        }
+      
+	if (${NUMBER} = 555 ) {
+    	    &SupportCall();
+        }
+
+	if (${NUMBER} = 105 ) {
+	    &recording(${CALLERID(number)},${EXTEN});
+	    &BusyCheckLocal(${EXTEN});
+	    Answer();
+	    Read(NUMBER,/var/lib/asterisk/sounds/vm-reachoper&/var/lib/asterisk/sounds/zdravstvuyte_dostavka8,1,,,15);
+
+	    if (${NUMBER} = 0 ) {
+		System(/var/lib/asterisk/agi-bin/email.sh muxa@neo63.ru "${CALLERID(num)}" "${CALLERID(name)}" "${DIALSTATUS}" "${VMSTATUS}" "${EXTEN}");
+		Playback(/var/lib/asterisk/sounds/calls-are-recorded);
+		Playback(/var/lib/asterisk/sounds/auth-thankyou&/var/lib/asterisk/sounds/vm-goodbye);
+		Hangup();
+    	        //Dial(SIP/105,60,mT);
+	        //&SupportCall();
+	    }
+	}
+
+	if (${EXISTS(${NUMBER})} = 0 ) {
+	    Playback(/var/lib/asterisk/sounds/vremja-ozhidanija-isteklo&do-svidanija);
+//	    Dial(SIP/200&SIP/300,60,Tt);     
+        }else{
+	    &CheckAvail(${NUMBER});
+	    &BusyCheckLocal(${NUMBER});
+	    Dial(SIP/${NUMBER},60,mTt);     
+        }
+    }
+    555657 => {
+	Answer();
+	Read(NUMBER,/var/lib/asterisk/sounds/zdravstujte&/var/lib/asterisk/sounds/dial-exten-tone,4,,,15);
+	&recording(${CALLERID(number)},${EXTEN});
+	Noop(${EXTEN});      
+	if (${NUMBER} = 111 ) {
+    	    Noop(${CALLERID(number)});
+    	    if (${CALLERID(number)} = 4953630660 ) {
+    		Playback(/var/lib/asterisk/sounds/all-circuits-busy);
+    	        Hangup();
+    	    }
+    	    Dial(SIP/105,60,mT);
+        }
+      
+	if (${NUMBER} = 555 ) {
+    	    &SupportCall();
+        }
+
+	if (${EXISTS(${NUMBER})} = 0 ) {
+	    Playback(/var/lib/asterisk/sounds/vremja-ozhidanija-isteklo&do-svidanija);
+        }else{
+	    Noop(${NUMBER});
+//    	    Dial(SIP/LG800_TRUNK/${NUMBER},60,mT);
+	    jump _12XX@local-users;
+   
+//	    _12XX => {
+//    		&recording(${CALLERID(number)},${EXTEN});
+//    		Dial(SIP/LG800_TRUNK/${EXTEN},60,mT);
+//    	    };
+//	    _13XX => {
+//    		&recording(${CALLERID(number)},${EXTEN});
+//    		Dial(SIP/LG800_TRUNK/${EXTEN},60,mT);
+//    	    };
+	}
+    }
+}
+    
+// ФОК
+context from-fok {
+    _8482580101 => {
+	Set(CALLERID(num)=${CALLERID(number):1});
+	&recording(${CALLERID(number)},8482580101);
+//    	DIAL(SIP/801,60,mT);
+//    	DIAL(${FOKDIAL},60,mT);
+
+//	&IVR_Albaport();
+//        Answer();
+//        Read(NUMBER,${ALBSOUNDS}/zdravstvuyte,1,,,1);
+        Read(NUMBER,${ALBSOUNDS}/main_19.04.16,1,,,1);
+        // Меню IVR
+        if (${NUMBER} = 1 ) {
+            //DIAL(${FOKDIAL},60,mT);
+	    Queue(queue_managers,t);
+	    //Queue(queue_reception);
+            return;
+        }
+
+        if (${NUMBER} = 2 ) {
+    //            DIAL(${FOKRECEPTION},60,mT);
+	    Queue(queue_reception,t);
+            return;
+        }
+
+        if (${NUMBER} = 3 ) {
+    //            DIAL(${FOKRECEPTION},60,mT);
+	    Queue(queue_led_tennis,t);
+            return;
+        }
+
+        if (${NUMBER} = 4 ) {
+            Read(NUMBER3,/var/lib/asterisk/sounds/dial-exten-tone,4,,,15);
+            //SayNumber(${NUMBER3});
+            Set(lenght=${LEN(${NUMBER3})});
+            if (${lenght} = 3 ) {
+                DIAL(SIP/${NUMBER3},60,mTt);
+            }
+            if (${lenght} = 4 ) {
+                DIAL(IAX2/neo-fokaster/${NUMBER3},60,mTt);
+            }
+        }
+
+        //&BusyCheckLocal(${EXTEN});
+        // Если не нажата ни одна кнопка - звонок Менеджерам
+        //DIAL(${FOKDIAL},60,mT);
+	Queue(queue_managers,t,,,15);
+	Queue(queue_reception,t,,,15);
+
+    }
+}
+
+context from-kusto {
+    _1XX => {
+        Dial(SIP/${EXTEN},60,mTt);
+    }
+}
+
+context from-mindal {   
+// ТЕХ.ПОДДЕРЖКА
+    _555 => {
+	    &recording(${CALLERID(number)},${EXTEN});
+            &SupportCall();
+            }
+
+    _100 => {
+	&recording(${CALLERID(number)},${EXTEN});
+	Read(NUMBER,,6,,,6);
+        Dial(SIP/AIST_TRUNK/${NUMBER},60,mT);
+    }
+    _XXX => {
+	&recording(${CALLERID(number)},${EXTEN});
+       Answer();
+
+    if (${NUMBER} = 111 ) {
+       Dial(SIP/105&SIP/111,15,mT);
+       Dial(SIP/AIST_TRUNK/299844,60,mT);
+    }
+        &BusyCheckLocal(${EXTEN});
+        Dial(SIP/${EXTEN},60,mTt);
+    }
+}
+
+context from-fokaster {
+// ТЕХ.ПОДДЕРЖКА
+    _555 => {
+            &recording(${CALLERID(number)},${EXTEN});
+            &SupportCall();
+            }
+
+    _444 => {
+	    &IVR_Albaport();
+	    }
+
+    includes {
+	    support;
+            albatros-users;
+            local-users;
+        };
+    _XXX => {
+	&recording(${CALLERID(number)},${EXTEN});
+	Answer();
+	if (${NUMBER} = 111 ) {
+    	    Dial(SIP/105&SIP/111,15,mT);
+    	    Dial(SIP/AIST_TRUNK/299844,60,mT);
+	}
+        &BusyCheckLocal(${EXTEN});
+        Dial(SIP/${EXTEN},60,mTt);
+    }
+
+}
+
+context BLF {
+
+    hint(SIP/100) 100 => {
+    };
+    hint(SIP/106) 106 => {
+    };
+    hint(SIP/103) 103 => {
+    };
+    hint(SIP/107) 107 => {
+    };
+    hint(SIP/108) 108 => {
+    };
+    hint(SIP/111) 111 => {
+    };
+    hint(SIP/115) 115 => {
+    };
+    hint(SIP/116) 116 => {
+    };
+    hint(SIP/119) 119 => {
+    };
+    hint(SIP/120) 120 => {
+    };
+    hint(SIP/141) 141 => {
+    };
+    hint(SIP/170) 170 => {
+    };
+    hint(SIP/180) 180 => {
+    };
+    hint(SIP/105) 105 => {
+    };
+    hint(SIP/183) 183 => {
+    };
+    hint(SIP/128) 128 => {
+    };
+    hint(SIP/129) 129 => {
+    };
+    hint(SIP/135) 135 => {
+    };
+    hint(SIP/112) 112 => {
+    };
+    hint(SIP/142) 142 => {
+    };
+    hint(SIP/140) 140 => {
+    };
+
+}

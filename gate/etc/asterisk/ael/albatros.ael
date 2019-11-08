@@ -1,0 +1,47 @@
+context albatros-users {
+    _XXXXXX =>{
+        &recording(${CALLERID(number)},${EXTEN});
+        Dial(SIP/${EXTEN}@FOK,,T);
+    };
+    _78482XXXXXX =>{
+        &recording(${CALLERID(number)},${EXTEN});
+        Dial(SIP/${EXTEN:5}@FOK,,T);
+    };
+    _88482XXXXXX =>{
+        &recording(${CALLERID(number)},${EXTEN});
+        Dial(SIP/${EXTEN:5}@FOK,,T);
+    };
+    _8846XXXXXXX =>{
+        &recording(${CALLERID(number)},${EXTEN});
+        Dial(SIP/${EXTEN:4}@FOK,,T);
+    };
+    _89X. =>{
+        &recording(${CALLERID(number)},${EXTEN});
+        Dial(SIP/${EXTEN}@FOK,,T);
+    };
+    _+79X. =>{
+        &recording(${CALLERID(number)},${EXTEN});
+        Dial(SIP/8${EXTEN:2}@FOK,,T);
+    };
+    _79X. =>{
+        &recording(${CALLERID(number)},${EXTEN});
+        Dial(SIP/8${EXTEN:1}@FOK,,T);
+    };
+    _XXX =>{
+        &recording(${CALLERID(number)},${EXTEN});
+        Dial(SIP/${EXTEN},,T);
+    };
+                      
+    _909 => {
+	&RecordGreeting();
+     };
+         
+    _7XXX =>{
+        &recording(${CALLERID(number)},${EXTEN});
+        Dial(SIP/${EXTEN:1},,T);
+    };
+    _38XX => {
+        &recording(${CALLERID(number)},${EXTEN});
+        Dial(OOH323/emg80-fok/${EXTEN},60,Tt);
+     };
+};

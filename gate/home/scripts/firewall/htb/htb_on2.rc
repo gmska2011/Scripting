@@ -1,0 +1,78 @@
+#!/bin/bash
+# Формирователь трафика для домашнего соединения с Интернет
+# 
+#
+# Установите следующие параметры так, чтобы они были немного меньше фактических
+# Единицы измерения -- килобиты
+DOWNLINK=100
+UPLINK=100
+DEV=tun0
+
+# очистка входящей и исходящей qdisc
+tc qdisc del dev $DEV root    2> /dev/null > /dev/null
+tc qdisc del dev $DEV ingress 2> /dev/null > /dev/null
+
+###### исходящий трафик
+
+# установка корневой HTB, отправить трафик по-умолчанию в 1:20:
+
+tc qdisc add dev $DEV root handle 1: htb default 20
+
+# ограничить общую исходящую скорость величиной $UPLINK -- это предотвратит
+# появление огромных очередей в DSL модеме,
+# которые отрицательно сказываются на величине задержки:
+
+tc class add dev $DEV parent 1: classid 1:1 htb rate ${UPLINK}kbit burst 6k
+
+# высокоприоритетный (интерактивный) класс 1:10:
+
+tc class add dev $DEV parent 1:1 classid 1:10 htb rate ${UPLINK}kbit \
+   burst 6k prio 1
+   
+   # класс по-умолчанию 1:20 -- получает немного меньший объем трафика
+   # и имеет более низкий приоритет:
+   
+   tc class add dev $DEV parent 1:1 classid 1:20 htb rate $[9*$UPLINK/10]kbit \
+      burst 6k prio 2
+      
+      # оба получают дисциплину Stochastic Fairness:
+      tc qdisc add dev $DEV parent 1:10 handle 10: sfq perturb 10
+      tc qdisc add dev $DEV parent 1:20 handle 20: sfq perturb 10
+      
+      # TOS = Minimum-Delay (ssh, НО НЕ scp) -- в 1:10:
+      tc filter add dev $DEV parent 1:0 protocol ip prio 10 u32 \
+            match ip tos 0x10 0xff  flowid 1:10
+	    
+	    # ICMP (ip protocol 1) -- в интерактивный класс 1:10
+	    # так мы сможем удивить своих друзей:
+	    tc filter add dev $DEV parent 1:0 protocol ip prio 10 u32 \
+		match ip protocol 1 0xff flowid 1:10
+		
+		# Поднять скорость входящего трафика, при наличии исходящего -- передать ACK-пакеты
+		# в интерактивный класс:
+		
+		tc filter add dev $DEV parent 1: protocol ip prio 10 u32 \
+		   match ip protocol 6 0xff \
+		      match u8 0x05 0x0f at 0 \
+		         match u16 0x0000 0xffc0 at 2 \
+			    match u8 0x10 0xff at 33 \
+			       flowid 1:10
+			       
+			       # остальной трафик не является интерактивным поэтому он попадает в 1:20
+			       
+			       
+			       ########## входящий трафик #############
+			       # необходимо несколько уменьшить скорость поступления входящего трафика,
+			       # это предотвратит задержку пакетов в очередях у поставщика услуг.
+			       # Поставщики имеют обыкновение увеличивать размеры очередей,
+			       # поэтому, экспериментальным путем подберите требуемые значения,
+			       # при которых скачивание будет происходить с максимальной скоростью.
+			       #
+			       # присоединить входной ограничитель:
+			       
+			       tc qdisc add dev $DEV handle ffff: ingress
+			       
+			       # сбрасывать все подряд (0.0.0.0/0), что приходит со слишком большой скоростью.
+			       
+			       tc filter add dev $DEV parent ffff: protocol ip prio 50 u32 match ip src \
+			          0.0.0.0/0 police rate ${DOWNLINK}kbit burst 10k drop flowid :1

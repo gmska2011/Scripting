@@ -1,0 +1,15 @@
+# Пиринговые сетки ......
+195.144.192.0/19    # Totel
+62.213.0.0/19       # Volgatelecom
+212.32.192.0/19     # Volgatelecom
+85.112.32.0/20      # Volgatelecom
+85.112.48.0/23      # Volgatelecom
+85.112.58.0/23      # Volgatelecom
+85.112.51.0/24
+85.112.55.0/24
+85.112.60.0/23      # Volgatelecom
+85.112.62.0/23      # Volgatelecom
+88.200.128.0/17     # Volgatelecom
+217.77.96.0/19      # Infopac
+217.113.123.111
+

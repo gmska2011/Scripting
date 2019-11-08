@@ -1,0 +1,261 @@
+<?php
+include "config.php";
+
+$session=$_GET["session"];
+$username=$_GET["username"];
+
+    if ($session == 1){
+
+$today = date("H:i d.m.y");
+$date_time = date("d-m-y H:i:s");  
+//$username=$_GET["username"];
+$ip = $_SERVER["REMOTE_ADDR"];
+
+$query = mysql_query("SELECT * FROM domain_users WHERE username ='".$username."'");
+$result = mysql_fetch_assoc($query);
+
+$id = $result['id_mag'];
+
+$sql = "select ip_ws from ws where id_mag='".$id."'" or die(mysql_error());
+$rs = mysql_query($sql);
+    while($row = mysql_fetch_row($rs)){
+        $str=$row[0];
+    }
+$arr = explode(".", $str);
+$MASK = $arr[0].".".$arr[1].".".$arr[2].".";
+
+// далее записываем в файл текст
+echo "# Сгенерированный конфиг SOUTH_CONFIG.INI. Дата создания файла: ".$today."\r\n";
+echo "# Имя пользователя ".$username."\r\n";
+echo "# Рабочий каталог SOUTH \r\n";
+echo "# Ваш IP адрес: ".$ip." \r\n";
+echo "# ID магазина: ".$id." \r\n";
+//echo "# IP адрес директора: ".$str."\r\n";
+echo "# МASK подсети: ".$MASK." \r\n";
+echo "WORKDIR=h:\south\r\n";
+echo "WORKDIRSCALE=h:\south\Scale\r\n\r\n";
+
+echo "# Установка ядра процессора для работы \r\n";
+    $query_trm = sprintf("SELECT * FROM terminal WHERE ip_term='".$ip."'");
+    $result_trm = mysql_query($query_trm);
+    while ($trm = mysql_fetch_assoc($result_trm)){
+    $last_core = $trm['last_core'];
+    $core = $trm['core'];
+
+    if ($last_core == 1) {
+	if ($last_core < $core) {
+    	    echo "PROC=1 \r\n\r\n";
+	    // к значению $last_core прибавляем + 1
+	    $query_update = "UPDATE terminal SET last_core=('".$last_core."'+1) WHERE ip_term='".$ip."'";
+	    mysql_query($query_update);
+	    }
+	    else {
+	    echo "PROC=1 \r\n\r\n";
+	    // значение $last_core заменем на 1
+    	    $query_update = "UPDATE terminal SET last_core=1 WHERE ip_term='".$ip."'";
+    	    mysql_query($query_update); 
+	    }
+}
+    elseif ($last_core == 2) {
+    
+        if ($last_core < $core){
+	    echo "PROC=2 \r\n\r\n";
+	    // к значению $last_core прибавляем + 1
+	    $query_update = "UPDATE terminal SET last_core=('".$last_core."'+1) WHERE ip_term='".$ip."'";
+	    mysql_query($query_update);
+	    }
+	    else {
+	    echo "PROC=2 \r\n\r\n";
+	    // значение $last_core заменем на 1
+	    $query_update = "UPDATE terminal SET last_core=1 WHERE ip_term='".$ip."'";
+	    mysql_query($query_update);
+	    }
+    }    
+
+    elseif ($last_core == 3) {
+
+        if ($last_core < $core){
+    	    echo "PROC=4 \r\n\r\n";
+	    // к значению $last_core прибавляем + 1
+		$query_update = "UPDATE terminal SET last_core=('".$last_core."'+1) WHERE ip_term='".$ip."'";
+		mysql_query($query_update);
+            }
+	    else {
+	    echo "PROC=4 \r\n\r\n";
+	    // значение $last_core заменем на 1
+            $query_update = "UPDATE terminal SET last_core=1 WHERE ip_term='".$ip."'";
+	    mysql_query($query_update);
+	    }
+    }
+
+    elseif ($last_core == 4) {
+
+        if ($last_core < $core){
+	    echo "PROC=8 \r\n\r\n";
+	    // к значению $last_core прибавляем + 1
+    	    $query_update = "UPDATE terminal SET last_core=('".$last_core."'+1) WHERE ip_term='".$ip."'";
+    	    mysql_query($query_update);
+    	    }
+    	    else {
+    	    echo "PROC=8 \r\n\r\n";
+    	    // значение $last_core заменем на 1
+    	    $query_update = "UPDATE terminal SET last_core=1 WHERE ip_term='".$ip."'";
+    	    mysql_query($query_update);
+	    }
+    }
+
+    elseif ($last_core == 5) {
+
+        if ($last_core < $core){
+    	    echo "PROC=16 \r\n\r\n";
+	    // к значению $last_core прибавляем + 1
+    	    $query_update = "UPDATE terminal SET last_core=('".$last_core."'+1) WHERE ip_term='".$ip."'";
+    	    mysql_query($query_update);
+    	    }
+    	    else {
+    	    echo "PROC=16 \r\n\r\n";
+	    // значение $last_core заменем на 1
+    	    $query_update = "UPDATE terminal SET last_core=1 WHERE ip_term='".$ip."'";
+    	    mysql_query($query_update);
+	    }
+    }
+
+    elseif ($last_core == 6) {
+
+        if ($last_core < $core){
+    	    echo "PROC=32 \r\n\r\n";
+	    // к значению $last_core прибавляем + 1
+    	    $query_update = "UPDATE terminal SET last_core=('".$last_core."'+1) WHERE ip_term='".$ip."'";
+    	    mysql_query($query_update);
+    	    }
+    	    else {
+    	    echo "PROC=32 \r\n\r\n";
+	    // значение $last_core заменем на 1
+    	    $query_update = "UPDATE terminal SET last_core=1 WHERE ip_term='".$ip."'";
+    	    mysql_query($query_update);
+	    }
+    }
+
+    elseif ($last_core == 7) {
+
+        if ($last_core < $core){
+    	    echo "PROC=64 \r\n\r\n";
+	    // к значению $last_core прибавляем + 1
+    	    $query_update = "UPDATE terminal SET last_core=('".$last_core."'+1) WHERE ip_term='".$ip."'";
+    	    mysql_query($query_update);
+    	    }
+    	    else {
+    	    echo "PROC=64 \r\n\r\n";
+	    // значение $last_core заменем на 1
+    	    $query_update = "UPDATE terminal SET last_core=1 WHERE ip_term='".$ip."'";
+    	    mysql_query($query_update);
+	    }
+    }
+
+    	    else {
+    	    echo "PROC=128 \r\n\r\n";
+	    // значение $last_core заменем на 1
+    	    $query_update = "UPDATE terminal SET last_core=1 WHERE ip_term='".$ip."'";
+    	    mysql_query($query_update);
+    	    }
+}
+
+//echo "PROC=2 \r\n\r\n";
+
+echo "# Номер виртуального порта штрихэтикетника (default: LPT2) \r\n";
+echo "LPTPORT=LPT2\r\n\r\n";
+
+echo "# Имя SMB-шары (Citizen, Datamax) \r\n";
+
+        $query_mod = sprintf("SELECT share_strh FROM domain_users WHERE username='".$username."'");
+        $result_mod = mysql_query($query_mod);
+        $strh_mod = mysql_fetch_assoc($result_mod);
+        $strh = $strh_mod['share_strh'];
+
+echo "SHTRIH_MODEL=".$strh."\r\n\r\n";
+
+echo "# МАСКА ПОДСЕТИ МАГАЗИНА (sample: 192.168.0.) \r\n";
+echo "MASK=".$MASK."\r\n\r\n";
+
+echo "# IP машины куда подключен штрихэтикетник \r\n";
+
+	$query_sh = sprintf("SELECT w.ip_ws FROM domain_users as d LEFT JOIN ws as w ON d.id_shtrih = w.id  where d.username='".$username."'");
+	$result_sh = mysql_query($query_sh);
+	$rsh = mysql_fetch_assoc($result_sh);
+	$sh = $rsh['ip_ws'];
+
+echo "SHTRIH_IP=".$sh."\r\n\r\n";
+
+echo "# IP машин куда скидывать прайс магазина (sample: 84 85) \r\n";
+echo "COPY_PRC_IP=";
+
+	$query2 = sprintf("SELECT * FROM ws WHERE id_mag='".$id."'");
+	$result2 = mysql_query($query2);
+	    while ($mag = mysql_fetch_assoc($result2)){
+	    $magip = $mag['ip_ws'];
+	    $ip_arr = explode(".", $magip);
+	    echo $ip_arr[3]." ";
+	    }
+echo " \r\n\r\n";
+
+echo "# COMM магазина - путь к базе данных магазина \r\n";
+
+	$query_comm = sprintf("SELECT comm FROM shop WHERE id='".$id."'");
+	$result_comm = mysql_query($query_comm);
+	$comm = mysql_fetch_row($result_comm);
+	$com = $comm[0];	
+	    if (isset($com)) {
+	    echo "COMM=".$com."\r\n\r\n";
+	    }
+	    else
+	    {
+	    echo "COMM=commXX\r\n\r\n";
+	    }
+
+echo "# IP адреса весов DIGI (sample: 6 7 8) \r\n";
+echo "IP_VES=";
+
+	$query_ves = sprintf("SELECT * FROM ves WHERE id_mag='".$id."'");
+	$result_ves = mysql_query($query_ves);
+	    while ($ves = mysql_fetch_assoc($result_ves)){
+	    $vesip = $ves['ip_ves'];
+	    $ves_arr = explode(".", $vesip);
+	    echo $ves_arr[3]." ";
+	    }
+echo "\r\n\r\n";
+
+$session_pel_query = sprintf("SELECT * FROM session_pel ORDER BY date LIMIT 1");
+$session_pel_result = mysql_query($session_pel_query);
+$session_row = mysql_fetch_assoc($session_pel_result);
+$session_pel_date = $session_row['date'];
+$session_pel_id = $session_row['id'];
+$date_time = date("Y-m-d H:i:s");
+$d = strtotime("-12 day",strtotime($date_time));
+
+    if ($d < strtotime($session_pel_date)) {
+    $session_pel = sprintf("INSERT INTO `session_pel`(`date`, `name`, `terminal`, `core`) VALUES ('".$date_time."','".$username."','".$ip."','".$last_core."')");
+    mysql_query($session_pel);
+    }	
+    else {  
+    $session_pel = sprintf("UPDATE `session_pel` SET `date`='".$date_time."', `name`='".$username."', `terminal`='".$ip."', `core`='".$last_core."' WHERE `id`='".$session_pel_id."'");	
+    mysql_query($session_pel);  
+    }
+//    echo strtotime($date_time)." - сейчас\r\n";
+//    echo strtotime($session_pel_date)." - дата сессии\r\n";
+//    echo $d." - минус 12 дней\r\n";
+    
+    // удаление записей по $username из таблицы 'session_online'
+    $session_pel_online_del = sprintf ("DELETE FROM `session_online` WHERE name = '".$username."'");
+    mysql_query($session_pel_online_del);
+
+    // добавление актуальной  записи по $username в таблицу 'session_online'
+    $session_pel_online = sprintf("INSERT INTO `session_online`(`date`, `name`, `terminal`, `core`) VALUES ('".$date_time."','".$username."','".$ip."','".$last_core."')");
+    mysql_query($session_pel_online);
+
+}
+    else {
+    $session_pel_online_del = sprintf ("DELETE FROM `session_online` WHERE name = '".$username."'");
+    //echo $session_pel_online_del;
+    mysql_query($session_pel_online_del);
+    }
+?>

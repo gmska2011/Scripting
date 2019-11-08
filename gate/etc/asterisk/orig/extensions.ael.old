@@ -1,0 +1,31 @@
+globals {
+	CONSOLE-AEL="Console/dsp"; 		// Console interface for demo
+	//CONSOLE-AEL=Zap/1;
+	//CONSOLE-AEL=Phone/phone0;
+	IAXINFO-AEL=guest;				// IAXtel username/password
+	//IAXINFO-AEL="myuser:mypass";
+	OUTBOUND-TRUNK="Zap/g2";		// Trunk interface
+	//
+	// Note the 'g2' in the OUTBOUND-TRUNK variable above. It specifies which group (defined
+	// in chan_dahdi.conf) to dial, i.e. group 2, and how to choose a channel to use in
+	// the specified group. The four possible options are:
+	//
+	// g: select the lowest-numbered non-busy DAHDI channel
+	//    (aka. ascending sequential hunt group).
+	// G: select the highest-numbered non-busy DAHDI channel
+	//    (aka. descending sequential hunt group).
+	// r: use a round-robin search, starting at the next highest channel than last
+	//    time (aka. ascending rotary hunt group).
+	// R: use a round-robin search, starting at the next lowest channel than last
+	//    time (aka. descending rotary hunt group).
+	//
+	OUTBOUND-TRUNKMSD=1;					// MSD digits to strip (usually 1 or 0)
+	//OUTBOUND-TRUNK2=IAX2/user:pass@provider;
+};
+
+context from-users {
+     _1XX => {
+             Dial(SIP/${EXTEN});
+       };
+};
+

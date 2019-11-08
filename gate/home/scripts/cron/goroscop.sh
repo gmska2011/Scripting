@@ -1,0 +1,1 @@
+http://www2.neo63.ru/service/horoscope.php

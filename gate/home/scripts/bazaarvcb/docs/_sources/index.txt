@@ -1,0 +1,173 @@
+.. bazaarvcb documentation master file, created by
+   sphinx-quickstart on Fri Sep 16 20:15:25 2011.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive.
+
+bazaarvcb's homepage
+=====================
+
+**bazaarvcb** do fast backup and restore of VMs running on VMware ESXi 5.X 
+
+Documentation
+-------------
+
+.. * :ref:`man_pages`
+
+    
+* :doc:`Getting started <gettingstarted>`
+* :doc:`man <man/bazaarvcb>`
+* :doc:`FAQ <faq>`
+     
+Overview
+--------
+
+**bazaarVCB** is a fast backup solution for free the version of VMware ESXi.
+
+bazaarVCB is very fast, up to 80Mo/s on middle-end hardware.
+
+bazaarVCB is composed by command line tools driven by a friendly GUI (*coming soon*)
+to create and schedule backup jobs.
+
+The PRO version (*coming soon*) will include storage deduplication 
+and VM synchronizations.  
+
+
+Features
+--------
+
+* Available for Windows and Linux
+* Fast, download up to 80Mo/s, restore up to 20Mo/s
+* Multiple backup strategy
+  * copy to another datastore
+  * download to the local host
+  * download into a deduplicated storage space
+  * sync with the local host
+  * sync with another ESXi host
+  
+* Fast backup through Internet with help of deduplication
+* VM synchronization between backup host and ESXi server
+  
+Features to come
+----------------
+
+* Deduplication at storage level 
+* VM synchronization between two ESXi hosts
+* A GUI to setup and schedule job 
+
+Requirements
+------------
+
+bazaarvcb works on most Linux and Windows OS. It backup VMware ESXi 5.x.
+
+ESXi 4.x will be partially supported if possible.
+
+Download
+---------
+
+Download from `http://www.magiksys.net/download/bazaarvcb <http://www.magiksys.net/download/bazaarvcb>`__.
+
+Don't worry about installation, **bazaarvcb** is a single self contained executable file.
+
+Their is 3 versions that you can download from `http://www.magiksys.net/download/bazaarvcb <http://www.magiksys.net/download/bazaarvcb>`__.
+
+* bazaarvcb-X.Y-linux-i386.tgz
+* bazaarvcb-X.Y-linux-x86_64.tgz
+* bazaarvcb-X.Y-win32.zip
+
+
+The name are self explanatory, take the one that match your system ! 
+Uncompress the archive and copy the program *bazaarvcb.exe*, or *bazarrvcb* 
+somewhere in your *PATH*. For example in /usr/local/bin for Linux systems. 
+
+The *win32* file is 32bit and works also on all Windows 64bits but
+cannot be copied to *system32* or *Program Files* that are reserved for 
+64bits applications. Copy it somewhere else and us the full path 
+or add the path to the PATH variable.
+
+ 
+Support
+-------
+
+Send your questions to bazaarvcb.support@magiksys.net
+
+
+Storage consideration
+---------------------
+
+Sparse files
+++++++++++++
+
+VM's disks contains some unused space, if this space contains zeros, bazzarvcb
+can use sparse file to store these disk images. A freshly installed system
+on a 1To disk will use only few Giga on the backup host. 
+
+Deduplication
+++++++++++++++
+
+In the future bazaarvcb will be able to write to a self managed deduplicated repository.
+Multiple VMs will be stored on the same repository and take benefit of block
+sharing between VMs.   
+
+
+Network setup
+--------------
+
+Then SSH service must be started on the ESXi host. *bazaarvcb* tunnels
+the https connection into the SSH connection.
+ 
+Because SSH is very CPU intensive, the ESXi agent try to open an un-encrypted
+connection back to the backup host only for data. It it fail, then it fallback 
+to the existing SSH connection.
+The default port is 31031. This is the one used by VMotion and this port
+is open on the ESXi by default. You must open this port on your backup host.
+On Windows just reply yes to the popup Windows the first time you run bazaarVCB.
+The reason why this is the ESXi host that open the data channel back to the
+backup host is technical and could change in the future. 
+If you need to use VMotion then use another port.
+    
+
+.. _man_pages:
+
+MAN pages
+---------
+
+    :doc:`bazaarvcb <man/bazaarvcb>`: do backup and restore
+         
+
+License
+-------
+
+        Copyright (C) 2013 Alain Spineux
+
+        SHAREWARE LICENSE AGREEMENT
+         
+        This is a legal agreement between you, the "END USER", and ALAIN SPINEUX. Use of this software (the "SOFTWARE")
+        written by ALAIN SPINEUX indicates your acceptance of these terms.
+         
+        1. GRANT OF LICENSE. ALAIN SPINEUX hereby grants you the right to use the SOFTWARE on multiple computers for an unlimited period of time.
+         
+        2. PROPRIETARY RIGHTS. The SOFTWARE is owned exclusively by ALAIN SPINEUX, and this license does not transfer any ownership of the SOFTWARE to you.
+         
+        3. NON PERMITTED USES. You may not translate, reverse program, disassemble, decompile or otherwise reverse engineer the SOFTWARE.
+         
+        4. NO WARRANTY. THIS SOFTWARE IS LICENSED TO YOU "AS IS," AND WITHOUT ANY WARRANTY OF ANY KIND, WHETHER ORAL, WRITTEN, EXPRESS, IMPLIED OR STATUTORY, INCLUDING BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.  ALAIN SPINEUX DOES NOT WARRANT THAT THIS SOFTWARE DOES NOT INFRINGE ANY RIGHTS OF THIRD PARTIES.
+         
+        5. LIMITATION OF LIABILITY. ALAIN SPINEUX grants the license to the SOFTWARE hereunder and the END USER accepts the use hereof on an "AS IS" and "WITH ALL FAULTS" basis.  Furthermore, the END USER understands and agrees that IN NO EVENT WILL ALAIN SPINEUX OR ANY OF ITS SUPPLIERS BE LIABLE TO LICENSEE FOR SPECIAL OR CONSEQUENTIAL DAMAGES which might arise out of or in connection with the performance or non-performance of this Agreement or of the SOFTWARE hereunder, even if ALAIN SPINEUX has been advised of the possibility of such damages, INCLUDING, BUT NOT LIMITED TO, LOST PROFITS due to errors, inaccuracies, omissions, incompleteness or insufficiency of the SOFTWARE or materials, nor for the usefulness of the SOFTWARE to the END USER.  In no event shall ALAIN SPINEUX 'S liability related         to any of the SOFTWARE exceed the license fees, if any, actually paid by you for        the SOFTWARE.  ALAIN SPINEUX shall not be liable for any damages whatsoever arising out of or related to the use of or inability to use the SOFTWARE,        including but not limited to direct, indirect, special, incidental, or consequential damages.
+        
+                 
+Contents:
+
+.. toctree::
+    :maxdepth: 2
+
+    gettingstarted
+    faq
+    man/bazaarvcb
+    
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
+

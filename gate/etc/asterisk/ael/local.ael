@@ -1,0 +1,265 @@
+context support {
+// ТЕХ.ПОДДЕРЖКА
+    _555 => {
+    	    &recording(${CALLERID(number)},${EXTEN});
+	    &SupportCall();
+	    }
+};
+
+context to-neo {
+// Звонок в офис
+    _XXX  => {
+        &recording(${CALLERID(number)},${EXTEN});
+        &BusyCheckLocal(${EXTEN});
+        Dial(SIP/${EXTEN},60,mTt);
+    }
+};
+
+context local-users {
+    _111  => {
+       &recording(${CALLERID(number)},${EXTEN});
+       &BusyCheckLocal(${EXTEN});
+       Dial(SIP/111&SIP/105,15,mTt);
+       Dial(SIP/AIST_TRUNK/299844,60,mTt);
+    }
+
+    _666  => {
+	Answer();
+	Read(NUMBER,/var/lib/asterisk/sounds/greetings,3,,,15);
+        &recording(${CALLERID(number)},${EXTEN});
+	SayDigits(${CALLERID(number)});
+	Noop(${CALLERID(number)});
+
+	if (${NUMBER} = 111 ) {
+	    Dial(SIP/105&SIP/111,15,mT);
+	    Dial(SIP/AIST_TRUNK/299844,60,mT);
+        }
+	
+	if (${NUMBER} = 555 ) {
+    	    &SupportCall();
+        }
+
+        Playback(/var/lib/asterisk/sounds/company-welcome&/var/lib/asterisk/sounds/calls-are-recorded);
+        Read(NUMBER,/var/lib/asterisk/sounds/press-1&/var/lib/asterisk/sounds/press-2&/var/lib/asterisk/sounds/then-press-pound,3,,,15);
+
+	if (${NUMBER} = 1 ) {
+	    SayDigits(${NUMBER});
+	    Dial(SIP/105,30,mT);
+	}
+
+	if (${NUMBER} = 2 ) {
+	    SayDigits(${NUMBER});
+	    Dial(SIP/105,30,mT);
+	}
+    }
+
+    _XXX  => {
+	&recording(${CALLERID(number)},${EXTEN});
+	&BusyCheckLocal(${EXTEN});
+	Dial(SIP/${EXTEN},60,mTt);
+    }
+
+     _199 => {                                                                                                                                                                                                              
+           MeetMe(2000,Mc);                                                                                                                                                                                                 
+      };   
+
+// Admin Call
+    _299255 => {
+	&recording(${CALLERID(number)},${EXTEN});
+	Dial(SIP/105,60,mTt);
+    }
+
+//    _299844 => {
+//	&recording(${CALLERID(number)},${EXTEN});
+//	&SupportCall();
+//    }
+
+// Звонки на 557675 по внутренней сети
+    _557675 => {
+	///	AIST 557675	///
+	// Прибавим громкость
+	Set(VOLUME(TX)=1);
+	Set(VOLUME(RX)=1);
+
+	Answer();
+//	Read(NUMBER,/var/lib/asterisk/sounds/greetings,3,,,15);
+	Read(NUMBER,/var/lib/asterisk/sounds/zdravstujte&/var/lib/asterisk/sounds/dial-exten-tone,3,,,15);
+        &recording(${CALLERID(number)},${EXTEN});
+
+	if (${NUMBER} = 111 ) {
+    	    Noop(${CALLERID(number)});
+    	    if (${CALLERID(number)} = 4953630660 ) {
+        	Playback(/var/lib/asterisk/sounds/all-circuits-busy);
+        	Hangup();
+    	    }
+    	    Dial(SIP/105&SIP/111,15,mT);
+    	    Dial(SIP/AIST_TRUNK/299844,60,mT);
+        }
+
+	if (${NUMBER} = 555 ) {
+	    &SupportCall();
+	}
+    
+	if (${EXISTS(${NUMBER})} = 0 ) {
+	    Playback(/var/lib/asterisk/sounds/vremja-ozhidanija-isteklo&do-svidanija);
+        }else{
+    	    &BusyCheckLocal(${NUMBER});
+    	    Dial(SIP/${NUMBER},60,mTt);
+        }
+    };
+
+    _XXXXXX => {
+	// Прибавим громкость
+	    Set(VOLUME(TX)=3);
+	    Set(VOLUME(RX)=3);
+
+//	    Set(CALLERID(num)=);
+//	    Set(CALLERID(num)=000${CALLERID(num)});
+	    Set(CALLERID(num)=557675);
+	    &recording(${CALLERID(number)},${EXTEN});
+	    Dial(SIP/AIST_TRUNK/${EXTEN},,mT);
+    }
+
+
+    _909 => {
+	&RecordGreeting();
+     }
+
+//    _999 => {
+//        Answer();
+//        Wait(1);
+//        AGI(say.php,"Здравствуйте");
+//        AGI(say.php,"Вас приветствует компания");
+//        AGI(say.php,"Habrahabr!",en);
+//        AGI(say.php,"Ваш звонок важен для нас!");
+//        AGI(say.php,"Пожалуйста!");
+//        AGI(say.php,"оставайтесь на линии");
+//        AGI(say.php,"Вам обязательно ответят!");
+//     }
+
+    _*XXX => {                                                                                                                                                                                                                   
+	&recording(${CALLERID(number)},${EXTEN});
+    	Dial(SIP/${EXTEN:1},60,mTt);
+    }
+
+    _*XXXXXX => {                                                                                                                                                                                                                   
+	&recording(${CALLERID(number)},${EXTEN});
+	Set(CALLERID(num)=557675);
+	Dial(SIP/AIST_TRUNK/${EXTEN:1},60,mTt);                                                                                                                                                                                        
+    }                                                                                                                                                                                                                            
+    _0X => {                                                                                                                                                                                                                   
+	&recording(${CALLERID(number)},${EXTEN});
+	Set(CALLERID(num)=557675);
+	Dial(SIP/AIST_TRUNK/${EXTEN:1},60,mTt);                                                                                                                                                                                        
+    }                                                                                                                                                                                                                            
+        
+    _**1XX => {
+         Dial(IAX2/neo-kusto/${EXTEN:2},60);
+    }
+    
+    _38XX => {
+//	Set(CALLERID(num)=${CALLERID(number)});
+	&recording(${CALLERID(number)},${EXTEN});
+        Dial(OOH323/emg80-fok/${EXTEN},60,Tt);
+     };
+
+    _12XX => {
+	&recording(${CALLERID(number)},${EXTEN});
+        Dial(SIP/LG800_TRUNK/${EXTEN},60,mT);
+     };
+    _13XX => {
+	&recording(${CALLERID(number)},${EXTEN});
+        Dial(SIP/LG800_TRUNK/${EXTEN},60,mT);
+    };
+    _XXXX => {
+	&recording(${CALLERID(number)},${EXTEN});
+        Dial(IAX2/neo-mindal/${EXTEN},60,mT);
+     };
+};
+
+context sipnet-users {       
+
+// �воник на межго�од �е�ез sipnet
+                      _849XXXXXXXX =>{
+//                      &SaveToMp3();
+			 &recording(${CALLERID(number)},${EXTEN});
+                       Dial(SIP/${EXTEN}@SIPNET,,T);
+		        };
+
+                      _88XXXXXXXXX =>{
+//                      &SaveToMp3();
+			&recording(${CALLERID(number)},${EXTEN});
+                       Dial(SIP/${EXTEN}@SIPNET,,T);
+			};
+
+                      _90XXXXXXXXX =>{
+//                      &SaveToMp3();
+			&recording(${CALLERID(number)},${EXTEN});
+                       Dial(SIP/${EXTEN}@SIPNET,,T);
+			};
+
+                      _89XXXXXXXXX =>{
+//                      &SaveToMp3();
+			&recording(${CALLERID(number)},${EXTEN});
+//                       Dial(SIP/7${EXTEN:1}@KURS,,T);
+                       Dial(SIP/${EXTEN}@SIPNET,,T);
+//			Playback(goodbye);
+//			Playback(/var/lib/asterisk/sounds/dosvidaniya);
+    			Hangup();
+			};
+
+                      _8XXXXXXXXXX =>{
+//                      &SaveToMp3();
+			 &recording(${CALLERID(number)},${EXTEN});
+                       Dial(SIP/${EXTEN}@SIPNET,,T);
+			};
+
+                      _847XXXXXXXX =>{
+//                      &SaveToMp3();
+			 &recording(${CALLERID(number)},${EXTEN});
+                       Dial(SIP/${EXTEN}@SIPNET,,T);
+			};
+                      _375XXXXXXXXX =>{
+//                      &SaveToMp3();
+			 &recording(${CALLERID(number)},${EXTEN});
+                       Dial(SIP/${EXTEN}@SIPNET,,T);
+			};
+};
+                   
+
+// ��од��ие � �еле�онной линии �е�ез Linksys                                                                                                                                                                                     
+    context from-gw {
+    111 => {
+	&recording(${CALLERID(number)},${EXTEN});
+	&SupportCall();
+//	Dial(SIP/111&SIP/105&SIP/153,70,mt);
+    }
+}
+
+context foktrunk {
+        includes {
+            support;
+            albatros-users;
+        };
+}
+
+context ats-users {
+    _99XXX => {
+        Dial(SIP/${EXTEN:2}@spa3102,,mT);
+         }
+
+	
+     _9XXXXXX => {
+         MixMonitor(${UNIQUEID}.wav);   
+        Noop(${EXTEN});
+        Dial(SIP/9p${EXTEN:1}@spa3102,60,mT);
+          };
+}
+
+// ��од��ие � SIPNET
+    context from-sipnet {
+            _0041894509 => {
+		 &recording(${CALLERID(number)},${EXTEN});
+                 Dial(SIP/105,60,t);
+            };
+}

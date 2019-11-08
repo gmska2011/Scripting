@@ -1,0 +1,142 @@
+#!/bin/sh
+
+get_ip ()
+{
+ FILE=$1
+ PARAM=`cat /home/scripts/firewall/$FILE  | sed -e s'/#.*//' | sed -e s'/\ //g' | egrep -v "^#" | egrep -v "^$"` 
+ echo $PARAM
+}
+
+WORKDIR="/home/scripts/firewall"
+IPTABLES="/sbin/iptables"
+
+modprobe ip_tables
+modprobe iptable_nat
+modprobe ipt_LOG
+modprobe ipt_limit
+modprobe ip_nat_ftp
+modprobe ip_conntrack_ftp
+
+MYREALIP="85.114.178.150"
+
+
+ALLOW_SSH=`get_ip allow_ssh`
+ALLOW_OPENVPN=`get_ip allow_openvpn`
+ALLOW_JABBER=`get_ip allow_jabber`
+
+
+############################################################
+
+
+# Очищаем цепочки 
+$IPTABLES -F
+$IPTABLES -t nat -F
+# Удаляем пользовательские цепочки
+$IPTABLES -X 
+$IPTABLES -X -t nat 
+
+# Задаем правила для цепочек по умолчанию
+$IPTABLES -P INPUT ACCEPT
+$IPTABLES -P FORWARD ACCEPT
+$IPTABLES -P OUTPUT ACCEPT
+
+#$IPTABLES -N ssh_check
+
+
+
+#######################################
+#
+# Firewall
+#
+#
+				
+$IPTABLES -N eth0_check # Создать цепочку для проверки пакетов с ИНЕТА
+
+$IPTABLES -A INPUT -i lo -j ACCEPT   # Пропускать все локальные пакеты 
+
+
+$IPTABLES -A INPUT -i eth0 -j ACCEPT #
+
+
+#for OPENVPN in $ALLOW_OPENVPN ; do
+#    $IPTABLES -A INPUT -p UDP -s $OPENVPN  --dport 1194 -j ACCEPT  
+#    $IPTABLES -A INPUT -p UDP -s $OPENVPN  --dport 1195 -j ACCEPT      
+#    $IPTABLES -A INPUT -p UDP -s $OPENVPN  --dport 1196 -j ACCEPT      
+#done    
+
+$IPTABLES -A INPUT -i tun+  -j ACCEPT
+$IPTABLES -A INPUT -i tap+  -j ACCEPT
+$IPTABLES -A INPUT -i tap0 -j ACCEPT
+
+$IPTABLES -A INPUT -i eth1 -j eth0_check # Проверить пакеты с инета идущие локально на машину
+
+$IPTABLES -A FORWARD -i eth0 -o eth1 -j ACCEPT # Пропускать все пакеты с внутренней сети в инет 
+ 
+$IPTABLES -A FORWARD -i eth1 -o eth0 -j eth0_check # Проверить пакеты с инета 
+
+
+# icmp пакеты 
+$IPTABLES -A  eth0_check -p ICMP --icmp-type 8 -j LOG  --log-level debug --log-prefix "I'm pinging :" 
+$IPTABLES -A  eth0_check -p ICMP --icmp-type 3 -j ACCEPT # Пропускаем пакеты Destination Unreacheable
+$IPTABLES -A  eth0_check -p ICMP --icmp-type 8 -j ACCEPT # Пропускаем Echo Request 
+$IPTABLES -A  eth0_check -p ICMP --icmp-type 0  -j ACCEPT # Пропускаем Echo Reply 
+$IPTABLES -A  eth0_check -p ICMP --icmp-type 11 -j ACCEPT # Пропускаем Time Exceeded
+$IPTABLES -A  eth0_check -p ICMP --icmp-type 30 -j ACCEPT # Пропускаем traceroute
+$IPTABLES -A  eth0_check -p ICMP -m limit --limit 2/minute --limit-burst 6 -j LOG --log-level debug --log-prefix "ICMP packed died:"
+$IPTABLES -A  eth0_check -p ICMP -j DROP 
+
+#UDP пакеты 
+$IPTABLES -A eth0_check -p UDP --sport 53 -j ACCEPT 
+$IPTABLES -A eth0_check -p UDP --dport 53 -j ACCEPT  
+
+                                                                                                               
+#for OPENVPN in $ALLOW_OPENVPN ; do                                                                             
+# $IPTABLES -A eth0_check -p UDP -s $OPENVPN --dport 1194 -j ACCEPT 
+# $IPTABLES -A eth0_check -p UDP -s $OPENVPN --dport 1195 -j ACCEPT  
+# $IPTABLES -A eth0_check -p UDP -s $OPENVPN --dport 1196 -j ACCEPT  
+#done        
+
+
+
+$IPTABLES -A eth0_check -p UDP -m state --state ESTABLISHED,RELATED -j ACCEPT  # Пропускаем установленные соеденения 
+#$IPTABLES -A udp_pck -p UDP -sport 4000 -j ACCEPT 
+$IPTABLES -A  eth0_check -m limit --limit 3/minute --limit-burst 6 -j LOG --log-level debug --log-prefix "UDP packet died:"
+$IPTABLES -A  eth0_check -p UDP -j DROP 
+
+#tcp пакеты 
+$IPTABLES -A eth0_check -p TCP ! --syn -m state --state NEW -j LOG --log-level debug --log-prefix "Bad TCP packet NEW not Syn" # Логируем ненормальные пакеты 
+$IPTABLES -A eth0_check -p TCP ! --syn -m state --state NEW -j DROP
+
+for SSH in $ALLOW_SSH ; do
+ $IPTABLES -A eth0_check -p TCP -s $SSH --dport 22 -j ACCEPT # Проверить пакеты SSH
+done 
+
+for JABBER in $ALLOW_JABBER ; do
+ $IPTABLES -A eth0_check -p TCP -s $JABBER --dport 5222 -j ACCEPT # Проверить пакеты jabber
+done 
+
+
+#$IPTABLES -A eth0_check -p TCP --dport 80 -j ACCEPT # Пропустить DNS
+$IPTABLES -A eth0_check -p TCP --dport 53 -j ACCEPT # Пропустить DNS
+#$IPTABLES -A eth0_check -p TCP --dport 80 -j ACCEPT # www
+
+
+$IPTABLES -A eth0_check -p TCP --dport 25 -j ACCEPT # smtp
+$IPTABLES -A eth0_check -p TCP -m state --state ESTABLISHED,RELATED -j ACCEPT  # Пропускаем установленные соеденения 
+$IPTABLES -A eth0_check -m limit --limit 3/minute --limit-burst 6 -j LOG --log-level debug --log-prefix "IP INPUT packet died:"  # Логируем упущенные соеденения 
+$IPTABLES -A eth0_check -p TCP -j DROP 
+
+
+
+
+###################################
+# Кому разрешено пользоваться NAT #
+###################################
+
+#   $IPTABLES -t nat -A POSTROUTING -s 192.168.0.0/24 -d $NETWORK -j SNAT --to-source $MYREALIP
+
+  $IPTABLES -t nat -A POSTROUTING -p tcp -m multiport -s 192.168.0.178 -d mail.avtograd.ru --dport 25,110 -j SNAT --to-source $MYREALIP   
+# Даем доступ на smtp mail.ru
+#  $IPTABLES -t nat -A POSTROUTING -p tcp -s 192.168.25.2  -d smtp.mail.ru --dport 25 -j SNAT --to-source $MYREALIP   
+
+service iptables save

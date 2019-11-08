@@ -1,0 +1,178 @@
+# See /usr/share/postfix/main.cf.dist for a commented, more complete version
+
+
+#debug_peer_list = neo63.ru
+#debug_peer_level = 2
+
+# Debian specific:  Specifying a file name will cause the first
+# line of that file to be used as the name.  The Debian default
+# is /etc/mailname.
+myorigin = /etc/mailname
+
+smtpd_banner = $myhostname ESMTP $mail_name (Debian/GNU)
+biff = no
+
+# appending .domain is the MUA's job.
+append_dot_mydomain = no
+
+# Uncomment the next line to generate "delayed mail" warnings
+#delay_warning_time = 4h
+
+readme_directory = no
+
+anvil_rate_time_unit = 1h
+smtpd_client_message_rate_limit = 200
+
+# TLS parameters
+#smtpd_tls_cert_file=/etc/ssl/certs/ssl-cert-snakeoil.pem
+#smtpd_tls_key_file=/etc/ssl/private/ssl-cert-snakeoil.key
+#smtpd_use_tls=yes
+smtpd_tls_session_cache_database = btree:${data_directory}/smtpd_scache
+smtp_tls_session_cache_database = btree:${data_directory}/smtp_scache
+
+smtp_use_tls = yes
+smtpd_use_tls = yes
+#smtpd_tls_auth_only = yes
+smtp_tls_note_starttls_offer = yes
+smtpd_tls_key_file = /etc/ssl/certs/neo63.pem
+smtpd_tls_cert_file = /etc/ssl/certs/neo63.pem
+smtpd_tls_CAfile = /etc/ssl/certs/neo63.pem
+smtpd_tls_loglevel = 1
+smtpd_tls_received_header = yes
+smtpd_tls_session_cache_timeout = 3600s
+tls_random_source = dev:/dev/urandom
+
+
+
+# See /usr/share/doc/postfix/TLS_README.gz in the postfix-doc package for
+# information on enabling SSL in the smtp client.
+
+myhostname = neo63.ru
+alias_maps = hash:/etc/aliases
+alias_database = hash:/etc/aliases
+#myorigin = neo63.ru, neo.rus
+mydestination = neo63.ru, neo.rus, localhost.neo.rus, localhost
+relay_domains = $mydestination
+#relayhost =
+#mynetworks = 127.0.0.0/8 [::ffff:127.0.0.0]/104 [::1]/128 192.0.0.0/8 10.0.0.0/8 11.0.0.0/8 192.168.150.0/24 12.0.0.0/8 192.168.252.0/24
+mynetworks = 127.0.0.0/8 [::ffff:127.0.0.0]/104 [::1]/128 192.168.0.2 192.168.0.6 192.168.0.9 81.28.166.140 192.168.0.191 10.0.0.0/24 192.168.0.63
+#mailbox_command = procmail -a "$EXTENSION"
+#mailbox_size_limit = 0
+recipient_delimiter = +
+inet_interfaces = all
+
+
+virtual_alias_maps = hash:/etc/postfix/vmaps
+
+
+smtpd_sasl_type = dovecot
+smtpd_sasl_path = private/auth
+smtpd_sasl_auth_enable = yes
+broken_sasl_auth_clients = yes
+
+mail_spool_directory = /var/mail
+#home_mailbox = /home/mail/Maildir/%u/Maildir/
+home_mailbox = Maildir/
+disable_vrfy_command = yes
+
+smtpd_helo_required = yes
+smtpd_helo_restrictions =
+	permit_mynetworks,
+        permit_sasl_authenticated
+#	reject_invalid_hostname,
+#        check_helo_access regexp:/etc/postfix/helo_access,
+	check_helo_access hash:/etc/postfix/client_access,
+#	reject_non_fqdn_hostname,
+        reject_invalid_helo_hostname,
+        reject_non_fqdn_helo_hostname,
+        reject_unknown_helo_hostname,
+#        reject_unknown_hostname
+
+smtpd_client_restrictions =
+#       check_client_access hash:/etc/postfix/client_access,
+	check_sender_access hash:/etc/postfix/sender_access,
+	reject_unauth_pipelining,
+        permit_sasl_authenticated,
+        permit_mynetworks,
+#        reject_unknown_client_hostname,
+#        regexp:/etc/postfix/dul_checks,
+#        reject_rbl_client list.dsbl.org,
+#        check_client_access regexp:/etc/postfix/whitelist,
+#        reject_rbl_client bl.spamcop.net,
+#        reject_rbl_client spamsources.fabel.dk,
+#        reject_rbl_client dul.ru,
+        reject_unknown_client
+#        permit
+
+
+smtpd_sender_restrictions =
+#	check_sender_access  hash:/etc/postfix/whitelist,
+	check_sender_access  hash:/etc/postfix/restricted_senders,
+        permit_mynetworks,
+	permit_sasl_authenticated,
+#        reject_non_fqdn_sender,
+#        reject_unknown_sender_domain,
+	reject_unauth_destination,
+	reject_unlisted_sender
+#        permit
+
+smtpd_recipient_restrictions =
+  check_sender_access hash:/etc/postfix/sender_access,
+  permit_mynetworks,
+  permit_sasl_authenticated,
+#  reject_unknown_client,
+#  reject_unknown_hostname,
+#  reject_unknown_sender_domain,
+#  reject_unverified_sender,
+#  reject_non_fqdn_hostname,
+#  reject_non_fqdn_sender,
+#  reject_non_fqdn_recipient,
+  check_policy_service inet:127.0.0.1:10023,
+  check_helo_access hash:/etc/postfix/helo_checks,
+  reject_unauth_destination,
+  reject_unauth_pipelining,
+  reject_unlisted_recipient,
+  reject_invalid_hostname
+#  permit
+
+
+
+
+#	reject_unauth_pipelining,
+#        permit_mynetworks,
+#        permit_sasl_authenticated,
+#	check_helo_access hash:/etc/postfix/helo_checks
+#        check_sender_access hash:/etc/postfix/sender_access
+#	permit_mx_backup,
+#	check_relay_domains, 
+#        reject_unauth_destination,
+#	check_policy_service inet:127.0.0.1:10023,
+#        reject_invalid_hostname,
+#        regexp:/etc/postfix/recipient_access,
+#        reject_non_fqdn_recipient,
+#        reject_unknown_recipient_domain,
+#        permit
+
+
+#local_recipient_maps = proxy:unix:passwd.byname
+
+header_checks = regexp:/etc/postfix/header_checks
+#address_verify_sender = $double_bounce_sender
+
+# EMAIL для проверки адресов
+double_bounce_sender = postmaster@neo63.ru
+
+#relayhost =
+#mailbox_size_limit = 0
+#mailbox_size_limit = 50000000000
+message_size_limit = 40000000
+smtpd_sasl_security_options = noanonymous
+
+sender_bcc_maps=hash:/etc/postfix/sender_bcc_map
+recipient_bcc_maps=hash:/etc/postfix/recipient_bcc_map
+
+always_bcc = sbs
+
+#content_filter = scan:[127.0.0.1]:10025
+#content_filter = smtp-amavis:[127.0.0.1]:10024
+

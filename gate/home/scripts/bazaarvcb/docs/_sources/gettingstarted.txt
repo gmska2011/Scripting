@@ -1,0 +1,182 @@
+.. bazaarvcb gettingstarted
+
+
+Get started with bazaarvcb
+===========================
+
+
+Overview
+--------
+
+The program include multiple features to help the user before and after the backup.
+This tutorial will show each of them.
+The order of some arguments and options in the command line are important.
+The first parameter after the name of the program must be a command or the option -h.
+Use option -h to list these commands: ::
+
+
+        $ bazaarvcb -h
+        usage: bazaarvcb [-h]  ...
+        
+        optional arguments:
+          -h, --help   show this help message and exit
+        
+        valid commands:
+            checkhash  check .hsh files integrity in one directory
+            listvm     list registered VMs on the ESXi host
+            queryvm    display VMs informations
+            listbackup 
+                       search for backups in local and remote directories
+            querybackup 
+                       display report file of one particular
+            backup     backup a VM
+            restore    restore a backup
+ 
+
+List of VMs
+------------
+
+First, do a listing of existing VMs. This part is important because
+this provides the right name of the VMs. Some characters in the name
+like slash '/' are encoded and*bazaarvcb*uses the raw name. ::
+
+        $ bazaarvcb listvm -H vmware -u root -p pass 
+        STATE SNAP#  NAME                     .VMX PATH
+        on      1  MISC.ttylinux            [SATA2000-3] MISC/ttylinux/ttylinux.vmx
+        off     0  MISC.ttylinux1G          [SATA2000-3] MISC/ttylinux1G/ttylinux.vmx
+        on      0  MISC.ttylinux2G          [SATA2000-3] MISC/ttylinux2G/ttylinux.vmx
+
+The first VM is powered ON and has a snapshot. Look at the *datastore* paths
+at the end of the line. The format is important, this is how*bazaarvcb*make
+the difference between a datasore on the ESXi and a local path. 
+
+
+Get more info about one VM
+---------------------------
+
+Query the selected VM: ::
+
+        $ bazaarvcb queryvm -H vmware -u root -p pass MISC.ttylinux2G
+        ======= MISC.ttylinux2G ======
+        status  "POWERED ON"
+        ------- disks -------
+        Hard disk 1
+                capacity        64Mo
+                size            64Mo
+                descripor       "[SATA2000-3] MISC/ttylinux2G/ttylinux_1.vmdk"
+                extent          "[SATA2000-3] MISC/ttylinux2G/ttylinux_1-flat.vmdk"
+                mode            "persistent"
+                type            "VirtualDiskFlatVer2BackingInfo"
+                thinprovisioned "False"
+        Hard disk 2
+                capacity        2048Mo
+                size            2048Mo
+                descripor       "[SATA2000-3] MISC/ttylinux2G/ttylinux.vmdk"
+                extent          "[SATA2000-3] MISC/ttylinux2G/ttylinux-flat.vmdk"
+                mode            "persistent"
+                type            "VirtualDiskFlatVer2BackingInfo"
+                thinprovisioned "False"
+        ----- snapshots -----
+  
+The VM has Two disks of 64Mo and 2Go, is powered on and has no snapshot. 
+
+Backup your VM to another datastore
+------------------------------------
+
+We will simply backup the VM to another datastore of the same ESXi hosts. ::
+
+    $ bazaarvcb backup -H vmware -u root -p pass --roll-out 3 MISC.ttylinux2G "[SATA750-0] /backup"
+
+The target directory is a datastore path. this is equal to */vmfs/volume/SATA750-0/backup*.
+Use this notation to refer to a datastore, this is how backauvcb make the difference between a
+copy to another datastore and a download on the localhost.
+
+*--roll-out 3 * is used to limit the number of backup, old backups are
+removed, at the end only 3 backups are kept on the target. You can backup 
+all you VMs into the same directory, *roll-out* make the difference between
+all the backup using the *UUID* stored in the backup report file *bazaarvcb.rep*
+ 
+Now we will list all backup of VM *MISC.ttylinux2verify* in the datastore *[SATA750-0] /backup* : ::
+
+    $ bazaarvcb listbackup -H vmware -u root -p pass MISC.ttylinux2G "[SATA750-0] /backup" 
+    MISC.ttylinux2G 564ddca0-67ea-ca03-da5e-24962d27213e OK 2013-04-22T00:34:26 [SATA750-0] backup/MISC.ttylinux2G-20130422003426
+
+One backup is found :
+ 
+* *MISC.ttylinux2G*: the name of the VM
+* *564ddca0-67ea-ca03-da5e-24962d27213e*: the UUID of the VM; VMware allows multiple VM to have the same name.
+* *OK*: the backup was successful
+* *2013-04-22T00:34:26*: when the backup started
+* *[SATA750-0/backup] MISC.ttylinux2G-20130422003426*: where it is stored
+
+*listbackup* accepts * to list all backups of all VMs and also accept multiple target directories, these 
+directories can be on any datastore of the ESXi host or on the local machine. *listbackup* 
+does a recursive search in nested directories.
+
+I rerun the command 3 more time to see what is happening and do a last *listbackup* : ::
+
+    $ bazaarvcb backup -H vmware -u root -p pass --roll-out 3 MISC.ttylinux2G "[SATA750-0] /backup"
+    $ bazaarvcb backup -H vmware -u root -p pass --roll-out 3 MISC.ttylinux2G "[SATA750-0] /backup"
+    $ bazaarvcb backup -H vmware -u root -p pass --roll-out 3 MISC.ttylinux2G "[SATA750-0] /backup"
+    $ bazaarvcb listbackup -H vmware -u root -p pass MISC.ttylinux2G "[SATA750-0] /backup" 
+    MISC.ttylinux2G 564ddca0-67ea-ca03-da5e-24962d27213e OK 2013-04-22T01:23:25 [SATA750-0] backup/MISC.ttylinux2G-20130422012325
+    MISC.ttylinux2G 564ddca0-67ea-ca03-da5e-24962d27213e OK 2013-04-22T01:30:51 [SATA750-0] backup/MISC.ttylinux2G-20130422013051
+    MISC.ttylinux2G 564ddca0-67ea-ca03-da5e-24962d27213e OK 2013-04-22T01:52:07 [SATA750-0] backup/MISC.ttylinux2G-20130422015207
+    
+    
+The first backup is missing, only the 3 last backup are in the list.
+*backupvcb* use VMware's *vmkfstools* to copy each disks of the vm to the datastore. 
+
+
+Backup your VM to a local directory (download)
+-----------------------------------------------
+
+To download you VMs to a local directory, you have to specify a local directory
+instead of a datastore. ::
+
+
+    $ bazaarvcb backup -H vmware -u root -p pass --roll-out 3 MISC.ttylinux2G /s1/backup/bazaarvcb
+    
+*bazzarvcb* will upload an agent on the ESXi and start multiple instance of it, then it
+will open port 31031 (default for --listen option) and wait for connection of the agents.
+If the agent cannot connect back to the backup host, they will fall back to slower SSH tunnels.
+Port 31031 has been choose because is is open on ESXi by default, no need to open it.
+Be sure to open it on your backup hosts too. If you are backing up through Internet or
+a router doing NAT be sure to setup a port forwarding to your backup host and use option *--callback*
+option to setup the external IP address of your Internet router.  
+
+If you want to backup through a slow network like Internet, you can use the option *--hashing*
+that will calculate hashes of blocks before to sent them back to the host. If the hashes matches
+blocks in the last backup, then these block will be taken from there and not downloaded from
+the ESXi server. *bazzarvcb* recursively search in the target directory for the last valid backup of the VM
+an use data from it. You can tell *bazaarvcb* to search into another directory using the *--base* option.
+
+
+If you are on a fast network, *--hashing* could slow down the backup, or consume to much CPU.
+You can reduce the number of agent using the *--agent* option.
+ 
+ 
+Here too you can use command *listbackup* to list backup from the two previous locations. :: 
+
+    $ bazaarvcb listbackup -H vmware -u root -p pass MISC.ttylinux2G "[SATA750-0] /backup" /s1/backup/bazaarvcb
+    MISC.ttylinux2G 564ddca0-67ea-ca03-da5e-24962d27213e OK 2013-04-22T01:56:44 [SATA750-0] backup/MISC.ttylinux2G-20130422015644
+    MISC.ttylinux2G 564ddca0-67ea-ca03-da5e-24962d27213e OK 2013-04-22T02:03:59 /s1/backup/bazaarvcb/MISC.ttylinux2G-20130422020359
+    MISC.ttylinux2G 564ddca0-67ea-ca03-da5e-24962d27213e OK 2013-04-22T02:40:48 /s1/backup/bazaarvcb/MISC.ttylinux2G-20130422024048
+    MISC.ttylinux2G 564ddca0-67ea-ca03-da5e-24962d27213e OK 2013-04-22T03:06:39 [SATA750-0] backup/MISC.ttylinux2G-20130422030639
+    MISC.ttylinux2G 564ddca0-67ea-ca03-da5e-24962d27213e OK 2013-04-22T03:13:13 [SATA750-0] backup/MISC.ttylinux2G-20130422031313
+
+Restore a backup
+-----------------
+
+The simplest way to restore a backup, is to copy the directory hoding the VM you wan to restore to
+one datastore of the ESXi host and rejister the .vmx file. To help you *bazaarvcv* provide the *restore*
+command. You can restore VMs from a datastore or a local directory.
+For example her eI'm restoring a VM from one of the backup listed previously. ::  
+
+    
+   $ bazaarvcb restore -H vmware -u root -p vishnou --register Restored.ttylinux2Ga /s1/backup/bazaarvcb/MISC.ttylinux2G-20130422024048 "[SATA750-0] /"
+
+The VM is restored under the name *Restored.ttylinux2G* and registered.
+
+
+ 

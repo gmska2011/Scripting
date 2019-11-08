@@ -1,0 +1,5 @@
+/^neo63\.ru$/           	550 Don't use my own hostname
+/^81\.28\.162\.69$/             550 Don't use my own IP address
+/^\[81\.28\.162\.69\]$/         550 Don't use my own IP address
+/^[0-9.]+$/                     550 Your software is not RFC 2821 compliant
+/^[0-9]+(\.[0-9]+){3}$/         550 Your software is not RFC 2821 compliant

@@ -1,0 +1,71 @@
+Certificate:
+    Data:
+        Version: 3 (0x2)
+        Serial Number: 55 (0x37)
+    Signature Algorithm: sha1WithRSAEncryption
+        Issuer: C=RU, ST=SAMARSKAYA, L=TOGLIATTY, O=NEOTREID-LTD, CN=NEOTREID-LTD CA/emailAddress=muxa@neo63.ru
+        Validity
+            Not Before: Apr 26 07:19:48 2017 GMT
+            Not After : Apr 24 07:19:48 2027 GMT
+        Subject: C=RU, ST=SAMARSKAYA, L=TOGLIATTY, O=NEOTREID-LTD, CN=makarova14/emailAddress=muxa@neo63.ru
+        Subject Public Key Info:
+            Public Key Algorithm: rsaEncryption
+                Public-Key: (1024 bit)
+                Modulus:
+                    00:a1:30:94:b5:cf:9e:2e:7d:3d:7e:7d:fc:0d:95:
+                    2d:e0:c3:30:bf:17:9e:03:68:34:a2:ab:7c:71:37:
+                    e5:13:71:5a:2f:35:8f:2a:d6:04:41:20:a7:01:b9:
+                    45:b7:9a:de:29:18:cd:f8:a5:75:c7:63:54:e8:0a:
+                    d8:e2:6e:30:32:ed:47:5b:ec:42:51:2b:2a:29:2d:
+                    1d:f8:db:42:af:a1:be:34:c3:f5:2e:40:ef:0f:a0:
+                    14:24:92:db:d9:61:fa:57:19:10:6a:5c:3b:22:1d:
+                    3b:26:3b:2e:1f:d6:79:a9:a4:8f:25:11:ef:3f:5e:
+                    6b:63:88:57:3b:3e:fa:02:b3
+                Exponent: 65537 (0x10001)
+        X509v3 extensions:
+            X509v3 Basic Constraints: 
+                CA:FALSE
+            Netscape Comment: 
+                Easy-RSA Generated Certificate
+            X509v3 Subject Key Identifier: 
+                42:6F:52:FA:CA:07:BC:51:91:21:17:96:7B:8D:E3:71:E9:8F:5A:8A
+            X509v3 Authority Key Identifier: 
+                keyid:F8:AD:6B:CF:05:6A:F5:01:B7:8A:6F:A2:91:D0:F3:C3:E3:2B:62:F3
+                DirName:/C=RU/ST=SAMARSKAYA/L=TOGLIATTY/O=NEOTREID-LTD/CN=NEOTREID-LTD CA/emailAddress=muxa@neo63.ru
+                serial:A3:2E:2A:A8:AE:52:1B:B7
+
+            X509v3 Extended Key Usage: 
+                TLS Web Client Authentication
+            X509v3 Key Usage: 
+                Digital Signature
+    Signature Algorithm: sha1WithRSAEncryption
+         12:6c:7f:1f:db:b0:a7:46:18:d4:48:33:d4:6d:44:24:31:0b:
+         f5:38:e9:70:60:95:cf:c1:d1:c7:46:69:f5:5c:83:80:ce:a7:
+         46:1a:c8:bf:15:96:68:c5:ed:4c:2c:eb:50:6e:3f:69:de:a5:
+         c0:b8:2b:59:ae:dd:8a:34:aa:e4:70:7e:11:2b:75:78:14:c9:
+         39:3d:23:18:c5:80:0a:b6:38:5c:a3:48:29:9a:b1:28:21:47:
+         fc:57:4c:8d:8b:df:9f:9b:26:c4:d3:c4:46:16:7f:0b:e7:38:
+         eb:1b:3e:65:a0:da:aa:39:4a:94:56:22:64:48:e1:63:84:05:
+         a1:bb
+-----BEGIN CERTIFICATE-----
+MIIDuzCCAySgAwIBAgIBNzANBgkqhkiG9w0BAQUFADCBhTELMAkGA1UEBhMCUlUx
+EzARBgNVBAgTClNBTUFSU0tBWUExEjAQBgNVBAcTCVRPR0xJQVRUWTEVMBMGA1UE
+ChMMTkVPVFJFSUQtTFREMRgwFgYDVQQDEw9ORU9UUkVJRC1MVEQgQ0ExHDAaBgkq
+hkiG9w0BCQEWDW11eGFAbmVvNjMucnUwHhcNMTcwNDI2MDcxOTQ4WhcNMjcwNDI0
+MDcxOTQ4WjCBgDELMAkGA1UEBhMCUlUxEzARBgNVBAgTClNBTUFSU0tBWUExEjAQ
+BgNVBAcTCVRPR0xJQVRUWTEVMBMGA1UEChMMTkVPVFJFSUQtTFREMRMwEQYDVQQD
+EwptYWthcm92YTE0MRwwGgYJKoZIhvcNAQkBFg1tdXhhQG5lbzYzLnJ1MIGfMA0G
+CSqGSIb3DQEBAQUAA4GNADCBiQKBgQChMJS1z54ufT1+ffwNlS3gwzC/F54DaDSi
+q3xxN+UTcVovNY8q1gRBIKcBuUW3mt4pGM34pXXHY1ToCtjibjAy7Udb7EJRKyop
+LR3420Kvob40w/UuQO8PoBQkktvZYfpXGRBqXDsiHTsmOy4f1nmppI8lEe8/Xmtj
+iFc7PvoCswIDAQABo4IBPDCCATgwCQYDVR0TBAIwADAtBglghkgBhvhCAQ0EIBYe
+RWFzeS1SU0EgR2VuZXJhdGVkIENlcnRpZmljYXRlMB0GA1UdDgQWBBRCb1L6yge8
+UZEhF5Z7jeNx6Y9aijCBugYDVR0jBIGyMIGvgBT4rWvPBWr1AbeKb6KR0PPD4yti
+86GBi6SBiDCBhTELMAkGA1UEBhMCUlUxEzARBgNVBAgTClNBTUFSU0tBWUExEjAQ
+BgNVBAcTCVRPR0xJQVRUWTEVMBMGA1UEChMMTkVPVFJFSUQtTFREMRgwFgYDVQQD
+Ew9ORU9UUkVJRC1MVEQgQ0ExHDAaBgkqhkiG9w0BCQEWDW11eGFAbmVvNjMucnWC
+CQCjLiqorlIbtzATBgNVHSUEDDAKBggrBgEFBQcDAjALBgNVHQ8EBAMCB4AwDQYJ
+KoZIhvcNAQEFBQADgYEAEmx/H9uwp0YY1Egz1G1EJDEL9TjpcGCVz8HRx0Zp9VyD
+gM6nRhrIvxWWaMXtTCzrUG4/ad6lwLgrWa7dijSq5HB+ESt1eBTJOT0jGMWACrY4
+XKNIKZqxKCFH/FdMjYvfn5smxNPERhZ/C+c46xs+ZaDaqjlKlFYiZEjhY4QFobs=
+-----END CERTIFICATE-----

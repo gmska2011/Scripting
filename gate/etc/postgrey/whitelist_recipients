@@ -1,0 +1,15 @@
+# postgrey whitelist for mail recipients
+# --------------------------------------
+# put this file in /etc/postgrey or specify its path
+# with --whitelist-recipients=xxx
+
+postmaster@
+abuse@
+mironova@
+svn@
+efimov777@
+anton@
+chepkalenko.v@
+muxa@
+meandr@
+sasha@

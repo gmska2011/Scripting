@@ -1,0 +1,108 @@
+#include "ael/local.ael"
+#include "ael/meandr.ael"
+#include "ael/macros.ael"
+
+globals {
+    SECRETAR=SIP/205&SIP/210;
+   
+    WAV=/records/wav; //Временный каталог с WAV
+    MP3=/var/spool/asterisk/monitor; //Куда выгружать mp3 файлы
+    RECORDING=1; // Запись, 1 - включена.
+
+}
+
+
+context from-shops {
+        includes {
+                local-users;
+        };
+};
+
+context from-shops-samara {
+        includes {
+                local-users;
+        };
+};
+                
+                
+context from-admin {
+        includes {
+            local-users;
+            sipnet-users;
+	    ats-users;
+
+        };
+
+};
+
+context from-office {
+        includes {
+            local-users;
+            sipnet-users;
+
+        };
+};
+
+context from-office-no-sipnet {
+        includes {
+            local-users;
+        };
+};
+
+
+context from-notinoffice {
+        includes {
+            sipnet-users;
+            local-users;
+        };
+};
+
+context from-meandr {
+        includes {
+                meandr-home;
+        };
+};
+
+context from-pavel {
+    _XXXXXX => {
+        Set(CALLERID(num)=557675);
+	Dial(SIP/AIST_TRUNK/${EXTEN},,);
+    }
+}
+
+context fromaist {
+    557565 => {
+        Dial(SIP/200,60,Tt);    
+	
+    }
+    557675 => {
+       Answer();
+//       Read(NUMBER,/var/lib/asterisk/sounds/greetings,3,,,15);
+      Read(NUMBER,/var/lib/asterisk/sounds/zdravstujte&/var/lib/asterisk/sounds/dial-exten-tone,3,,,15);
+	&recording(${CALLERID(number)},${EXTEN});
+      if (${EXISTS(${NUMBER})} = 0 ) {
+    	   Playback(/var/lib/asterisk/sounds/vremja-ozhidanija-isteklo&do-svidanija);
+//           Dial(SIP/200&SIP/300,60,Tt);     
+      }else{
+//           &CheckAvail(${NUMBER});
+           &BusyCheckLocal(${NUMBER});
+           Dial(SIP/${NUMBER},60,Tt);     
+      }
+    }
+
+}    
+
+context from-kusto {    
+    _1XX => {
+        Dial(SIP/${EXTEN},60,Tt);
+    }
+}
+
+context from-mindal {    
+    _XXX => {
+	&recording(${CALLERID(number)},${EXTEN});
+        Dial(SIP/${EXTEN},60,Tt);
+    }
+}
+
+

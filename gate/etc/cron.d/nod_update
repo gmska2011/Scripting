@@ -1,0 +1,6 @@
+# Activity reports every 10 minutes everyday
+#1 */1 * * * su nod -c "/home/nod32-update-mirror/nod32-mirror/nod32-mirror.sh -u" >/dev/null 2>/dev/null 
+#1 */1 * * * /home/scripts/nod32/sync_nod192.sh >/dev/null 2>/dev/null 
+#1 */1 * * * /home/scripts/nod32/sync_nod192.sh >/dev/null 2>/dev/null 
+
+

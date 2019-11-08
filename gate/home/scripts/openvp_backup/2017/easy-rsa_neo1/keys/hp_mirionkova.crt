@@ -1,0 +1,72 @@
+Certificate:
+    Data:
+        Version: 3 (0x2)
+        Serial Number: 27 (0x1b)
+    Signature Algorithm: sha1WithRSAEncryption
+        Issuer: C=RU, ST=SAMARSKAYA, L=TOGLIATTY, O=NEOTREID-LTD, CN=NEOTREID-LTD CA/emailAddress=muxa@neo63.ru
+        Validity
+            Not Before: Jul 15 10:28:24 2016 GMT
+            Not After : Jul 13 10:28:24 2026 GMT
+        Subject: C=RU, ST=SAMARSKAYA, L=TOGLIATTY, O=NEOTREID-LTD, CN=hp_mirionkova/emailAddress=muxa@neo63.ru
+        Subject Public Key Info:
+            Public Key Algorithm: rsaEncryption
+                Public-Key: (1024 bit)
+                Modulus:
+                    00:d2:8b:23:e6:6b:d3:d9:ed:9d:ad:de:15:ed:59:
+                    66:de:a9:cd:82:7c:38:9f:2c:0f:da:5f:0f:e2:d1:
+                    38:40:0c:54:6c:82:6a:e5:73:31:62:8b:2c:97:ea:
+                    b5:e5:a2:1d:61:66:bf:a7:5e:11:56:bd:c4:db:93:
+                    8d:9c:fd:a4:b2:ef:5a:36:95:d9:aa:e7:90:e4:bf:
+                    03:2d:9d:ae:b1:30:bf:d9:62:45:ec:a5:c6:d4:c9:
+                    1b:2c:f7:e6:23:db:3e:fc:f5:d2:16:a3:b3:80:32:
+                    e4:ae:79:91:94:01:1d:7a:c6:c7:1e:d8:af:4e:9e:
+                    a6:96:9c:02:2e:90:5d:87:95
+                Exponent: 65537 (0x10001)
+        X509v3 extensions:
+            X509v3 Basic Constraints: 
+                CA:FALSE
+            Netscape Comment: 
+                Easy-RSA Generated Certificate
+            X509v3 Subject Key Identifier: 
+                BA:10:2A:E4:C1:06:0D:5A:F1:B5:06:1F:E2:8E:AF:D4:AA:32:02:8C
+            X509v3 Authority Key Identifier: 
+                keyid:F8:AD:6B:CF:05:6A:F5:01:B7:8A:6F:A2:91:D0:F3:C3:E3:2B:62:F3
+                DirName:/C=RU/ST=SAMARSKAYA/L=TOGLIATTY/O=NEOTREID-LTD/CN=NEOTREID-LTD CA/emailAddress=muxa@neo63.ru
+                serial:A3:2E:2A:A8:AE:52:1B:B7
+
+            X509v3 Extended Key Usage: 
+                TLS Web Client Authentication
+            X509v3 Key Usage: 
+                Digital Signature
+    Signature Algorithm: sha1WithRSAEncryption
+         6b:61:e7:76:c8:16:00:0a:d8:0a:e8:cc:46:5f:dc:26:d0:71:
+         c2:f4:de:29:fe:9c:8d:0c:8c:b1:e5:e9:66:c8:68:15:98:0c:
+         2e:a2:ce:11:0d:3f:6d:c0:79:67:5c:05:ff:ad:1c:9c:36:00:
+         4e:04:84:af:eb:19:35:7d:58:45:3b:a0:39:73:6f:e5:17:f8:
+         cf:1f:2e:86:38:2a:50:7a:64:2d:a9:b2:2a:24:4a:33:8c:cc:
+         d8:94:1c:b0:c4:51:7c:ed:d7:2c:50:ad:e0:56:72:ac:35:0f:
+         67:88:b1:6e:c4:2e:e2:aa:d5:6a:f0:d4:3f:37:f2:d4:99:c7:
+         42:97
+-----BEGIN CERTIFICATE-----
+MIIDvjCCAyegAwIBAgIBGzANBgkqhkiG9w0BAQUFADCBhTELMAkGA1UEBhMCUlUx
+EzARBgNVBAgTClNBTUFSU0tBWUExEjAQBgNVBAcTCVRPR0xJQVRUWTEVMBMGA1UE
+ChMMTkVPVFJFSUQtTFREMRgwFgYDVQQDEw9ORU9UUkVJRC1MVEQgQ0ExHDAaBgkq
+hkiG9w0BCQEWDW11eGFAbmVvNjMucnUwHhcNMTYwNzE1MTAyODI0WhcNMjYwNzEz
+MTAyODI0WjCBgzELMAkGA1UEBhMCUlUxEzARBgNVBAgTClNBTUFSU0tBWUExEjAQ
+BgNVBAcTCVRPR0xJQVRUWTEVMBMGA1UEChMMTkVPVFJFSUQtTFREMRYwFAYDVQQD
+FA1ocF9taXJpb25rb3ZhMRwwGgYJKoZIhvcNAQkBFg1tdXhhQG5lbzYzLnJ1MIGf
+MA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDSiyPma9PZ7Z2t3hXtWWbeqc2CfDif
+LA/aXw/i0ThADFRsgmrlczFiiyyX6rXloh1hZr+nXhFWvcTbk42c/aSy71o2ldmq
+55DkvwMtna6xML/ZYkXspcbUyRss9+Yj2z789dIWo7OAMuSueZGUAR16xsce2K9O
+nqaWnAIukF2HlQIDAQABo4IBPDCCATgwCQYDVR0TBAIwADAtBglghkgBhvhCAQ0E
+IBYeRWFzeS1SU0EgR2VuZXJhdGVkIENlcnRpZmljYXRlMB0GA1UdDgQWBBS6ECrk
+wQYNWvG1Bh/ijq/UqjICjDCBugYDVR0jBIGyMIGvgBT4rWvPBWr1AbeKb6KR0PPD
+4yti86GBi6SBiDCBhTELMAkGA1UEBhMCUlUxEzARBgNVBAgTClNBTUFSU0tBWUEx
+EjAQBgNVBAcTCVRPR0xJQVRUWTEVMBMGA1UEChMMTkVPVFJFSUQtTFREMRgwFgYD
+VQQDEw9ORU9UUkVJRC1MVEQgQ0ExHDAaBgkqhkiG9w0BCQEWDW11eGFAbmVvNjMu
+cnWCCQCjLiqorlIbtzATBgNVHSUEDDAKBggrBgEFBQcDAjALBgNVHQ8EBAMCB4Aw
+DQYJKoZIhvcNAQEFBQADgYEAa2HndsgWAArYCujMRl/cJtBxwvTeKf6cjQyMseXp
+ZshoFZgMLqLOEQ0/bcB5Z1wF/60cnDYATgSEr+sZNX1YRTugOXNv5Rf4zx8uhjgq
+UHpkLamyKiRKM4zM2JQcsMRRfO3XLFCt4FZyrDUPZ4ixbsQu4qrVavDUPzfy1JnH
+Qpc=
+-----END CERTIFICATE-----

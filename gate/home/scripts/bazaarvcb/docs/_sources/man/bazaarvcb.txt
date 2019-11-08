@@ -1,0 +1,254 @@
+:orphan:
+
+bazaarvcb manual page
+========================
+
+Synopsis
+--------
+
+**bazaarvcb** [options]
+
+Description
+-----------
+
+**bazaarvcb** backup and restore VMware VMs 
+
+This doc is incomplete, use -h or "command" -h to get help from the command line.
+Read the GettingStarted file for more. 
+
+Options
+-------
+
+ ::
+
+        usage: bazaarvcb [-h] [--version]  ...
+        
+        backup and restore VMware virtual machines
+        
+        optional arguments:
+          -h, --help   show this help message and exit
+          --version    show program's version number and exit
+        
+        valid commands:
+          
+            checkhash  check .hsh files integrity in one directory
+            listvm     list registered VMs on the ESXi host
+            queryvm    display VMs informations
+            listbackup
+                       search for backups in local and remote directories
+            querybackup
+                       display report file of one particular
+            backup     backup a VM
+            restore    restore a backup
+
+
+BACKUP
+------
+
+ ::
+
+        usage: bazaarvcb backup [-h] [-q] [-d] [-l LOGFILE] [-H HOST] [-P PORT]
+                                   [-u USER] [-p PASSWORD]
+                                   [--mail {always,never,error}] [--mail-host HOST]
+                                   [--mail-port PORT] [--mail-mode {normal,ssl,tls}]
+                                   [--mail-login LOGIN] [--mail-password PASS]
+                                   [--mail-sender SENDER] [--mail-recipient RECIPIENT]
+                                   [--mail-header HEADER] [--exclude-disk DISK]
+                                   [--disk-format {zeroedthick,eagerzeroedthick,thin,2gbsparse}]
+                                   [--base BASE_DIR] [--hashing] [--consolidate]
+                                   [--profile] [--no-purge] [--roll-out COUNT]
+                                   [--shutdown] [--shutdown-timeout MINUTES] [--poweron]
+                                   [--poweron-after] [--agent COUNT]
+                                   [--listen ADDR[:PORT]] [--callback ADDR:PORT]
+                                   vmname target
+        
+        positional arguments:
+          vmname                the name or the .vmx path
+          target                local or remote directory where to backup the VM
+        
+        optional arguments:
+          -h, --help            show this help message and exit
+          -q, --quiet           don't display log on the console
+          -d, --debug           increase debugging level
+          -l LOGFILE, --log LOGFILE
+                                specify the logfile
+        
+        host options:
+          -H HOST, --host HOST  hostname or ip address of the ESXi server
+          -P PORT, --port PORT  port
+          -u USER, --user USER  username
+          -p PASSWORD, --password PASSWORD
+                                password
+        
+        mail options:
+          --mail {always,never,error}
+                                when to send an email, default is never
+          --mail-host HOST      name or IP of the mail relay
+          --mail-port PORT      tcp port of the mail relay, (default depend of mode)
+          --mail-mode {normal,ssl,tls}
+                                SMTP protocol
+          --mail-login LOGIN    login for the mail relay
+          --mail-password PASS  password for the mail relay
+          --mail-sender SENDER  email address of the sender
+          --mail-recipient RECIPIENT
+                                email address of one recipient, you can use multiple
+                                option
+          --mail-header HEADER  email address of one recipient, you can use multiple
+                                option
+        
+        backup options:
+          --exclude-disk DISK   the full path of a disk to exclude, can be used
+                                multiple time
+          --disk-format {zeroedthick,eagerzeroedthick,thin,2gbsparse}
+                                only for remote backup, when vmkfstools is used,
+                                default is to keep the same format
+          --base BASE_DIR       a directory where to search for the most recent base
+                                image
+          --hashing             use block hashing to lower bandwidth
+          --consolidate         consolidate snapshots if any
+          --profile             enable profiling
+          --no-purge            don't purge backup that have failed
+          --roll-out COUNT      the number of backup to keep, 0 to never roll, <0 to
+                                roll before to backup
+          --shutdown            shutdown the VM before the backup (poweroff after
+                                shutdown-timeout seconds), you probably want a
+                                --poweron too
+          --shutdown-timeout MINUTES
+                                time before to do a hard poweroff (default is 15 min)
+          --poweron             start the VM after the snapshot, before to start the
+                                backup
+          --poweron-after       start the VM after the end of the backup
+          
+          --jobname JOBNAME     the name of the job, default is to use the vmname
+          --comment COMMENT     a comment going into the report
+          
+          --agent COUNT         the number of agent to start on the remote ESXi
+          --listen (ADDR:)PORT  the program expect to receive data from ESXi on this
+                                port, default is 31031, it is already open on ESXi,
+                                open it on your Windows or Linux host
+          --callback ADDR:PORT  when the program is behind NAT, the address of your
+                                Internet gateway to which the ESXi will send data back
+
+LISTVM
+-------
+
+ ::
+ 
+        usage: bazaarvcb listvm [-h] [-H HOST] [-P PORT] [-u USER] [-p PASSWORD]
+        
+        optional arguments:
+          -h, --help            show this help message and exit
+          -H HOST, --host HOST  hostname or ip address of the ESXi server
+          -P PORT, --port PORT  port
+          -u USER, --user USER  username
+          -p PASSWORD, --password PASSWORD
+                                password
+                                
+                                
+LISTBACKUP
+------------
+  
+  ::
+  
+        usage: bazaarvcb listbackup [-h] [-H HOST] [-P PORT] [-u USER]
+                                       [-p PASSWORD]
+                                       vmname path [path ...]
+        
+        positional arguments:
+          vmname                the name or the UUID of the VM, use "*" for all
+                                backups
+          path                  list of local and remote directories to search for
+                                backup
+        
+        optional arguments:
+          -h, --help            show this help message and exit
+          -H HOST, --host HOST  hostname or ip address of the ESXi server
+          -P PORT, --port PORT  port
+          -u USER, --user USER  username
+          -p PASSWORD, --password PASSWORD
+                                password
+
+
+RESTORE
+-------
+  
+  ::
+  
+        usage: bazaarvcb restore [-h] [-q] [-d] [-l LOGFILE] [-H HOST] [-P PORT]
+                                    [-u USER] [-p PASSWORD] [--agent COUNT]
+                                    [--listen ADDR[:PORT]] [--callback ADDR:PORT]
+                                    [--register] [--map-disk-NA DISK_NAME:TARGET_DIR]
+                                    [--disk-format-NA {zeroedthick,eagerzeroedthick,thin}]
+                                    [--poweron-NA] [--no-purge-NA]
+                                    vmname source destination
+        
+        positional arguments:
+          vmname                the name to give to the new vm
+          source                the local or remote directory holding the backup
+          destination           where to restore the backup
+        
+        optional arguments:
+          -h, --help            show this help message and exit
+          -q, --quiet           don't display log on the console
+          -d, --debug           increase debugging level
+          -l LOGFILE, --log LOGFILE
+                                specify the logfile
+          --agent COUNT         the number of agent to start on the remote ESXi
+          --listen ADDR[:PORT]  the program expect to receive data from ESXi on this
+                                port, default is 31031
+          --callback ADDR:PORT  when the program is behind NAT, the address of your
+                                Internet gateway to which the ESXi will send data back
+        
+        host options:
+          -H HOST, --host HOST  hostname or ip address of the ESXi server
+          -P PORT, --port PORT  port
+          -u USER, --user USER  username
+          -p PASSWORD, --password PASSWORD
+                                password
+        
+        restore options:
+          --register            register the newly restored VM
+          --map-disk-NA DISK_NAME:TARGET_DIR
+                                map disk
+          --disk-format-NA {zeroedthick,eagerzeroedthick,thin}
+                                only when vmkfstools is used, default is to keep the
+                                same format
+          --poweron-NA          start the VM after the restore
+          --no-purge-NA         don't purge restore that have failed
+
+
+    
+    
+Examples
+--------
+
+List registered VMs 
+
+    $ bazaarvcb listvm -H vmware -u root -p pass 
+
+Get info about a VM
+
+    $ bazaarvcb queryvm -H vmware -u root -p pass MISC.ttylinux2G
+
+Backup your VM to a datastore
+
+    $ bazaarvcb backup -H vmware -u root -p pass --roll-out 3 MISC.ttylinux2G "[SATA750-0] /backup"
+
+
+Backup VM to a local directory (download)
+
+    $ bazaarvcb backup -H vmware -u root -p pass --roll-out 3 MISC.ttylinux2G /s1/backup/bazaarvcb
+    
+List backup of VM MISC.ttylinux2G in local directory and on datastores.
+
+    $ bazaarvcb listbackup -H vmware -u root -p pass MISC.ttylinux2G "[SATA750-0] /backup" /s1/backup/bazaarvcb
+
+Restore a backup
+    
+   $ bazaarvcb restore -H vmware -u root -p vishnou --register Restored.ttylinux2Ga /s1/backup/bazaarvcb/MISC.ttylinux2G-20130422024048 "[SATA750-0] /"
+
+Author
+------
+
+Alain Spineux <alain.spineux@gmail.com>
+

@@ -1,0 +1,2 @@
+# Activity reports every 10 minutes everyday
+*/1 * * * * wget -O - https://neo63.ru/service/alias_postfixadmin.php >/dev/null 2>/dev/null 

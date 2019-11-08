@@ -1,0 +1,27 @@
+#include "ael/local.ael"
+#include "ael/macros.ael"
+
+globals {
+    SECRETAR=SIP/205&SIP/210;
+}
+
+
+context from-shops {
+        includes {
+                local-users;
+        };
+};
+                
+                
+context from-office {
+        includes {
+                local-users;
+        };
+};
+
+
+context from-noinoffice {
+        includes {
+                local-users;
+        };
+};

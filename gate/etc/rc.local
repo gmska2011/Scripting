@@ -1,0 +1,26 @@
+#!/bin/sh -e
+#
+# rc.local
+#
+# This script is executed at the end of each multiuser runlevel.
+# Make sure that the script will "exit 0" on success or any other
+# value on error.
+#
+# In order to enable or disable this script just change the execution
+# bits.
+#
+# By default this script does nothing.
+ulimit -HSn 32768
+ulimit -n 10000
+
+/bin/mount -o bind /var/spool/asterisk/monitor /var/www/html/acdr/records
+
+#/opt/teamspeak3-server_linux-amd64/ts3server_startscript.sh start
+#/usr/local/bin/noip2
+
+echo 256 >  /proc/sys/net/ipv4/neigh/default/gc_thresh1
+echo 2048 > /proc/sys/net/ipv4/neigh/default/gc_thresh2
+echo 4096 > /proc/sys/net/ipv4/neigh/default/gc_thresh3
+
+
+exit 0

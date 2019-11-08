@@ -1,0 +1,79 @@
+<?php
+$link = mysqli_connect("localhost", "root", "uk.rjyfn2009", "openfire");
+$link2 = mysqli_connect("localhost", "root", "uk.rjyfn2009", "ip_pelican");
+$charset = "UTF8";
+mysqli_set_charset($link, "utf8");
+mysqli_set_charset($link2, "utf8");
+
+/* п�ове�ка подкл��ени� */
+if (mysqli_connect_errno()) {
+    printf("�е �дало�� подкл��и����: %s\n", mysqli_connect_error());
+        exit();
+        }
+$query = "SELECT name FROM ofUser where name != ''  ";
+$query2 = "SELECT name FROM users";
+
+#echo $query."\n";   
+$name = array();     
+$name2 = array();     
+if ($result = mysqli_query($link, $query)) 
+{
+    $z=0;    
+    /* в�бо�ка данн�� и поме�ение и� в ма��ив */
+    while ($row = mysqli_fetch_row($result)) {
+	$pieces = explode(" (", $row[0]);
+#        $name[$i] = $row[0];
+
+#	$name[$i][1] = preg_replace("/(.*).$/", "\\1", $pieces[1]);
+
+	if ($pieces[1]) {
+#	$pieces[1] = preg_replace("/(.*).$/", "\\1", $pieces[1]);
+#	$pieces[1] = ~s/(.*)/;
+		if (preg_match("/\)/", $pieces[1])){
+		$pieces[1] = preg_replace("/\)/", "", $pieces[1]);
+		}
+	    $name[$z][0] = $pieces[0];
+	    $name[$z][1] = $pieces[1];
+	    $z=$z+1;
+	}
+
+    }
+
+    
+$count1=$z;
+#while ($z > 0){
+#echo $name[$i][0]." - ".$name[$i][1];
+
+#echo $name[$z][0]." - ".$name[$z][1]."\n";
+#$z=$z-1;
+#    }
+
+        /* о�и�аем �ез�л��и����ий набо� */
+mysqli_free_result($result);
+}
+
+if ($result = mysqli_query($link2, $query2)) {
+
+$i=0;    
+/* в�бо�ка данн�� и поме�ение и� в ма��ив */
+    while ($row = mysqli_fetch_row($result)) {
+$name2[$i] = $row[0];
+$i=$i+1;
+    }
+
+$count2=$i;
+
+        /* о�и�аем �ез�л��и����ий набо� */
+mysqli_free_result($result);
+}
+echo $count2." - ".$count1;
+while ($count1 > 0){
+echo $name2[$count1]." - - - - ".$name[$count1][0]."  ".$name[$count1][1]."\n";
+$count1=$count1-1;
+    }
+
+
+                        
+                /* зак��ваем подкл��ение */
+                    mysqli_close($link);
+    ?>

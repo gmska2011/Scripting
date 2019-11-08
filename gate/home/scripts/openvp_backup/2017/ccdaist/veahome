@@ -1,0 +1,4 @@
+############################iroute 192.168.90.10 255.255.255.0             CHE ZA HUYNYA!!!!! 
+### NE TAK ETO DELAYETSYA, PRO SETKU 90 serv I TAK ZNAYET
+### POCHITAY PRO push "ifconfig ***.***.***.***"
+ifconfig-push 192.168.90.34 192.168.90.35

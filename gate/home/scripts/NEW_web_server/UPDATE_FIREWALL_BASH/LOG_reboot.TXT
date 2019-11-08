@@ -1,0 +1,75 @@
+192.168.2.4 - Reboot Error
+192.168.3.4 - Reboot Error
+192.168.4.4 - OK!
+192.168.5.4 - Reboot Error
+192.168.6.4 - Reboot Error
+192.168.7.4 - OK!
+192.168.8.4 - Reboot Error
+192.168.9.4 - Reboot Error
+192.168.10.4 - Reboot Error
+192.168.11.4 - Reboot Error
+192.168.12.4 - Reboot Error
+192.168.13.4 - Reboot Error
+192.168.14.4 - OK!
+192.168.15.4 - Reboot Error
+192.168.200.4 - Reboot Error
+192.168.201.4 - Reboot Error
+192.168.202.4 - Reboot Error
+192.168.63.4 - OK!
+192.168.18.4 - Reboot Error
+192.168.16.4 - OK!
+192.168.208.4 - Reboot Error
+192.168.22.4 - Reboot Error
+192.168.19.4 - Reboot Error
+192.168.20.4 - Reboot Error
+192.168.21.4 - OK!
+192.168.23.4 - OK!
+192.168.24.4 - OK!
+192.168.205.4 - Reboot Error
+192.168.203.4 - Reboot Error
+192.168.206.4 - Reboot Error
+192.168.209.4 - Reboot Error
+192.168.207.4 - OK!
+192.168.210.4 - Reboot Error
+192.168.212.4 - OK!
+192.168.211.4 - Reboot Error
+192.168.213.4 - Reboot Error
+192.168.220.4 - Reboot Error
+192.168.222.4 - Reboot Error
+192.168.214.4 - Reboot Error
+192.168.58.4 - Reboot Error
+192.168.218.4 - OK!
+192.168.224.4 - Reboot Error
+192.168.225.4 - OK!
+192.168.226.4 - OK!
+192.168.227.4 - Reboot Error
+192.168.229.4 - OK!
+192.168.231.4 - Reboot Error
+192.168.232.4 - Reboot Error
+192.168.233.4 - Reboot Error
+192.168.236.4 - Reboot Error
+192.168.235.4 - Reboot Error
+192.168.240.4 - Reboot Error
+192.168.234.4 - Reboot Error
+192.168.238.4 - Reboot Error
+192.168.241.4 - Reboot Error
+192.168.26.4 - Reboot Error
+192.168.242.4 - Reboot Error
+192.168.243.4 - Reboot Error
+192.168.245.4 - Reboot Error
+192.168.244.4 - OK!
+192.168.247.4 - Reboot Error
+192.168.249.4 - Reboot Error
+192.168.246.4 - Reboot Error
+192.168.248.4 - Reboot Error
+192.168.27.4 - Reboot Error
+192.168.28.4 - Reboot Error
+192.168.29.4 - Reboot Error
+192.168.32.4 - Reboot Error
+192.168.33.4 - Reboot Error
+192.168.35.4 - Reboot Error
+192.168.36.4 - Reboot Error
+192.168.38.4 - OK!
+192.168.34.4 - Reboot Error
+192.168.37.4 - Reboot Error
+192.168.41.4 - OK!

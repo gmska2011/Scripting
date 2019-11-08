@@ -1,0 +1,65 @@
+Certificate:
+    Data:
+        Version: 3 (0x2)
+        Serial Number: 45 (0x2d)
+        Signature Algorithm: md5WithRSAEncryption
+        Issuer: C=RU, ST=NA, L=TOGLIATTI, O=INZA-LTD-AIST, CN=server/emailAddress=pavel@kusto.com.ru
+        Validity
+            Not Before: Mar  3 11:53:56 2010 GMT
+            Not After : Feb 29 11:53:56 2020 GMT
+        Subject: C=RU, ST=NA, O=INZA-LTD-AIST, CN=meandr/emailAddress=pavel@kusto.com.ru
+        Subject Public Key Info:
+            Public Key Algorithm: rsaEncryption
+            RSA Public Key: (1024 bit)
+                Modulus (1024 bit):
+                    00:a5:c0:bd:6f:fd:ff:ce:f9:bd:d1:50:70:36:80:
+                    eb:b0:a2:95:2f:02:9f:d8:95:d2:00:50:1f:f2:88:
+                    89:f1:02:75:2e:73:bc:d3:c6:cb:85:2b:1b:a7:4d:
+                    1e:ff:c7:0b:46:97:13:06:cb:4d:94:1f:88:d6:9e:
+                    d3:5b:ec:43:d2:30:8b:4c:43:ab:be:bf:88:78:b3:
+                    90:f5:53:91:6a:fd:cb:c2:dd:3b:4f:c2:21:bd:c5:
+                    a3:bb:1c:7a:3e:46:30:ff:27:36:39:3d:5c:30:22:
+                    9f:f8:ad:5e:41:d0:1c:e9:6c:ec:52:b7:fa:85:c1:
+                    40:4b:f2:fc:94:5c:c6:76:29
+                Exponent: 65537 (0x10001)
+        X509v3 extensions:
+            X509v3 Basic Constraints: 
+                CA:FALSE
+            Netscape Comment: 
+                OpenSSL Generated Certificate
+            X509v3 Subject Key Identifier: 
+                EE:7B:08:C6:D5:13:30:0F:23:F5:C7:A5:56:02:A0:9D:82:2D:A4:4F
+            X509v3 Authority Key Identifier: 
+                keyid:F6:7C:E6:FB:14:B7:F6:C1:5E:03:99:12:AA:ED:40:E4:44:12:76:38
+                DirName:/C=RU/ST=NA/L=TOGLIATTI/O=INZA-LTD-AIST/CN=server/emailAddress=pavel@kusto.com.ru
+                serial:00
+
+    Signature Algorithm: md5WithRSAEncryption
+        6e:81:fa:f7:9c:e5:cf:a6:fc:57:8b:e7:cd:1a:7c:6c:6d:b4:
+        0a:f9:b8:35:23:b5:c7:28:61:00:86:f1:d5:cc:09:9b:9f:7f:
+        51:73:40:f4:6e:c9:36:87:a0:1a:01:eb:47:d1:8c:a4:bb:6f:
+        76:59:fb:12:6d:c8:34:1c:47:66:77:32:dd:0d:4a:7e:d8:47:
+        15:4b:6c:96:5b:e8:dd:78:ea:c9:7b:b5:4e:d1:d9:89:e4:12:
+        73:b7:ac:09:9e:c9:4e:85:49:cb:9d:4a:5e:70:57:cc:8a:88:
+        10:a1:2a:c1:fa:9d:d0:6c:e5:9d:6c:b5:9b:1b:84:01:e2:60:
+        29:6c
+-----BEGIN CERTIFICATE-----
+MIIDWjCCAsOgAwIBAgIBLTANBgkqhkiG9w0BAQQFADB6MQswCQYDVQQGEwJSVTEL
+MAkGA1UECBMCTkExEjAQBgNVBAcTCVRPR0xJQVRUSTEWMBQGA1UEChMNSU5aQS1M
+VEQtQUlTVDEPMA0GA1UEAxMGc2VydmVyMSEwHwYJKoZIhvcNAQkBFhJwYXZlbEBr
+dXN0by5jb20ucnUwHhcNMTAwMzAzMTE1MzU2WhcNMjAwMjI5MTE1MzU2WjBmMQsw
+CQYDVQQGEwJSVTELMAkGA1UECBMCTkExFjAUBgNVBAoTDUlOWkEtTFRELUFJU1Qx
+DzANBgNVBAMTBm1lYW5kcjEhMB8GCSqGSIb3DQEJARYScGF2ZWxAa3VzdG8uY29t
+LnJ1MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQClwL1v/f/O+b3RUHA2gOuw
+opUvAp/YldIAUB/yiInxAnUuc7zTxsuFKxunTR7/xwtGlxMGy02UH4jWntNb7EPS
+MItMQ6u+v4h4s5D1U5Fq/cvC3TtPwiG9xaO7HHo+RjD/JzY5PVwwIp/4rV5B0Bzp
+bOxSt/qFwUBL8vyUXMZ2KQIDAQABo4IBAjCB/zAJBgNVHRMEAjAAMCwGCWCGSAGG
++EIBDQQfFh1PcGVuU1NMIEdlbmVyYXRlZCBDZXJ0aWZpY2F0ZTAdBgNVHQ4EFgQU
+7nsIxtUTMA8j9celVgKgnYItpE8wgaQGA1UdIwSBnDCBmYAU9nzm+xS39sFeA5kS
+qu1A5EQSdjihfqR8MHoxCzAJBgNVBAYTAlJVMQswCQYDVQQIEwJOQTESMBAGA1UE
+BxMJVE9HTElBVFRJMRYwFAYDVQQKEw1JTlpBLUxURC1BSVNUMQ8wDQYDVQQDEwZz
+ZXJ2ZXIxITAfBgkqhkiG9w0BCQEWEnBhdmVsQGt1c3RvLmNvbS5ydYIBADANBgkq
+hkiG9w0BAQQFAAOBgQBugfr3nOXPpvxXi+fNGnxsbbQK+bg1I7XHKGEAhvHVzAmb
+n39Rc0D0bsk2h6AaAetH0Yyku292WfsSbcg0HEdmdzLdDUp+2EcVS2yWW+jdeOrJ
+e7VO0dmJ5BJzt6wJnslOhUnLnUpecFfMiogQoSrB+p3QbOWdbLWbG4QB4mApbA==
+-----END CERTIFICATE-----

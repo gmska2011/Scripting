@@ -1,0 +1,40 @@
+context lg800-users {
+    includes {
+            support;
+            local-users;
+    };
+
+    _78482XXXXXX =>{
+        &recording(${CALLERID(number)},${EXTEN});
+        Dial(SIP/${EXTEN:5}@FOK,,T);
+    };
+
+    _88482XXXXXX =>{
+        &recording(${CALLERID(number)},${EXTEN});
+        Dial(SIP/${EXTEN:5}@FOK,,T);
+    };
+
+    _8846XXXXXXX =>{
+        &recording(${CALLERID(number)},${EXTEN});
+        Dial(SIP/${EXTEN:4}@FOK,,T);
+    };
+
+    _89X. =>{
+        &recording(${CALLERID(number)},${EXTEN});
+        Dial(SIP/${EXTEN}@FOK,,T);
+    };
+
+    _+79X. =>{
+        &recording(${CALLERID(number)},${EXTEN});
+        Dial(SIP/8${EXTEN:2}@FOK,,T);
+    };
+
+    _79X. =>{
+        &recording(${CALLERID(number)},${EXTEN});
+        Dial(SIP/8${EXTEN:1}@FOK,,T);
+    };
+
+    _909 => {
+	&RecordGreeting();
+    };
+};

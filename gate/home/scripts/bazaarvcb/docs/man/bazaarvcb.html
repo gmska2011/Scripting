@@ -1,0 +1,372 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>bazaarvcb manual page &mdash; bazaarvcb 0.9.1b documentation</title>
+    
+    <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.9.1b',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/bazaarvcb.ico"/>
+    <link rel="top" title="bazaarvcb 0.9.1b documentation" href="../index.html" />
+    <link rel="prev" title="FAQ" href="../faq.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../faq.html" title="FAQ"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">bazaarvcb 0.9.1b documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/bazaarvcb-200.png" alt="Logo"/>
+            </a></p>
+<h3>Author's home</h3>
+<div class="tuxhome">
+  <a href="http://blog.magiksys.net">
+    <img class="mytux" src="../_static/tux-transparent-56x64b.png" alt="Tux Logo"/>
+    <span class="homesite">blog.magiksys.net</span>
+  </a>
+</div>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">bazaarvcb manual page</a><ul>
+<li><a class="reference internal" href="#synopsis">Synopsis</a></li>
+<li><a class="reference internal" href="#description">Description</a></li>
+<li><a class="reference internal" href="#options">Options</a></li>
+<li><a class="reference internal" href="#backup">BACKUP</a></li>
+<li><a class="reference internal" href="#listvm">LISTVM</a></li>
+<li><a class="reference internal" href="#listbackup">LISTBACKUP</a></li>
+<li><a class="reference internal" href="#restore">RESTORE</a></li>
+<li><a class="reference internal" href="#examples">Examples</a></li>
+<li><a class="reference internal" href="#author">Author</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../faq.html"
+                        title="previous chapter">FAQ</a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="bazaarvcb-manual-page">
+<h1>bazaarvcb manual page<a class="headerlink" href="#bazaarvcb-manual-page" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="synopsis">
+<h2>Synopsis<a class="headerlink" href="#synopsis" title="Permalink to this headline">¶</a></h2>
+<p><strong>bazaarvcb</strong> [options]</p>
+</div>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p><strong>bazaarvcb</strong> backup and restore VMware VMs</p>
+<p>This doc is incomplete, use -h or &#8220;command&#8221; -h to get help from the command line.
+Read the GettingStarted file for more.</p>
+</div>
+<div class="section" id="options">
+<h2>Options<a class="headerlink" href="#options" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><div class="highlight-python"><pre>usage: bazaarvcb [-h] [--version]  ...
+
+backup and restore VMware virtual machines
+
+optional arguments:
+  -h, --help   show this help message and exit
+  --version    show program's version number and exit
+
+valid commands:
+
+    checkhash  check .hsh files integrity in one directory
+    listvm     list registered VMs on the ESXi host
+    queryvm    display VMs informations
+    listbackup
+               search for backups in local and remote directories
+    querybackup
+               display report file of one particular
+    backup     backup a VM
+    restore    restore a backup</pre>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="backup">
+<h2>BACKUP<a class="headerlink" href="#backup" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><div class="highlight-python"><pre>usage: bazaarvcb backup [-h] [-q] [-d] [-l LOGFILE] [-H HOST] [-P PORT]
+                           [-u USER] [-p PASSWORD]
+                           [--mail {always,never,error}] [--mail-host HOST]
+                           [--mail-port PORT] [--mail-mode {normal,ssl,tls}]
+                           [--mail-login LOGIN] [--mail-password PASS]
+                           [--mail-sender SENDER] [--mail-recipient RECIPIENT]
+                           [--mail-header HEADER] [--exclude-disk DISK]
+                           [--disk-format {zeroedthick,eagerzeroedthick,thin,2gbsparse}]
+                           [--base BASE_DIR] [--hashing] [--consolidate]
+                           [--profile] [--no-purge] [--roll-out COUNT]
+                           [--shutdown] [--shutdown-timeout MINUTES] [--poweron]
+                           [--poweron-after] [--agent COUNT]
+                           [--listen ADDR[:PORT]] [--callback ADDR:PORT]
+                           vmname target
+
+positional arguments:
+  vmname                the name or the .vmx path
+  target                local or remote directory where to backup the VM
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -q, --quiet           don't display log on the console
+  -d, --debug           increase debugging level
+  -l LOGFILE, --log LOGFILE
+                        specify the logfile
+
+host options:
+  -H HOST, --host HOST  hostname or ip address of the ESXi server
+  -P PORT, --port PORT  port
+  -u USER, --user USER  username
+  -p PASSWORD, --password PASSWORD
+                        password
+
+mail options:
+  --mail {always,never,error}
+                        when to send an email, default is never
+  --mail-host HOST      name or IP of the mail relay
+  --mail-port PORT      tcp port of the mail relay, (default depend of mode)
+  --mail-mode {normal,ssl,tls}
+                        SMTP protocol
+  --mail-login LOGIN    login for the mail relay
+  --mail-password PASS  password for the mail relay
+  --mail-sender SENDER  email address of the sender
+  --mail-recipient RECIPIENT
+                        email address of one recipient, you can use multiple
+                        option
+  --mail-header HEADER  email address of one recipient, you can use multiple
+                        option
+
+backup options:
+  --exclude-disk DISK   the full path of a disk to exclude, can be used
+                        multiple time
+  --disk-format {zeroedthick,eagerzeroedthick,thin,2gbsparse}
+                        only for remote backup, when vmkfstools is used,
+                        default is to keep the same format
+  --base BASE_DIR       a directory where to search for the most recent base
+                        image
+  --hashing             use block hashing to lower bandwidth
+  --consolidate         consolidate snapshots if any
+  --profile             enable profiling
+  --no-purge            don't purge backup that have failed
+  --roll-out COUNT      the number of backup to keep, 0 to never roll, &lt;0 to
+                        roll before to backup
+  --shutdown            shutdown the VM before the backup (poweroff after
+                        shutdown-timeout seconds), you probably want a
+                        --poweron too
+  --shutdown-timeout MINUTES
+                        time before to do a hard poweroff (default is 15 min)
+  --poweron             start the VM after the snapshot, before to start the
+                        backup
+  --poweron-after       start the VM after the end of the backup
+
+  --jobname JOBNAME     the name of the job, default is to use the vmname
+  --comment COMMENT     a comment going into the report
+
+  --agent COUNT         the number of agent to start on the remote ESXi
+  --listen (ADDR:)PORT  the program expect to receive data from ESXi on this
+                        port, default is 31031, it is already open on ESXi,
+                        open it on your Windows or Linux host
+  --callback ADDR:PORT  when the program is behind NAT, the address of your
+                        Internet gateway to which the ESXi will send data back</pre>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="listvm">
+<h2>LISTVM<a class="headerlink" href="#listvm" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><div class="highlight-python"><pre>usage: bazaarvcb listvm [-h] [-H HOST] [-P PORT] [-u USER] [-p PASSWORD]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -H HOST, --host HOST  hostname or ip address of the ESXi server
+  -P PORT, --port PORT  port
+  -u USER, --user USER  username
+  -p PASSWORD, --password PASSWORD
+                        password</pre>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="listbackup">
+<h2>LISTBACKUP<a class="headerlink" href="#listbackup" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><div class="highlight-python"><pre>usage: bazaarvcb listbackup [-h] [-H HOST] [-P PORT] [-u USER]
+                               [-p PASSWORD]
+                               vmname path [path ...]
+
+positional arguments:
+  vmname                the name or the UUID of the VM, use "*" for all
+                        backups
+  path                  list of local and remote directories to search for
+                        backup
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -H HOST, --host HOST  hostname or ip address of the ESXi server
+  -P PORT, --port PORT  port
+  -u USER, --user USER  username
+  -p PASSWORD, --password PASSWORD
+                        password</pre>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="restore">
+<h2>RESTORE<a class="headerlink" href="#restore" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><div class="highlight-python"><pre>usage: bazaarvcb restore [-h] [-q] [-d] [-l LOGFILE] [-H HOST] [-P PORT]
+                            [-u USER] [-p PASSWORD] [--agent COUNT]
+                            [--listen ADDR[:PORT]] [--callback ADDR:PORT]
+                            [--register] [--map-disk-NA DISK_NAME:TARGET_DIR]
+                            [--disk-format-NA {zeroedthick,eagerzeroedthick,thin}]
+                            [--poweron-NA] [--no-purge-NA]
+                            vmname source destination
+
+positional arguments:
+  vmname                the name to give to the new vm
+  source                the local or remote directory holding the backup
+  destination           where to restore the backup
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -q, --quiet           don't display log on the console
+  -d, --debug           increase debugging level
+  -l LOGFILE, --log LOGFILE
+                        specify the logfile
+  --agent COUNT         the number of agent to start on the remote ESXi
+  --listen ADDR[:PORT]  the program expect to receive data from ESXi on this
+                        port, default is 31031
+  --callback ADDR:PORT  when the program is behind NAT, the address of your
+                        Internet gateway to which the ESXi will send data back
+
+host options:
+  -H HOST, --host HOST  hostname or ip address of the ESXi server
+  -P PORT, --port PORT  port
+  -u USER, --user USER  username
+  -p PASSWORD, --password PASSWORD
+                        password
+
+restore options:
+  --register            register the newly restored VM
+  --map-disk-NA DISK_NAME:TARGET_DIR
+                        map disk
+  --disk-format-NA {zeroedthick,eagerzeroedthick,thin}
+                        only when vmkfstools is used, default is to keep the
+                        same format
+  --poweron-NA          start the VM after the restore
+  --no-purge-NA         don't purge restore that have failed</pre>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<p>List registered VMs</p>
+<blockquote>
+<div>$ bazaarvcb listvm -H vmware -u root -p pass</div></blockquote>
+<p>Get info about a VM</p>
+<blockquote>
+<div>$ bazaarvcb queryvm -H vmware -u root -p pass MISC.ttylinux2G</div></blockquote>
+<p>Backup your VM to a datastore</p>
+<blockquote>
+<div>$ bazaarvcb backup -H vmware -u root -p pass &#8211;roll-out 3 MISC.ttylinux2G &#8220;[SATA750-0] /backup&#8221;</div></blockquote>
+<p>Backup VM to a local directory (download)</p>
+<blockquote>
+<div>$ bazaarvcb backup -H vmware -u root -p pass &#8211;roll-out 3 MISC.ttylinux2G /s1/backup/bazaarvcb</div></blockquote>
+<p>List backup of VM MISC.ttylinux2G in local directory and on datastores.</p>
+<blockquote>
+<div>$ bazaarvcb listbackup -H vmware -u root -p pass MISC.ttylinux2G &#8220;[SATA750-0] /backup&#8221; /s1/backup/bazaarvcb</div></blockquote>
+<p>Restore a backup</p>
+<blockquote>
+<div>$ bazaarvcb restore -H vmware -u root -p vishnou &#8211;register Restored.ttylinux2Ga /s1/backup/bazaarvcb/MISC.ttylinux2G-20130422024048 &#8220;[SATA750-0] /&#8221;</div></blockquote>
+</div>
+<div class="section" id="author">
+<h2>Author<a class="headerlink" href="#author" title="Permalink to this headline">¶</a></h2>
+<p>Alain Spineux &lt;<a class="reference external" href="mailto:alain&#46;spineux&#37;&#52;&#48;gmail&#46;com">alain<span>&#46;</span>spineux<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../faq.html" title="FAQ"
+             >previous</a> |</li>
+        <li><a href="../index.html">bazaarvcb 0.9.1b documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+
+    <div class="footer">
+        &copy; Copyright 2013, Alain Spineux.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-21029552-4']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+  </body>
+</html>

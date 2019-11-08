@@ -13,7 +13,8 @@ cnxn = pyodbc.connect('DRIVER='+s.driver+';SERVER='+s.server+';PORT=1433;DATABAS
 cursor = cnxn.cursor()
 #cursor.execute("SELECT TOP 6 * from dbo.pLogData WHERE 'HozOrgan' is not NULL order by 'TimeVal' DESC;")
 #cursor.execute("SELECT TOP 50 * from dbo.pLogData WHERE 'HozOrgan' is not NULL and Event='28' order by 'TimeVal' DESC;")
-cursor.execute("SELECT * from dbo.pLogData WHERE 'HozOrgan' is not NULL and CAST(TimeVal as date) BETWEEN '"+curdate+" 00:00:00' AND '"+curdate+" 23:59:00' and Event='28' order by 'TimeVal' DESC;")
+#cursor.execute("SELECT * from dbo.pLogData WHERE 'HozOrgan' is not NULL and CAST(TimeVal as date) BETWEEN '"+curdate+" 00:00:00' AND '"+curdate+" 23:59:00' and Event='28' order by 'TimeVal' DESC;")
+cursor.execute("SELECT * from dbo.pLogData WHERE 'HozOrgan' is not NULL and CAST(TimeVal as date) BETWEEN '2019-10-29 00:00:00' AND '"+curdate+" 23:59:00' and Event='28' order by 'TimeVal' DESC;")
 
 def userName(user):
     cursor.execute("SELECT TOP 1 * from dbo.pList WHERE ID='%s';" % (user))

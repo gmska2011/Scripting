@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# Startup file for OpenVPN
+
+# Load tun module
+/sbin/modprobe tun >/dev/null 2>&1
+sleep 1s
+

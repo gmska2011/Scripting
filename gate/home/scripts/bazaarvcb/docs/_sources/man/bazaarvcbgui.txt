@@ -1,0 +1,65 @@
+:orphan:
+
+bazaarvcbgui manual page
+========================
+
+Synopsis
+--------
+
+**bazaarvcbgui** <config_file>
+
+Description
+-----------
+
+**bazaarvcbgui** is a graphical front-end for *bazaarvcb*, to schedule 
+and run backup or restore jobs  
+
+Options
+-------
+.. program:: bazaarvcbgui
+
+.. option:: -h, --help
+
+    Show help message and exit.
+
+
+Examples
+---------
+
+start *bazaarvcbgui* 
+
+    $ bazaarvcbgui bazaarvcb.ini 
+
+Overview
+---------
+
+*bazaarvcbgui* stores objects in a .ini file. section name are cryptic random *UUID*
+to allow the user to give its own name without restriction and rename it at will.
+
+Their is 5 kinds of object:
+
+- preference : it is unique and store the preferences of the user.
+- ESXi host: this is the hostname and credential of one ESXi host
+- repository : these are locations where you can store backups. a *repository* can be
+    local to the host running the program or attached to a specific ESXi host.
+    A repository can be used to backup multiple VM from multiple hosts. 
+    When browsing (not available yet) you can activate filter to help you to find
+    the backup to restores.
+- mail: this object contains one or multiples recipients address where to send email reports.
+  It also include informations about he SMTP relay and optional credential.
+- job: this object link objects above to backup an *ESXi host* to a *repository* and send 
+the report to a *email* addresses.
+
+
+The schedule options are simplistic but should support 90% of the user's need.  
+
+
+
+
+  
+
+Author
+------
+
+Alain Spineux <alain.spineux@gmail.com>
+

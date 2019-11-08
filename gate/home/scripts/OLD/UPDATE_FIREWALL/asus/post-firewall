@@ -1,0 +1,37 @@
+#!/bin/sh
+# FIREWALL FOR ASUS/D-LINK
+# Make by MUXA in 21.12.2015 v4.3 (EGAIS)
+
+# Path to iptables
+IPTABLES="/usr/sbin/iptables"
+
+# Variables
+LAN="br0"
+WIFI="vlan0"
+
+# ACCEPT IP's without masquerade.
+accept_ip="81.28.162.69 192.168.0.0/16 10.10.10.0/24 194.110.251.19 194.67.29.98 194.186.207.162 194.54.12.149 194.54.12.140 62.213.9.158 85.114.182.226 146.120.90.0/24"
+
+wan_name="eth0 eth2 3g-wan eth0.2 pppoe-wan vlan1 vlan2 ppp0"
+
+for WAN in $wan_name ; do
+        $IPTABLES -I FORWARD 1 -i $LAN -o $WAN -j DROP
+        $IPTABLES -I FORWARD 1 -i $WIFI -o $WAN -j DROP
+        $IPTABLES -I INPUT 1 -i $WAN -j ACCEPT
+        $IPTABLES -I FORWARD 1 -i $WAN -o $LAN -j ACCEPT
+
+        for IP in $accept_ip ; do
+                    $IPTABLES -I FORWARD 1 -i $LAN -o $WAN -d $IP -j ACCEPT
+        done
+done
+
+# Allow input from TUN
+$IPTABLES -I INPUT 1 -i tun0 -j ACCEPT
+$IPTABLES -I FORWARD 1 -i tun0 -o $LAN -j ACCEPT
+$IPTABLES -I FORWARD 1 -i $LAN -o tun0 -j ACCEPT
+# Allow input from GRE TUNNEL
+$IPTABLES -I INPUT 1 -i tnl -j ACCEPT
+$IPTABLES -I FORWARD 1 -i tnl -o $LAN -j ACCEPT
+$IPTABLES -I FORWARD 1 -i $LAN -o tnl -j ACCEPT
+# MASQUERADE IP's ALLOW SAMPLE
+#$IPTABLES -I FORWARD 1 -i $LAN -o vlan1 -d 0/0 -s 10.20.22.99 -j ACCEPT

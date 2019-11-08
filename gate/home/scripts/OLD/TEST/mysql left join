@@ -1,0 +1,4 @@
+select  a.username, a.lastIpAddress, a.lastLoginDate , a.lastLogoffDate , b.name, b.email  from  userStatus as a left join ofUser as b on a.username = b.username;
+
+
+select  a.username, a.lastIpAddress, b.name, date_format(from_unixtime(left(a.lastLoginDate,12)),"%d/%m/%Y %H:%i:%s") as logindate,    date_format(from_unixtime(left(a.lastLogoffDate,12)),"%d/%m/%Y %H:%i:%s") as logoffdate, b.email  from  userStatus as a left join ofUser as b using(username) order by username;

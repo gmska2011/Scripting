@@ -1,0 +1,72 @@
+#!/bin/sh
+# OPENVPN1 Server
+# WARNING!!! ALL ROUTES BY OSPF!!!
+
+#SKLAD_Ohl
+#/sbin/ip ro replace 10.21.11.0/24 via 10.10.10.140
+#SKLAD_LPO
+/sbin/ip ro replace 192.168.251.0/24 via 10.10.10.251
+#P_12_2_kv
+/sbin/ip ro replace 192.168.15.0/24 via 10.10.10.15
+#P_15_2_kv
+/sbin/ip ro replace 192.168.8.0/24 via 10.10.10.8
+#P_17_kv
+/sbin/ip ro replace 192.168.201.0/24 via 10.10.10.26
+#P_19_4_kv
+/sbin/ip ro replace 192.168.79.0/24 via 10.10.10.111
+#P_3_2_kv
+/sbin/ip ro replace 192.168.249.0/24 via 10.10.10.70
+#P_3a_2_kv
+/sbin/ip ro replace 192.168.228.0/24 via 10.10.10.50
+#P_5_kv
+/sbin/ip ro replace 192.168.230.0/24 via 10.10.10.52
+#P_7_kv
+/sbin/ip ro replace 192.168.218.0/24 via 10.10.10.41
+#P_8_kv
+/sbin/ip ro replace 192.168.4.0/24 via 10.10.10.3
+#P_8_2_kv
+/sbin/ip ro replace 192.168.10.0/24 via 10.10.10.10
+#P_9_kv
+/sbin/ip ro replace 192.168.217.0/24 via 10.10.10.40
+#P_b_Lenina
+/sbin/ip ro replace 192.168.64.0/24 via 10.10.10.100
+#P_Karbisheva_1
+/sbin/ip ro replace 192.168.11.0/24 via 10.10.10.11
+#P_Matrosova
+/sbin/ip ro replace 192.168.82.0/24 via 10.10.10.114
+#P_Muriseva_2
+/sbin/ip ro replace 192.168.238.0/24 via 10.10.10.59
+#P_Muriseva_3
+#/sbin/ip ro replace 192.168.243.0/24 via 10.10.10.64
+#P_Topolinaya
+/sbin/ip ro replace 192.168.234.0/24 via 10.10.10.56
+#P_Yaroslavskaya
+/sbin/ip ro replace 192.168.36.0/24 via 10.10.10.80
+
+#SIP
+#/sbin/ip ru del from 81.28.166.88 lookup SIP
+#/sbin/ip ru del from 81.28.166.88 lookup SIP
+#/sbin/ip ru add from 81.28.166.88 lookup SIP
+
+#/sbin/ip ro add default via 81.28.166.65 dev eth4 table SIP
+#/sbin/ip ro add 62.106.122.110 via 81.28.166.65 dev eth4
+
+/sbin/ip ru del from 198.18.254.134 lookup SIP
+/sbin/ip ru del from 198.18.254.134 lookup SIP
+/sbin/ip ru add from 198.18.254.134 lookup SIP
+
+/sbin/ip ro add default via 198.18.254.129 dev eth6 table SIP
+/sbin/ip ro add 198.19.255.155 via 198.18.254.129 dev eth6
+
+##### WIFI
+/sbin/ip ru del from 192.168.1.0/24 lookup VT2
+/sbin/ip ru del from 192.168.1.0/24 lookup VT2
+/sbin/ip ru add from 192.168.1.0/24 lookup VT2
+/sbin/ip ro add 192.168.1.0/24 dev eth0.100 table VT2
+/sbin/ip ro add default dev eth1.2600 table VT2
+
+/sbin/ip ru del from 10.20.30.0/24 lookup VT1
+/sbin/ip ru del from 10.20.30.0/24 lookup VT1
+/sbin/ip ru add from 10.20.30.0/24 lookup VT1
+/sbin/ip ro add 10.20.30.0/24 dev eth0.200 table VT1
+/sbin/ip ro replace default dev eth1.2600 table VT1

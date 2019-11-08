@@ -1,0 +1,198 @@
+macro SaveToMp3 (){
+    Set(WavToMp3=/usr/bin/lame -b 16 -m m -q 9-resample  /var/spool/asterisk/monitor/${UNIQUEID}.wav  /var/spool/asterisk/monitor/${UNIQUEID}.mp3 ; rm -rf /var/spool/asterisk/monitor/${UNIQUEID}.wav);
+    MixMonitor(${UNIQUEID}.wav,,${WavToMp3});
+    return;
+};
+
+
+macro recording (calling,called) {
+    if ("${RECORDING}" = "1"){
+          Set(fname=${UNIQUEID}-${STRFTIME(${EPOCH},,%Y-%m-%d-%H_%M)}-${calling}-${called});
+          Set(dir=${STRFTIME(${EPOCH},,%Y-%m-%d)});
+//          Set(monopt=nice -n 19 /usr/bin/lame -b 32  --silent "${WAV}/${fname}.wav" "${MP3}/${dir}/${fname}.mp3" && rm -f "${WAV}/${fname}.wav" && chmod o+r "${MP3}/${dir}/${fname}.mp3");
+//          Set(monopt=mkdir -p "${MP3}/${dir}/" && nice -n 19 /usr/bin/lame -b 32  --silent "${WAV}/${fname}.wav" "${MP3}/${dir}/${fname}.mp3" && rm -f "${WAV}/${fname}.wav" && chmod o+r "${MP3}/${dir}/${fname}.mp3");
+          Set(monopt=convert2mp3.sh ${WAV} ${MP3} ${dir} ${fname});
+          Set(CDR(filename)=${fname}.mp3);
+          Set(CDR(realdst)=${called});
+          MixMonitor(${WAV}/${fname}.wav,b,${monopt});
+    };
+    return; 
+};
+
+macro GetCallerName () {
+    Set(CNAME=${CALLERID(num)});
+//    MYSQL(Connect connid localhost root 600420 motiondb);
+//    MYSQL(Query resultid ${connid} select name from phones where number=${CALLERID(num)} );    
+    MYSQL(Query resultid ${connid} select name from phones where number like "%${CALLERID(num)}" limit 1);
+    MYSQL(Fetch fetchid ${resultid} CNAME);
+    MYSQL(Clear ${resultid});
+    MYSQL(Disconnect ${connid});
+    Noop(${CNAME});    
+    Set(CALLERID(name)=${CNAME}); 
+    Noop(${CALLERID(num):0:4});
+    Noop(${CALLERID(num):4:6});
+    if ( ${CALLERID(num):0:4}=8482 ) {
+            Set(CALLERID(num)=${CALLERID(num):4:6});
+    }
+    return;			    
+};
+
+macro RecordGreeting () {
+    Set(PASS=987654);
+    Read(PASSWORD,agent-pass,,,60);
+    if (${PASSWORD} = ${PASS}){
+	start_recording:
+	    Read(RMENU,recording-menu,1);
+	    if (${RMENU} = 1 ){
+		Playback(vm-rec-temp);
+	        Record(/var/lib/asterisk/sounds/test.gsm);
+		Playback(done-recording);		
+	    }else{
+		Playback(/var/lib/asterisk/sounds/test);
+	    }
+	goto start_recording;	    
+	    Noop(${PASSWORD});
+    }else{
+        Playback(conf-invalidpin);
+	Hangup();
+    };
+    return;
+};
+
+// проверка на доступность SIP номера 
+macro CheckAvail(NUMBER){
+    Noop(Sip number ${NUMBER} has status ${SIPPEER(${NUMBER},status)});
+    Noop(Sip number ${NUMBER} has mailbox ${SIPPEER(${NUMBER},mailbox)});    
+    if ("${SIPPEER(${NUMBER},status)}" = "" ){
+        Playback(pbx-invalid);	
+	Hangup();
+    }else if (("${SIPPEER(${NUMBER},status):0:2}" = "UN") && ("${SIPPEER(${NUMBER},mailbox)}" = "")){
+    // Если номер не доступен и не имеет голосовой почты , предупредить что номер не доступен. 
+	    Playback(v-dannyj-moment&vm-theperson);
+	    Saynumber(${NUMBER});
+	    Playback(vm-isunavail&pls-try-call-later);
+	    Hangup();
+    };
+    return;
+};
+
+ // Выставляем флаги на занятость линий и проверяем занятость линий
+macro BusyCheckLocal_old(NUMBER_IN){ 
+    Noop(NUMBER_IN ${NUMBER_IN});
+    Set(NUMBER_OUT=${CALLERID(num)});
+    Noop(NUMBER_OUT ${NUMBER_OUT}); 
+ 
+    Noop(GG ${GROUP_COUNT(${NUMBER_IN}@busy_in)});
+    if ( (${GROUP_COUNT(${NUMBER_IN}@busy_in)}>0)  || (${GROUP_COUNT(${NUMBER_IN}@busy_out)}>0) ){
+	Playback(v-dannyj-moment&vm-theperson);
+        Saynumber(${NUMBER_IN});
+        Playback(vm-isonphone&ozhidajte-soedinenija);
+    }
+    Set(GROUP(busy_in)=${NUMBER_IN});
+    Set(GROUP(busy_out)=${NUMBER_OUT}); 
+    return;
+};
+
+macro BusyCheckLocal(NUMBER_IN){
+    Noop(NUMBER_IN ${NUMBER_IN});
+    Set(NUMBER_OUT=${CALLERID(num)});
+    Noop(NUMBER_OUT ${NUMBER_OUT});
+    Set(BUSYIN=${GROUP_COUNT(${NUMBER_IN}@busy_in)});
+    Set(BUSYOUT=${GROUP_COUNT(${NUMBER_IN}@busy_out)});
+    Set(TOTAL_BUSY=${MATH(${BUSYIN}+${BUSYOUT},int)});
+                        
+            
+    Noop(TOTAL_BUSY: ${TOTAL_BUSY});
+    if (${TOTAL_BUSY} = 1){
+            Playback(v-dannyj-moment&vm-theperson);
+            Saynumber(${NUMBER_IN});
+	    Playback(vm-isonphone&ozhidajte-soedinenija);
+    }else if(${TOTAL_BUSY}>1){
+            Playback(v-dannyj-moment&vm-theperson);
+            Saynumber(${NUMBER_IN});
+            Playback(vm-isonphone&pls-try-call-later);
+    }
+                                                                                
+    Set(GROUP(busy_in)=${NUMBER_IN});
+    Set(GROUP(busy_out)=${NUMBER_OUT});
+    return;          
+};
+                                                                                                  
+macro BusySetOut()
+{
+    Set(NUMBER_OUT=${CALLERID(num)});
+    Set(GROUP(busy_out)=${NUMBER_OUT});
+    return;
+};
+                                                                                                            
+macro SupportCall()
+    {
+    Answer();
+//    Wait(2);
+//    Playback(zdravstujte);
+//    Playback(followme/pls-hold-while-try);
+
+//${STRFTIME(${EPOCH},,%d%m%Y-%H:%M:%S)})
+
+//Set(DAY=${STRFTIME(${EPOCH},,%w)});
+//    Noop(${DAY});
+//    Playback(digits/today&digits/day-${DAY});
+
+    MYSQL(Connect connid 10.63.0.242 dbadmin gtkbrfirf2019 pelican);
+//    MYSQL(Query resultid ${connid} select telephone from users where id = "4033" limit 1);
+//    MYSQL(Query resultid ${connid} SELECT users.telephone FROM users, calendar WHERE calendar.id_user=users.id AND calendar.date = CURDATE() ORDER BY calendar.date ASC LIMIT 1);
+    MYSQL(Query resultid ${connid} SELECT u.phone FROM domain_user as u, calendar as c WHERE c.id_domain_user=u.id AND c.date = CURDATE() ORDER BY c.date ASC LIMIT 1);
+    MYSQL(Fetch fetchid ${resultid} NUMDEZH);
+    MYSQL(Clear ${resultid});
+    Noop(${NUMDEZH});
+    Noop(${LEN(${NUMDEZH})});
+//  Set(CALLERID(num)=557675);
+    if (${LEN(${NUMDEZH})}>0){
+        Set(DEZHURNIY=${NUMDEZH});
+        Playback(/var/lib/asterisk/sounds/vash_zvonok_dezhurnomu);
+	SayDigits(${DEZHURNIY});
+	Set(CALLERID(all)="Neotreid" <557675>);
+	DIAL(SIP/AIST_TRUNK/${DEZHURNIY},,mT);
+        }else{
+	Playback(/var/lib/asterisk/sounds/vi_mozhete_otpravit_zayavku);
+//        DIAL(${ADMIN},20,mT);
+//        DIAL(${IT},60,mT);
+        Queue(queue_support,t);
+        }
+    return;
+};
+
+macro IVR_Albaport()
+    {
+        Answer();
+	Read(NUMBER,${ALBSOUNDS}/zdravstvuyte,1,,,45);
+	// Меню IVR
+	if (${NUMBER} = 1 ) {
+            DIAL(${FOKDIAL},60,mT);
+            //DIAL(SIP/900,60,mT);
+	    return;
+        }
+
+	if (${NUMBER} = 2 ) {
+            DIAL(${FOKRECEPTION},60,mT);
+	    return;
+        }
+
+	if (${NUMBER} = 3 ) {
+	    Read(NUMBER3,/var/lib/asterisk/sounds/dial-exten-tone,4,,,15);
+	    //SayNumber(${NUMBER3});
+	    Set(lenght=${LEN(${NUMBER3})});
+    	    if (${lenght} = 3 ) {
+	        DIAL(SIP/${NUMBER3},60,mT);
+	    }
+    	    if (${lenght} = 4 ) {
+	        DIAL(IAX2/neo-fokaster/${NUMBER3},60,mT);
+	    }
+	}
+	
+        //&BusyCheckLocal(${EXTEN});
+	// Если не нажата ни одна кнопка - звонок Менеджерам
+	DIAL(${FOKDIAL},60,mT);
+
+    return;
+};

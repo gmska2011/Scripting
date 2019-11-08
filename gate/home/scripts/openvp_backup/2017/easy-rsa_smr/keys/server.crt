@@ -1,0 +1,73 @@
+Certificate:
+    Data:
+        Version: 3 (0x2)
+        Serial Number: 1 (0x1)
+        Signature Algorithm: sha1WithRSAEncryption
+        Issuer: C=RU, ST=SAMARSKAYA, L=SAMARA, O=NEOTRAID, CN=NEOTRAID CA/emailAddress=admin@neo63.ru
+        Validity
+            Not Before: Jan 21 11:59:56 2013 GMT
+            Not After : Jan 19 11:59:56 2023 GMT
+        Subject: C=RU, ST=SAMARSKAYA, L=SAMARA, O=NEOTRAID, CN=server/emailAddress=admin@neo63.ru
+        Subject Public Key Info:
+            Public Key Algorithm: rsaEncryption
+            RSA Public Key: (1024 bit)
+                Modulus (1024 bit):
+                    00:ce:5d:e5:4d:47:ba:04:7f:24:73:d9:1c:91:f9:
+                    4d:22:ff:fa:b4:9c:b1:34:e6:8a:f3:1b:6b:97:26:
+                    86:9b:6f:68:f7:be:6f:ca:85:58:94:a1:c9:bd:6a:
+                    9d:90:f1:51:26:27:08:18:a0:98:3f:6a:06:07:d1:
+                    b1:36:31:19:7e:2d:66:d7:79:73:30:07:d8:e8:c6:
+                    2a:b3:dc:56:65:a5:b8:5a:64:3c:0f:d7:2d:56:56:
+                    38:cf:cc:4f:37:08:92:42:4f:1c:f5:37:aa:61:12:
+                    5e:a2:c2:55:b3:42:ce:fe:5a:f0:9b:86:29:56:a3:
+                    76:43:4e:4c:36:2e:46:a3:97
+                Exponent: 65537 (0x10001)
+        X509v3 extensions:
+            X509v3 Basic Constraints: 
+                CA:FALSE
+            Netscape Cert Type: 
+                SSL Server
+            Netscape Comment: 
+                Easy-RSA Generated Server Certificate
+            X509v3 Subject Key Identifier: 
+                8A:99:97:3A:76:14:6E:35:B8:32:BC:4D:1A:11:14:0B:94:88:10:63
+            X509v3 Authority Key Identifier: 
+                keyid:D7:B0:0C:9A:20:7E:D0:9B:C9:28:03:A1:04:13:C7:AA:C8:A8:AF:CE
+                DirName:/C=RU/ST=SAMARSKAYA/L=SAMARA/O=NEOTRAID/CN=NEOTRAID CA/emailAddress=admin@neo63.ru
+                serial:B9:41:23:02:DB:46:2A:24
+
+            X509v3 Extended Key Usage: 
+                TLS Web Server Authentication
+            X509v3 Key Usage: 
+                Digital Signature, Key Encipherment
+    Signature Algorithm: sha1WithRSAEncryption
+        60:b6:ad:a7:e1:f9:e4:ac:7c:da:99:0b:7a:28:25:f0:8d:4e:
+        99:4d:46:a1:e1:b3:39:17:34:f6:10:2d:42:ad:42:51:b1:d7:
+        56:96:29:c4:67:7c:bc:20:ef:aa:52:b7:87:c6:b6:c7:20:37:
+        b9:cd:14:7a:b6:84:bf:de:f2:fa:77:96:6e:9a:3d:46:0e:70:
+        f9:4e:a5:f5:29:c4:97:7d:af:dd:11:4b:90:1c:fb:a8:1c:00:
+        79:e9:91:95:64:09:46:63:47:8d:28:35:42:21:d5:28:b3:d6:
+        ee:4c:1e:dd:1a:5e:e5:a0:c1:b8:15:07:c2:a7:78:a4:c8:08:
+        b8:b0
+-----BEGIN CERTIFICATE-----
+MIIDsjCCAxugAwIBAgIBATANBgkqhkiG9w0BAQUFADB7MQswCQYDVQQGEwJSVTET
+MBEGA1UECBMKU0FNQVJTS0FZQTEPMA0GA1UEBxMGU0FNQVJBMREwDwYDVQQKEwhO
+RU9UUkFJRDEUMBIGA1UEAxMLTkVPVFJBSUQgQ0ExHTAbBgkqhkiG9w0BCQEWDmFk
+bWluQG5lbzYzLnJ1MB4XDTEzMDEyMTExNTk1NloXDTIzMDExOTExNTk1NlowdjEL
+MAkGA1UEBhMCUlUxEzARBgNVBAgTClNBTUFSU0tBWUExDzANBgNVBAcTBlNBTUFS
+QTERMA8GA1UEChMITkVPVFJBSUQxDzANBgNVBAMTBnNlcnZlcjEdMBsGCSqGSIb3
+DQEJARYOYWRtaW5AbmVvNjMucnUwgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGB
+AM5d5U1HugR/JHPZHJH5TSL/+rScsTTmivMba5cmhptvaPe+b8qFWJShyb1qnZDx
+USYnCBigmD9qBgfRsTYxGX4tZtd5czAH2OjGKrPcVmWluFpkPA/XLVZWOM/MTzcI
+kkJPHPU3qmESXqLCVbNCzv5a8JuGKVajdkNOTDYuRqOXAgMBAAGjggFJMIIBRTAJ
+BgNVHRMEAjAAMBEGCWCGSAGG+EIBAQQEAwIGQDA0BglghkgBhvhCAQ0EJxYlRWFz
+eS1SU0EgR2VuZXJhdGVkIFNlcnZlciBDZXJ0aWZpY2F0ZTAdBgNVHQ4EFgQUipmX
+OnYUbjW4MrxNGhEUC5SIEGMwga0GA1UdIwSBpTCBooAU17AMmiB+0JvJKAOhBBPH
+qsior86hf6R9MHsxCzAJBgNVBAYTAlJVMRMwEQYDVQQIEwpTQU1BUlNLQVlBMQ8w
+DQYDVQQHEwZTQU1BUkExETAPBgNVBAoTCE5FT1RSQUlEMRQwEgYDVQQDEwtORU9U
+UkFJRCBDQTEdMBsGCSqGSIb3DQEJARYOYWRtaW5AbmVvNjMucnWCCQC5QSMC20Yq
+JDATBgNVHSUEDDAKBggrBgEFBQcDATALBgNVHQ8EBAMCBaAwDQYJKoZIhvcNAQEF
+BQADgYEAYLatp+H55Kx82pkLeigl8I1OmU1GoeGzORc09hAtQq1CUbHXVpYpxGd8
+vCDvqlK3h8a2xyA3uc0UeraEv97y+neWbpo9Rg5w+U6l9SnEl32v3RFLkBz7qBwA
+eemRlWQJRmNHjSg1QiHVKLPW7kwe3Rpe5aDBuBUHwqd4pMgIuLA=
+-----END CERTIFICATE-----

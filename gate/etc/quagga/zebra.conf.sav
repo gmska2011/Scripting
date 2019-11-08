@@ -1,0 +1,115 @@
+!
+! Zebra configuration saved from vty
+!   2019/07/10 10:16:26
+!
+hostname Router
+password zebra
+enable password zebra
+!
+interface eth0
+ ipv6 nd suppress-ra
+!
+interface eth0.1
+ ipv6 nd suppress-ra
+!
+interface eth0.100
+ ipv6 nd suppress-ra
+!
+interface eth0.200
+ ipv6 nd suppress-ra
+!
+interface eth1
+ ipv6 nd suppress-ra
+!
+interface eth1.2600
+ ipv6 nd suppress-ra
+!
+interface eth2
+ ipv6 nd suppress-ra
+!
+interface eth3
+ ipv6 nd suppress-ra
+!
+interface eth6
+ ipv6 nd suppress-ra
+!
+interface gre0
+ ipv6 nd suppress-ra
+!
+interface lo
+!
+interface ppp0
+ ipv6 nd suppress-ra
+!
+interface tap1
+ ipv6 nd suppress-ra
+!
+interface tnl10
+ ipv6 nd suppress-ra
+!
+interface tnl20
+ ipv6 nd suppress-ra
+!
+interface tnl40
+ ipv6 nd suppress-ra
+!
+interface tnl41
+ ipv6 nd suppress-ra
+!
+interface tnl63
+ ipv6 nd suppress-ra
+!
+interface tnl104
+ ipv6 nd suppress-ra
+!
+interface tun1
+ ipv6 nd suppress-ra
+!
+interface tun2
+ ipv6 nd suppress-ra
+!
+interface tun5
+ ipv6 nd suppress-ra
+!
+interface tun6
+ ipv6 nd suppress-ra
+!
+interface tun7
+ ipv6 nd suppress-ra
+!
+interface tun8
+ ipv6 nd suppress-ra
+!
+interface tun9
+ ipv6 nd suppress-ra
+!
+ip route 10.21.12.0/24 tnl40
+!
+access-list 10 permit 10.0.0.0 0.0.0.255
+access-list 10 permit 10.0.1.0 0.0.0.255
+access-list 10 permit 10.10.10.0 0.0.0.255
+access-list 10 permit 10.20.0.1
+access-list 10 permit 10.20.92.2
+access-list 10 permit 10.99.0.0 0.0.0.255
+access-list 10 permit 10.100.1.1
+access-list 10 permit 12.12.4.1
+access-list 10 permit 192.168.0.0 0.0.0.255
+access-list 10 permit 192.168.1.0 0.0.0.255
+access-list 10 permit 192.168.90.2
+access-list 10 permit 192.168.93.2
+access-list 10 permit 192.168.94.2
+access-list 10 permit 192.168.95.2
+access-list 10 permit 198.18.254.128 0.0.0.127
+access-list 10 deny any
+access-list 22 permit 10.0.0.0 0.0.0.255
+access-list 22 deny any
+!
+route-map CONN permit 1
+ match ip address 10
+!
+ip forwarding
+ipv6 forwarding
+!
+!
+line vty
+!

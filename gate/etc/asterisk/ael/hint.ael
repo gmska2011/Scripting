@@ -1,0 +1,7 @@
+context test {
+    hint(SIP/100) 100 =>
+    {
+        Dial(SIP/100);
+	Hangup();
+    }
+}

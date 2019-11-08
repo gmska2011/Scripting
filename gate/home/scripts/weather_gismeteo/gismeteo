@@ -1,0 +1,33 @@
+#!/bin/sh
+
+cd /tmp/weather
+rm -rf /tmp/weather/*2789*
+rm -rf /tmp/weather/*4429*
+rm -rf /tmp/weather/mapsfoto2*
+rm -rf /tmp/weather/img_map2*
+rm -rf /tmp/weather/informer*
+cd /tmp/weather
+#wget http://www.gismeteo.ru/towns/27890.htm
+wget http://informer.gismeteo.ru/27890-47.GIF
+#wget http://informer.gismeteo.ru/graph/G27890-1.GIF
+#wget http://gismeteo.com/informer/graph/10?city=4429&lang=rus
+wget http://informer.gismeteo.ru/G27890-1.GIF
+wget http://www.pogoda.rbc.ru/images/maps/meteo/mapsfoto2.gif
+wget http://www.pogoda.rbc.ru/images/maps/meteo/img_map2.gif
+wget http://www.calend.ru/img/export/informer.png
+
+
+wget http://info.weather.yandex.net/informer/200x100/27890.png
+#cp /home/gon/tmp/weather/27890.htm /var/www/html/weather/togliatty.htm
+cp /tmp/weather/27890-47.GIF /home/webkustoshka/html/weather/files/27890-47.GIF 
+cp /tmp/weather/G27890-1.GIF /home/webkustoshka/html/weather/files/graf.png 
+#cp /tmp/weather/10?city=4429  /home/webkustoshka/html/weather/files/graf.png 
+cp /tmp/weather/mapsfoto2.gif /home/webkustoshka/html/weather/files/mapsfoto2.gif 
+cp /tmp/weather/img_map2.gif /home/webkustoshka/html/weather/files/img_map2.gif 
+cp /tmp/weather/27890.png /home/webkustoshka/html/images/27890.png 
+cp /tmp/weather/informer.png /var/www/html/images/informer.png 
+
+chmod -R 777 /home/webkustoshka/html/weather/files/
+
+exit 0
+

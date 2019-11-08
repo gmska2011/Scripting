@@ -1,0 +1,71 @@
+Certificate:
+    Data:
+        Version: 3 (0x2)
+        Serial Number: 37 (0x25)
+    Signature Algorithm: sha1WithRSAEncryption
+        Issuer: C=RU, ST=SAMARSKAYA, L=TOGLIATTY, O=NEOTREID-LTD, CN=NEOTREID-LTD CA/emailAddress=muxa@neo63.ru
+        Validity
+            Not Before: Sep 23 04:47:55 2016 GMT
+            Not After : Sep 21 04:47:55 2026 GMT
+        Subject: C=RU, ST=SAMARSKAYA, L=TOGLIATTY, O=NEOTREID-LTD, CN=yagodnoe/emailAddress=muxa@neo63.ru
+        Subject Public Key Info:
+            Public Key Algorithm: rsaEncryption
+                Public-Key: (1024 bit)
+                Modulus:
+                    00:b1:48:a7:62:71:9e:6c:36:69:ad:cb:9f:d3:7e:
+                    6f:6a:b9:e3:47:34:24:ef:ff:2b:98:1e:62:8a:bc:
+                    21:07:e2:59:24:84:45:09:52:0a:43:ad:33:48:76:
+                    91:84:96:82:10:56:9e:23:bc:d4:8a:0a:a5:8d:07:
+                    2f:54:b5:8f:7b:2f:dd:58:c6:84:2e:c9:16:d3:66:
+                    81:f0:9e:59:f3:5b:e3:e6:0c:ef:ae:9f:19:89:e7:
+                    a4:e3:e1:52:bc:83:6f:43:34:82:9b:78:16:32:78:
+                    46:c6:0b:42:fe:53:5d:6e:da:30:59:9e:95:ab:ad:
+                    9b:17:94:c6:9b:c2:23:6b:a1
+                Exponent: 65537 (0x10001)
+        X509v3 extensions:
+            X509v3 Basic Constraints: 
+                CA:FALSE
+            Netscape Comment: 
+                Easy-RSA Generated Certificate
+            X509v3 Subject Key Identifier: 
+                2E:44:BA:38:95:B6:DF:35:96:58:89:4A:47:C2:9F:60:8E:6A:30:7A
+            X509v3 Authority Key Identifier: 
+                keyid:F8:AD:6B:CF:05:6A:F5:01:B7:8A:6F:A2:91:D0:F3:C3:E3:2B:62:F3
+                DirName:/C=RU/ST=SAMARSKAYA/L=TOGLIATTY/O=NEOTREID-LTD/CN=NEOTREID-LTD CA/emailAddress=muxa@neo63.ru
+                serial:A3:2E:2A:A8:AE:52:1B:B7
+
+            X509v3 Extended Key Usage: 
+                TLS Web Client Authentication
+            X509v3 Key Usage: 
+                Digital Signature
+    Signature Algorithm: sha1WithRSAEncryption
+         51:60:3b:d8:bd:01:96:56:f9:f6:bd:dd:4d:51:23:8f:50:3c:
+         70:9c:40:98:65:62:ca:f5:e0:67:d0:b4:02:11:2c:80:00:ba:
+         87:ea:7f:82:6b:6c:e2:3c:39:57:58:3a:ed:ad:de:73:a6:8d:
+         85:23:cb:48:16:52:e7:52:98:dd:35:6c:6d:72:ed:30:e8:29:
+         fc:32:17:b9:2d:25:23:3b:66:49:80:a5:b8:f6:bf:54:29:26:
+         1a:bf:79:0d:5d:ce:38:38:c6:e9:d5:f8:7b:7d:5d:68:07:f7:
+         f9:5c:7d:d3:1a:e4:31:b2:73:c8:a6:b7:6f:5e:1b:bb:24:eb:
+         31:df
+-----BEGIN CERTIFICATE-----
+MIIDuDCCAyGgAwIBAgIBJTANBgkqhkiG9w0BAQUFADCBhTELMAkGA1UEBhMCUlUx
+EzARBgNVBAgTClNBTUFSU0tBWUExEjAQBgNVBAcTCVRPR0xJQVRUWTEVMBMGA1UE
+ChMMTkVPVFJFSUQtTFREMRgwFgYDVQQDEw9ORU9UUkVJRC1MVEQgQ0ExHDAaBgkq
+hkiG9w0BCQEWDW11eGFAbmVvNjMucnUwHhcNMTYwOTIzMDQ0NzU1WhcNMjYwOTIx
+MDQ0NzU1WjB+MQswCQYDVQQGEwJSVTETMBEGA1UECBMKU0FNQVJTS0FZQTESMBAG
+A1UEBxMJVE9HTElBVFRZMRUwEwYDVQQKEwxORU9UUkVJRC1MVEQxETAPBgNVBAMT
+CHlhZ29kbm9lMRwwGgYJKoZIhvcNAQkBFg1tdXhhQG5lbzYzLnJ1MIGfMA0GCSqG
+SIb3DQEBAQUAA4GNADCBiQKBgQCxSKdicZ5sNmmty5/Tfm9queNHNCTv/yuYHmKK
+vCEH4lkkhEUJUgpDrTNIdpGEloIQVp4jvNSKCqWNBy9UtY97L91YxoQuyRbTZoHw
+nlnzW+PmDO+unxmJ56Tj4VK8g29DNIKbeBYyeEbGC0L+U11u2jBZnpWrrZsXlMab
+wiNroQIDAQABo4IBPDCCATgwCQYDVR0TBAIwADAtBglghkgBhvhCAQ0EIBYeRWFz
+eS1SU0EgR2VuZXJhdGVkIENlcnRpZmljYXRlMB0GA1UdDgQWBBQuRLo4lbbfNZZY
+iUpHwp9gjmowejCBugYDVR0jBIGyMIGvgBT4rWvPBWr1AbeKb6KR0PPD4yti86GB
+i6SBiDCBhTELMAkGA1UEBhMCUlUxEzARBgNVBAgTClNBTUFSU0tBWUExEjAQBgNV
+BAcTCVRPR0xJQVRUWTEVMBMGA1UEChMMTkVPVFJFSUQtTFREMRgwFgYDVQQDEw9O
+RU9UUkVJRC1MVEQgQ0ExHDAaBgkqhkiG9w0BCQEWDW11eGFAbmVvNjMucnWCCQCj
+LiqorlIbtzATBgNVHSUEDDAKBggrBgEFBQcDAjALBgNVHQ8EBAMCB4AwDQYJKoZI
+hvcNAQEFBQADgYEAUWA72L0Bllb59r3dTVEjj1A8cJxAmGViyvXgZ9C0AhEsgAC6
+h+p/gmts4jw5V1g67a3ec6aNhSPLSBZS51KY3TVsbXLtMOgp/DIXuS0lIztmSYCl
+uPa/VCkmGr95DV3OODjG6dX4e31daAf3+Vx90xrkMbJzyKa3b14buyTrMd8=
+-----END CERTIFICATE-----

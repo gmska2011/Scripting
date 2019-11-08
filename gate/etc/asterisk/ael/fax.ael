@@ -1,0 +1,30 @@
+context  fax-users {
+     _XXXXXX* => {
+    		Noop(${EXTEN:0:6});
+		Playback(najmite-1&dlja-otpravki-faksa&vm-tocancel);
+		Set(NUMBER=0);
+		Read(NUMBER,,1,,,60);
+	        if ( ${NUMBER} = 1 ){
+			AGI(prepare_fax.agi,IAX2/pavel-kusto/${EXTEN:0:6});
+                  }else{
+                       Hangup();
+	        }
+																												   		
+	 }
+}	 
+		      
+
+context fax-out {
+    fax=> {
+	NoOp(send a fax);
+	Noop(${FAXFILE});
+	Set(FAXOPT(maxrate)=14400);
+	Set(FAXOPT(minrate)=2400);
+	SendFAX(${FAXFILE},d);
+	NoOp(FAXOPT(status) : ${FAXOPT(status)});
+	if (${FAXOPT(status)} = SUCCESS) {
+	     System(rm -rf  /mnt/disk/video/FAX/*);	    
+	     System(rm -rf  /tmp/*.tiff);	    	     
+	}
+    }
+}

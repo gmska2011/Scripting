@@ -1,0 +1,62 @@
+2014-08-25 12:46:00 INF connection secret: 0388b49feb9d3cdd649d890e7cc60363afbaacb0
+2014-08-25 12:46:00 INF listen on 31031
+2014-08-25 12:46:00 INF start version=0.9.7b cmd=['/home/scripts/bazaarvcb/bazaarvcb', 'backup', '-H', '192.168.0.218', '-u', 'root', '-p', '********', 'Linux_chk_192.168.0.6', '/home/backup/vm']
+2014-08-25 12:46:00 INF start backup Linux_chk_192.168.0.6 to /home/backup/vm
+2014-08-25 12:46:02 INF vmx: /vmfs/volumes/datastore1/Linux_chk_192.168.0.6/Linux_chk_192.168.0.6.vmx
+2014-08-25 12:46:02 INF vm pre-backup status is POWERED ON
+2014-08-25 12:46:03 INF backup using download agent
+2014-08-25 12:46:03 INF temporary destination: /home/backup/vm/Linux_chk_192.168.0.6-20140825124600.new
+2014-08-25 12:46:03 INF create snapshot: bazaar_Linux_chk_192.168.0.6_20140825124600
+2014-08-25 12:46:13 INF write vmx: Linux_chk_192.168.0.6.vmx
+2014-08-25 12:46:13 INF Upload agent as e3cacc9e94faf1547c14be494e06f4416e1714b4.pyc
+2014-08-25 12:46:13 INF data channel[0] is open through 192.168.0.4:31031
+2014-08-25 12:46:13 INF data channel[1] is open through 192.168.0.4:31031
+2014-08-25 12:46:13 INF data channel[2] is open through 192.168.0.4:31031
+2014-08-25 12:46:13 INF data channel[3] is open through 192.168.0.4:31031
+2014-08-25 12:46:13 INF data channel[4] is open through 192.168.0.4:31031
+2014-08-25 12:46:13 INF data channel[5] is open through 192.168.0.4:31031
+2014-08-25 12:46:13 INF data channel[6] is open through 192.168.0.4:31031
+2014-08-25 12:46:13 INF data channel[7] is open through 192.168.0.4:31031
+2014-08-25 12:46:13 INF write descriptor: Linux_chk_192.168.0.6.vmdk
+2014-08-25 12:46:13 INF download extend: /vmfs/volumes/datastore1/Linux_chk_192.168.0.6/Linux_chk_192.168.0.6-flat.vmdk
+2014-08-25 12:46:13 INF download 21474836480 bytes from /vmfs/volumes/datastore1/Linux_chk_192.168.0.6/Linux_chk_192.168.0.6-flat.vmdk
+2014-08-25 12:46:18 INF download     528/20480Mo ( 2.6)% in     5s at 77.21Mo/s
+2014-08-25 12:46:23 INF download     977/20480Mo ( 4.8)% in    10s at 80.03Mo/s
+2014-08-25 12:46:28 INF download    1399/20480Mo ( 6.8)% in    15s at 79.47Mo/s
+2014-08-25 12:46:33 INF download    1774/20480Mo ( 8.7)% in    20s at 75.77Mo/s
+2014-08-25 12:46:38 INF download    2215/20480Mo (10.8)% in    25s at 73.48Mo/s
+2014-08-25 12:46:43 INF download    2619/20480Mo (12.8)% in    30s at 74.54Mo/s
+2014-08-25 12:46:48 INF download    2931/20480Mo (14.3)% in    35s at 72.82Mo/s
+2014-08-25 12:46:53 INF download    3354/20480Mo (16.4)% in    40s at 74.35Mo/s
+2014-08-25 12:46:58 INF download    3729/20480Mo (18.2)% in    45s at 74.29Mo/s
+2014-08-25 12:47:03 INF download    4256/20480Mo (20.8)% in    50s at 74.98Mo/s
+2014-08-25 12:47:08 INF download    4452/20480Mo (21.7)% in    55s at 71.82Mo/s
+2014-08-25 12:47:13 INF download    4863/20480Mo (23.7)% in    60s at 72.69Mo/s
+2014-08-25 12:47:18 INF download    5267/20480Mo (25.7)% in    65s at 73.33Mo/s
+2014-08-25 12:47:23 INF download    5725/20480Mo (28.0)% in    70s at 74.62Mo/s
+2014-08-25 12:47:28 INF download    6120/20480Mo (29.9)% in    75s at 74.96Mo/s
+2014-08-25 12:47:33 INF download    6622/20480Mo (32.3)% in    80s at 74.98Mo/s
+2014-08-25 12:47:38 INF download    6842/20480Mo (33.4)% in    85s at 73.20Mo/s
+2014-08-25 12:47:43 INF download    7258/20480Mo (35.4)% in    90s at 73.73Mo/s
+2014-08-25 12:47:48 INF download    7685/20480Mo (37.5)% in    95s at 74.36Mo/s
+2014-08-25 12:47:53 INF download    8123/20480Mo (39.7)% in   100s at 75.05Mo/s
+2014-08-25 12:47:58 INF download    8551/20480Mo (41.8)% in   105s at 74.36Mo/s
+2014-08-25 12:48:03 INF download    9600/20480Mo (46.9)% in   110s at 71.43Mo/s
+2014-08-25 12:48:08 INF download   10667/20480Mo (52.1)% in   115s at 68.80Mo/s
+2014-08-25 12:48:13 INF download   11180/20480Mo (54.6)% in   120s at 69.99Mo/s
+2014-08-25 12:48:18 INF download   12122/20480Mo (59.2)% in   125s at 67.39Mo/s
+2014-08-25 12:48:23 INF download   13084/20480Mo (63.9)% in   130s at 65.81Mo/s
+2014-08-25 12:48:28 INF download   13936/20480Mo (68.0)% in   135s at 63.40Mo/s
+2014-08-25 12:48:33 INF download   14849/20480Mo (72.5)% in   140s at 61.30Mo/s
+2014-08-25 12:48:38 INF download   15382/20480Mo (75.1)% in   145s at 59.84Mo/s
+2014-08-25 12:48:43 INF download   16384/20480Mo (80.0)% in   150s at 57.87Mo/s
+2014-08-25 12:48:48 INF download   17167/20480Mo (83.8)% in   155s at 57.38Mo/s
+2014-08-25 12:48:53 INF download   18314/20480Mo (89.4)% in   160s at 55.63Mo/s
+2014-08-25 12:48:59 INF download   19035/20480Mo (92.9)% in   165s at 53.95Mo/s
+2014-08-25 12:49:04 INF download   20197/20480Mo (98.6)% in   170s at 52.39Mo/s
+2014-08-25 12:49:06 INF downloaded 8934/20480Mo in 172s at 51.76Mo/s
+2014-08-25 12:49:06 INF got 2261699/5242880 blocks 43.1%
+2014-08-25 12:49:08 INF remove snapshot: bazaar_Linux_chk_192.168.0.6_20140825124600
+2014-08-25 12:49:16 INF backup finished
+2014-08-25 12:49:16 INF renaming destination to /home/backup/vm/Linux_chk_192.168.0.6-20140825124600
+2014-08-25 12:49:16 INF backup success
